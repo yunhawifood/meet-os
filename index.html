@@ -4,21 +4,247 @@
 
 <head>
 
-<meta charset="UTF-8">
+  <meta charset="UTF-8" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>한농직판장</title>
+  <title>한농직판장</title>
+
+  <style>
+
+    body {
+
+      margin: 0;
+
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+
+      background: #ffffff;
+
+      color: #111;
+
+      text-align: center;
+
+    }
+
+    .wrap {
+
+      max-width: 430px;
+
+      margin: 0 auto;
+
+      padding: 70px 24px 40px;
+
+    }
+
+    .label {
+
+      font-size: 24px;
+
+      font-weight: 700;
+
+      margin-bottom: 24px;
+
+    }
+
+    h1 {
+
+      font-size: 46px;
+
+      margin: 0;
+
+      font-weight: 900;
+
+      letter-spacing: -2px;
+
+    }
+
+    .sub {
+
+      margin-top: 18px;
+
+      font-size: 22px;
+
+      color: #777;
+
+      font-weight: 500;
+
+    }
+
+    .buttons {
+
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 16px;
+
+      margin-top: 60px;
+
+    }
+
+    .main-btn {
+
+      border: none;
+
+      border-radius: 28px;
+
+      color: white;
+
+      padding: 36px 10px;
+
+      font-size: 28px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+    }
+
+    .red {
+
+      background: #e51f1f;
+
+    }
+
+    .green {
+
+      background: #168a3a;
+
+    }
+
+    .small {
+
+      display: block;
+
+      margin-top: 14px;
+
+      font-size: 16px;
+
+      font-weight: 500;
+
+      line-height: 1.4;
+
+      opacity: 0.9;
+
+    }
+
+    .login-title {
+
+      margin-top: 56px;
+
+      font-size: 22px;
+
+      font-weight: 800;
+
+    }
+
+    .login {
+
+      display: grid;
+
+      gap: 14px;
+
+      margin-top: 20px;
+
+    }
+
+    .login-btn {
+
+      border: none;
+
+      border-radius: 18px;
+
+      padding: 18px;
+
+      font-size: 20px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+    }
+
+    .kakao {
+
+      background: #fee500;
+
+      color: #111;
+
+    }
+
+    .naver {
+
+      background: #03c75a;
+
+      color: white;
+
+    }
+
+    .footer {
+
+      margin-top: 50px;
+
+      color: #888;
+
+      font-size: 16px;
+
+      line-height: 1.6;
+
+    }
+
+  </style>
 
 </head>
 
-<body style="font-family: sans-serif; text-align:center; margin-top:80px;">
+<body>
 
-<h1>🥩 한농직판장</h1>
+  <main class="wrap">
 
-<p>1kg 고기 직판장</p>
+    <div class="label">1kg 고기 직판장</div>
 
-<p>국내산 한돈 · 한우</p>
+    <h1>한농직판장</h1>
+
+    <div class="sub">국내산 한돈 · 한우</div>
+
+    <section class="buttons">
+
+      <button class="main-btn red">
+
+        매장 주문
+
+        <span class="small">필요한 상품을<br />요청해 주세요</span>
+
+      </button>
+
+      <button class="main-btn green">
+
+        아침배송
+
+        <span class="small">전날 저녁 주문 시<br />오전 7시 이전 배송</span>
+
+      </button>
+
+    </section>
+
+    <div class="login-title">간편하게 시작하기</div>
+
+    <section class="login">
+
+      <button class="login-btn kakao">카카오로 시작하기</button>
+
+      <button class="login-btn naver">네이버로 시작하기</button>
+
+    </section>
+
+    <div class="footer">
+
+      믿을 수 있는 고기만 판매합니다.<br />
+
+      한농직판장은 신선함을 직접 전합니다.
+
+    </div>
+
+  </main>
 
 </body>
 
