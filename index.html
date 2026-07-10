@@ -8,19 +8,27 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>한농직판장</title>
+  <title>한농직판장 | 내 손안의 정육점</title>
 
   <style>
+
+    * {
+
+      box-sizing: border-box;
+
+    }
 
     body {
 
       margin: 0;
 
-      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
-
       background: #ffffff;
 
-      color: #111;
+      color: #171717;
+
+      font-family: -apple-system, BlinkMacSystemFont,
+
+        "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
 
       text-align: center;
 
@@ -28,167 +36,349 @@
 
     .wrap {
 
-      max-width: 430px;
+      width: 100%;
+
+      max-width: 480px;
 
       margin: 0 auto;
 
-      padding: 70px 24px 40px;
+      padding: 22px 18px 36px;
 
     }
 
-    .label {
+    .store-photo {
 
-      font-size: 24px;
+      display: block;
 
-      font-weight: 700;
+      width: 100%;
 
-      margin-bottom: 24px;
+      height: 205px;
+
+      object-fit: cover;
+
+      object-position: center;
+
+      border-radius: 24px;
+
+    }
+
+    .hero {
+
+      padding: 32px 4px 24px;
 
     }
 
     h1 {
 
-      font-size: 46px;
-
       margin: 0;
+
+      font-size: 42px;
+
+      line-height: 1.15;
 
       font-weight: 900;
 
-      letter-spacing: -2px;
+      letter-spacing: -2.5px;
 
     }
 
-    .sub {
+    .tagline {
 
-      margin-top: 18px;
+      margin: 16px 0 0;
 
-      font-size: 22px;
+      color: #6d6d6d;
 
-      color: #777;
+      font-size: 19px;
 
-      font-weight: 500;
+      font-weight: 600;
+
+      letter-spacing: -0.5px;
 
     }
 
-    .buttons {
+    .main-buttons {
 
       display: grid;
 
       grid-template-columns: 1fr 1fr;
 
-      gap: 16px;
-
-      margin-top: 60px;
+      gap: 14px;
 
     }
 
-    .main-btn {
+    .main-button {
 
-      border: none;
+      aspect-ratio: 1 / 1;
 
-      border-radius: 28px;
+      border: 0;
+
+      border-radius: 27px;
 
       color: white;
 
-      padding: 36px 10px;
+      padding: 20px 14px;
 
-      font-size: 28px;
+      font-family: inherit;
 
-      font-weight: 800;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.13);
 
       cursor: pointer;
 
     }
 
-    .red {
+    .store-order {
 
-      background: #e51f1f;
-
-    }
-
-    .green {
-
-      background: #168a3a;
+      background: #c92721;
 
     }
 
-    .small {
+    .morning-delivery {
+
+      background: #2f8a46;
+
+    }
+
+    .icon {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      width: 64px;
+
+      height: 64px;
+
+      margin: 0 auto 15px;
+
+      border-radius: 50%;
+
+      background: rgba(255, 255, 255, 0.17);
+
+      font-size: 32px;
+
+    }
+
+    .main-button strong {
 
       display: block;
 
-      margin-top: 14px;
+      font-size: 27px;
 
-      font-size: 16px;
+      line-height: 1.2;
 
-      font-weight: 500;
+      font-weight: 850;
 
-      line-height: 1.4;
-
-      opacity: 0.9;
+      letter-spacing: -1px;
 
     }
 
-    .login-title {
+    .main-button small {
 
-      margin-top: 56px;
+      display: block;
 
-      font-size: 22px;
+      margin-top: 16px;
+
+      padding-top: 15px;
+
+      border-top: 1px solid rgba(255, 255, 255, 0.55);
+
+      font-size: 15px;
+
+      line-height: 1.45;
+
+      font-weight: 600;
+
+    }
+
+    .origin {
+
+      margin: 23px 0 0;
+
+      color: #666666;
+
+      font-size: 17px;
+
+      font-weight: 700;
+
+    }
+
+    .start-title {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 13px;
+
+      margin: 31px 0 18px;
+
+      font-size: 18px;
 
       font-weight: 800;
 
+      white-space: nowrap;
+
     }
 
-    .login {
+    .start-title::before,
+
+    .start-title::after {
+
+      content: "";
+
+      flex: 1;
+
+      height: 1px;
+
+      background: #e5e5e5;
+
+    }
+
+    .login-buttons {
 
       display: grid;
 
-      gap: 14px;
+      grid-template-columns: 1fr 1fr;
 
-      margin-top: 20px;
+      gap: 12px;
 
     }
 
-    .login-btn {
+    .login-button {
 
-      border: none;
+      height: 76px;
 
-      border-radius: 18px;
+      border: 1px solid #eeeeee;
 
-      padding: 18px;
+      border-radius: 20px;
 
-      font-size: 20px;
+      background: white;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 9px;
+
+      padding: 0 10px;
+
+      font-family: inherit;
+
+      font-size: 16px;
 
       font-weight: 800;
+
+      box-shadow: 0 7px 18px rgba(0, 0, 0, 0.07);
 
       cursor: pointer;
 
     }
 
-    .kakao {
+    .kakao-logo,
 
-      background: #fee500;
+    .naver-logo {
 
-      color: #111;
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      width: 34px;
+
+      height: 34px;
+
+      flex-shrink: 0;
+
+      font-weight: 900;
 
     }
 
-    .naver {
+    .kakao-logo {
+
+      background: #fee500;
+
+      border-radius: 9px;
+
+      color: #111111;
+
+      font-size: 11px;
+
+    }
+
+    .naver-logo {
 
       background: #03c75a;
 
+      border-radius: 4px;
+
       color: white;
+
+      font-size: 23px;
 
     }
 
     .footer {
 
-      margin-top: 50px;
+      margin: 29px 0 0;
 
-      color: #888;
+      color: #969696;
 
-      font-size: 16px;
+      font-size: 14px;
 
       line-height: 1.6;
+
+    }
+
+    @media (max-width: 360px) {
+
+      .wrap {
+
+        padding-left: 13px;
+
+        padding-right: 13px;
+
+      }
+
+      .store-photo {
+
+        height: 180px;
+
+      }
+
+      h1 {
+
+        font-size: 36px;
+
+      }
+
+      .main-buttons {
+
+        gap: 10px;
+
+      }
+
+      .main-button {
+
+        padding: 17px 10px;
+
+      }
+
+      .main-button strong {
+
+        font-size: 24px;
+
+      }
+
+      .main-button small {
+
+        font-size: 13px;
+
+      }
 
     }
 
@@ -200,49 +390,109 @@
 
   <main class="wrap">
 
-    <div class="label">1kg 고기 직판장</div>
+    <img
 
-    <h1>한농직판장</h1>
+      class="store-photo"
 
-    <div class="sub">국내산 한돈 · 한우</div>
+      src="IMG_1920.jpeg"
 
-    <section class="buttons">
+      alt="한농직판장 매장 전경"
 
-      <button class="main-btn red">
+    />
 
-        매장 주문
+    <section class="hero">
 
-        <span class="small">필요한 상품을<br />요청해 주세요</span>
+      <h1>내 손안의 정육점</h1>
+
+      <p class="tagline">고기가 생각날 때 언제 어디서든!</p>
+
+    </section>
+
+    <section class="main-buttons">
+
+      <button
+
+        class="main-button store-order"
+
+        type="button"
+
+        onclick="alert('매장 주문 화면은 다음 단계에서 연결합니다.')"
+
+      >
+
+        <span class="icon">🛍️</span>
+
+        <strong>매장 주문</strong>
+
+        <small>매장에 방문하실 예정이라면</small>
 
       </button>
 
-      <button class="main-btn green">
+      <button
 
-        아침배송
+        class="main-button morning-delivery"
 
-        <span class="small">전날 저녁 주문 시<br />오전 7시 이전 배송</span>
+        type="button"
+
+        onclick="alert('아침 배송 화면은 다음 단계에서 연결합니다.')"
+
+      >
+
+        <span class="icon">🚚</span>
+
+        <strong>아침 배송</strong>
+
+        <small>오지 마세요. 제가 갈게요.</small>
 
       </button>
 
     </section>
 
-    <div class="login-title">간편하게 시작하기</div>
+    <p class="origin">국내산 한우 · 한돈만 취급합니다.</p>
 
-    <section class="login">
+    <div class="start-title">간편하게 시작하기</div>
 
-      <button class="login-btn kakao">카카오로 시작하기</button>
+    <section class="login-buttons">
 
-      <button class="login-btn naver">네이버로 시작하기</button>
+      <button
+
+        class="login-button"
+
+        type="button"
+
+        onclick="alert('카카오 로그인은 추후 연결합니다.')"
+
+      >
+
+        <span class="kakao-logo">TALK</span>
+
+        <span>카카오로 시작하기</span>
+
+      </button>
+
+      <button
+
+        class="login-button"
+
+        type="button"
+
+        onclick="alert('네이버 로그인은 추후 연결합니다.')"
+
+      >
+
+        <span class="naver-logo">N</span>
+
+        <span>네이버로 시작하기</span>
+
+      </button>
 
     </section>
 
-    <div class="footer">
+    <p class="footer">
 
-      믿을 수 있는 고기만 판매합니다.<br />
+      한농직판장은 항상 신선한 고기와 정직한 가격을 약속드립니다.
 
-      한농직판장은 신선함을 직접 전합니다.
-
-    </div>
+    </p>
 
   </main>
 
