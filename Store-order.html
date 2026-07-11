@@ -1,1 +1,445 @@
+<!DOCTYPE html>
 
+<html lang="ko">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>매장 주문하기</title>
+
+  <style>
+
+    * {
+
+      box-sizing: border-box;
+
+    }
+
+    body {
+
+      margin: 0;
+
+      background: #ffffff;
+
+      color: #171717;
+
+      font-family: -apple-system, BlinkMacSystemFont,
+
+        "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+
+    }
+
+    .wrap {
+
+      width: 100%;
+
+      max-width: 480px;
+
+      margin: 0 auto;
+
+      padding: 24px 16px 40px;
+
+    }
+
+    .top {
+
+      margin-bottom: 24px;
+
+      text-align: center;
+
+    }
+
+    .top h1 {
+
+      margin: 0;
+
+      color: #164f2f;
+
+      font-size: 34px;
+
+      font-weight: 900;
+
+      letter-spacing: -2px;
+
+    }
+
+    .top p {
+
+      margin: 12px 0 0;
+
+      font-size: 17px;
+
+      font-weight: 600;
+
+      color: #444;
+
+    }
+
+    .top strong {
+
+      color: #c91d1d;
+
+    }
+
+    .product-grid {
+
+      display: grid;
+
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+
+      gap: 12px;
+
+    }
+
+    .product-card {
+
+      border: 1px solid #eeeeee;
+
+      border-radius: 20px;
+
+      overflow: hidden;
+
+      background: #ffffff;
+
+      box-shadow: 0 7px 18px rgba(0, 0, 0, 0.06);
+
+      cursor: pointer;
+
+    }
+
+    .product-image {
+
+      aspect-ratio: 1 / 0.82;
+
+      background: #f2f2f2;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-size: 48px;
+
+    }
+
+    .product-info {
+
+      padding: 14px 10px 16px;
+
+      text-align: center;
+
+    }
+
+    .product-name {
+
+      display: block;
+
+      margin-bottom: 8px;
+
+      font-size: 20px;
+
+      font-weight: 900;
+
+    }
+
+    .product-unit {
+
+      margin-right: 6px;
+
+      font-size: 14px;
+
+      color: #666;
+
+    }
+
+    .product-price {
+
+      color: #c91d1d;
+
+      font-size: 19px;
+
+      font-weight: 900;
+
+    }
+
+    .product-price.inquiry {
+
+      color: #bd6417;
+
+    }
+
+    .contact-card {
+
+      background: #fffaf2;
+
+    }
+
+    .contact-box {
+
+      margin-top: 18px;
+
+      padding: 17px 14px;
+
+      border: 1px solid #f0d88a;
+
+      border-radius: 18px;
+
+      background: #fffaf2;
+
+      text-align: center;
+
+      font-size: 17px;
+
+      font-weight: 800;
+
+    }
+
+    .talk {
+
+      display: inline-block;
+
+      margin-right: 8px;
+
+      padding: 5px 8px;
+
+      border-radius: 9px;
+
+      background: #ffe500;
+
+      color: #191600;
+
+      font-size: 13px;
+
+      font-weight: 900;
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <main class="wrap">
+
+    <section class="top">
+
+      <h1>매장 주문하기</h1>
+
+      <p><strong>500g</strong> 단위로 선택 가능합니다.</p>
+
+    </section>
+
+    <section class="product-grid">
+
+      <div class="product-card">
+
+        <div class="product-image">🥓</div>
+
+        <div class="product-info">
+
+          <span class="product-name">삼겹살</span>
+
+          <span class="product-unit">100g</span>
+
+          <span class="product-price">3,200원</span>
+
+        </div>
+
+      </div>
+
+      <div class="product-card">
+
+        <div class="product-image">🥩</div>
+
+        <div class="product-info">
+
+          <span class="product-name">목살</span>
+
+          <span class="product-unit">100g</span>
+
+          <span class="product-price">2,700원</span>
+
+        </div>
+
+      </div>
+
+      <div class="product-card">
+
+        <div class="product-image">🍖</div>
+
+        <div class="product-info">
+
+          <span class="product-name">앞다리</span>
+
+          <span class="product-unit">100g</span>
+
+          <span class="product-price">1,700원</span>
+
+        </div>
+
+      </div>
+
+      <div class="product-card">
+
+        <div class="product-image">🥩</div>
+
+        <div class="product-info">
+
+          <span class="product-name">알사태</span>
+
+          <span class="product-unit">100g</span>
+
+          <span class="product-price">990원</span>
+
+        </div>
+
+      </div>
+
+      <div class="product-card">
+
+        <div class="product-image">🍖</div>
+
+        <div class="product-info">
+
+          <span class="product-name">갈비</span>
+
+          <span class="product-unit">100g</span>
+
+          <span class="product-price inquiry">가격 문의</span>
+
+        </div>
+
+      </div>
+
+      <div class="product-card">
+
+        <div class="product-image">🍖</div>
+
+        <div class="product-info">
+
+          <span class="product-name">등갈비</span>
+
+          <span class="product-unit">100g</span>
+
+          <span class="product-price inquiry">가격 문의</span>
+
+        </div>
+
+      </div>
+
+      <div class="product-card">
+
+        <div class="product-image">🥩</div>
+
+        <div class="product-info">
+
+          <span class="product-name">등심</span>
+
+          <span class="product-unit">100g</span>
+
+          <span class="product-price inquiry">가격 문의</span>
+
+        </div>
+
+      </div>
+
+      <div class="product-card">
+
+        <div class="product-image">🥩</div>
+
+        <div class="product-info">
+
+          <span class="product-name">안심</span>
+
+          <span class="product-unit">100g</span>
+
+          <span class="product-price inquiry">가격 문의</span>
+
+        </div>
+
+      </div>
+
+      <div class="product-card">
+
+        <div class="product-image">🥓</div>
+
+        <div class="product-info">
+
+          <span class="product-name">항정살</span>
+
+          <span class="product-unit">100g</span>
+
+          <span class="product-price inquiry">가격 문의</span>
+
+        </div>
+
+      </div>
+
+      <div class="product-card">
+
+        <div class="product-image">🥩</div>
+
+        <div class="product-info">
+
+          <span class="product-name">가브리살</span>
+
+          <span class="product-unit">100g</span>
+
+          <span class="product-price inquiry">가격 문의</span>
+
+        </div>
+
+      </div>
+
+      <div class="product-card">
+
+        <div class="product-image">🥩</div>
+
+        <div class="product-info">
+
+          <span class="product-name">갈매기살</span>
+
+          <span class="product-unit">100g</span>
+
+          <span class="product-price inquiry">가격 문의</span>
+
+        </div>
+
+      </div>
+
+      <div class="product-card contact-card">
+
+        <div class="product-image">🐄</div>
+
+        <div class="product-info">
+
+          <span class="product-name">한우 문의</span>
+
+          <span class="product-unit">100g</span>
+
+          <span class="product-price inquiry">가격 문의</span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <div class="contact-box">
+
+      <span class="talk">TALK</span>
+
+      찾으시는 상품이 없으세요? 편하게 문의해주세요.
+
+    </div>
+
+  </main>
+
+</body>
+
+</html>
