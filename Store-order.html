@@ -602,10 +602,14 @@
   </section>
 <button
 
+  <button
+
   id="cartBar"
 
   type="button"
 
+  onclick="showCart()"  
+  
   style="
 
     display: none;
@@ -667,20 +671,57 @@
 
     }
 
-   let cartCount = 0;
+let cart = [];
 
 function selectWeight(weight, price) {
 
-  cartCount += 1;
+  cart.push({
 
-  document.getElementById("cartCount").textContent = cartCount;
+    product: "삼겹살",
+
+    weight: weight,
+
+    price: price
+
+  });
+
+  document.getElementById("cartCount").textContent = cart.length;
 
   document.getElementById("cartBar").style.display = "block";
 
   closeWeightSheet();
 
 }
-  </script>
+
+function showCart() {
+
+  let cartText = "장바구니\n\n";
+
+  cart.forEach(function(item, index) {
+
+    cartText +=
+
+      (index + 1) +
+
+      ". " +
+
+      item.product +
+
+      " " +
+
+      item.weight +
+
+      " · " +
+
+      item.price +
+
+      "\n";
+
+  });
+
+  alert(cartText);
+
+}  </script>
 
 </body>
 
