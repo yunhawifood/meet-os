@@ -835,15 +835,39 @@
 </section>  
   <script>
 
-    function openWeightSheet() {
+   function openWeightSheet(product, unitPrice) {
 
-      document.getElementById("sheetOverlay").style.display = "block";
+  selectedProduct = product;
 
-      document.getElementById("weightSheet").style.transform =
+  selectedUnitPrice = unitPrice;
 
-        "translate(-50%, 0)";
+  document.getElementById("weightSheetTitle").textContent =
 
-    }
+    product + " 중량 선택";
+
+  document.getElementById("price500").textContent =
+
+    (unitPrice * 5).toLocaleString("ko-KR") + "원";
+
+  document.getElementById("price1000").textContent =
+
+    (unitPrice * 10).toLocaleString("ko-KR") + "원";
+
+  document.getElementById("price1500").textContent =
+
+    (unitPrice * 15).toLocaleString("ko-KR") + "원";
+
+  document.getElementById("price2000").textContent =
+
+    (unitPrice * 20).toLocaleString("ko-KR") + "원";
+
+  document.getElementById("sheetOverlay").style.display = "block";
+
+  document.getElementById("weightSheet").style.transform =
+
+    "translate(-50%, 0)";
+
+}
 
     function closeWeightSheet() {
 
@@ -857,15 +881,21 @@
 
 let cart = [];
 
-function selectWeight(weight, price) {
+function selectWeight(weight, multiplier) {
+
+  const numericPrice = selectedUnitPrice * multiplier;
+
+  const formattedPrice =
+
+    numericPrice.toLocaleString("ko-KR") + "원";
 
   cart.push({
 
-    product: "삼겹살",
+    product: selectedProduct,
 
     weight: weight,
 
-    price: price
+    price: formattedPrice
 
   });
 
@@ -876,7 +906,6 @@ function selectWeight(weight, price) {
   closeWeightSheet();
 
 }
-
 function showCart() {
 
   const cartItems = document.getElementById("cartItems");
