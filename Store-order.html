@@ -236,8 +236,8 @@
 
     <section class="product-grid">
 
-      <div class="product-card">
-
+      <div class="product-card" onclick="openWeightSheet()">
+     
         <div class="product-image">🥓</div>
 
         <div class="product-info">
@@ -439,6 +439,199 @@
     </div>
 
   </main>
+  <div
+
+    id="sheetOverlay"
+
+    onclick="closeWeightSheet()"
+
+    style="
+
+      display: none;
+
+      position: fixed;
+
+      inset: 0;
+
+      background: rgba(0, 0, 0, 0.38);
+
+      z-index: 100;
+
+    "
+
+  ></div>
+
+  <section
+
+    id="weightSheet"
+
+    style="
+
+      position: fixed;
+
+      left: 50%;
+
+      bottom: 0;
+
+      transform: translate(-50%, 110%);
+
+      width: min(100%, 480px);
+
+      padding: 18px 16px 28px;
+
+      background: #ffffff;
+
+      border-radius: 26px 26px 0 0;
+
+      box-shadow: 0 -12px 35px rgba(0, 0, 0, 0.18);
+
+      transition: transform 0.25s ease;
+
+      z-index: 101;
+
+    "
+
+  >
+
+    <div
+
+      style="
+
+        width: 46px;
+
+        height: 5px;
+
+        margin: 0 auto 18px;
+
+        border-radius: 999px;
+
+        background: #dddddd;
+
+      "
+
+    ></div>
+
+    <div
+
+      style="
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        margin-bottom: 18px;
+
+      "
+
+    >
+
+      <h2 style="margin: 0; font-size: 23px;">삼겹살 중량 선택</h2>
+
+      <button
+
+        type="button"
+
+        onclick="closeWeightSheet()"
+
+        style="
+
+          width: 40px;
+
+          height: 40px;
+
+          border: 0;
+
+          border-radius: 50%;
+
+          background: #f2f2f2;
+
+          font-size: 22px;
+
+        "
+
+      >
+
+        ×
+
+      </button>
+
+    </div>
+
+    <div
+
+      style="
+
+        display: grid;
+
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 10px;
+
+      "
+
+    >
+
+      <button type="button" onclick="selectWeight('500g', '16,000원')">
+
+        500g<br><strong>16,000원</strong>
+
+      </button>
+
+      <button type="button" onclick="selectWeight('1kg', '32,000원')">
+
+        1kg<br><strong>32,000원</strong>
+
+      </button>
+
+      <button type="button" onclick="selectWeight('1.5kg', '48,000원')">
+
+        1.5kg<br><strong>48,000원</strong>
+
+      </button>
+
+      <button type="button" onclick="selectWeight('2kg', '64,000원')">
+
+        2kg<br><strong>64,000원</strong>
+
+      </button>
+
+    </div>
+
+  </section>
+
+  <script>
+
+    function openWeightSheet() {
+
+      document.getElementById("sheetOverlay").style.display = "block";
+
+      document.getElementById("weightSheet").style.transform =
+
+        "translate(-50%, 0)";
+
+    }
+
+    function closeWeightSheet() {
+
+      document.getElementById("sheetOverlay").style.display = "none";
+
+      document.getElementById("weightSheet").style.transform =
+
+        "translate(-50%, 110%)";
+
+    }
+
+    function selectWeight(weight, price) {
+
+      alert("삼겹살 " + weight + " · " + price);
+
+      closeWeightSheet();
+
+    }
+
+  </script>
 
 </body>
 
