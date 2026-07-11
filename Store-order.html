@@ -649,6 +649,195 @@
   장바구니 보기 · <span id="cartCount">0</span>개
 
 </button>
+  <div
+
+  id="cartOverlay"
+
+  onclick="closeCartSheet()"
+
+  style="
+
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.38);
+
+    z-index: 200;
+
+  "
+
+></div>
+
+<section
+
+  id="cartSheet"
+
+  style="
+
+    position: fixed;
+
+    left: 50%;
+
+    bottom: 0;
+
+    transform: translate(-50%, 110%);
+
+    width: min(100%, 480px);
+
+    max-height: 78vh;
+
+    overflow-y: auto;
+
+    padding: 18px 16px 28px;
+
+    background: #ffffff;
+
+    border-radius: 26px 26px 0 0;
+
+    box-shadow: 0 -12px 35px rgba(0, 0, 0, 0.18);
+
+    transition: transform 0.25s ease;
+
+    z-index: 201;
+
+  "
+
+>
+
+  <div
+
+    style="
+
+      width: 46px;
+
+      height: 5px;
+
+      margin: 0 auto 18px;
+
+      border-radius: 999px;
+
+      background: #dddddd;
+
+    "
+
+  ></div>
+
+  <div
+
+    style="
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      margin-bottom: 18px;
+
+    "
+
+  >
+
+    <h2 style="margin: 0; font-size: 24px;">장바구니</h2>
+
+    <button
+
+      type="button"
+
+      onclick="closeCartSheet()"
+
+      style="
+
+        width: 40px;
+
+        height: 40px;
+
+        border: 0;
+
+        border-radius: 50%;
+
+        background: #f2f2f2;
+
+        font-size: 22px;
+
+      "
+
+    >
+
+      ×
+
+    </button>
+
+  </div>
+
+  <div id="cartItems"></div>
+
+  <div
+
+    style="
+
+      display: flex;
+
+      justify-content: space-between;
+
+      margin-top: 20px;
+
+      padding-top: 18px;
+
+      border-top: 1px solid #eeeeee;
+
+      font-size: 18px;
+
+      font-weight: 900;
+
+    "
+
+  >
+
+    <span>총 주문금액</span>
+
+    <span id="cartTotal">0원</span>
+
+  </div>
+
+  <button
+
+    type="button"
+
+    onclick="alert('주문하기 기능은 다음 단계에서 연결합니다.')"
+
+    style="
+
+      width: 100%;
+
+      margin-top: 18px;
+
+      padding: 17px;
+
+      border: 0;
+
+      border-radius: 18px;
+
+      background: #164f2f;
+
+      color: white;
+
+      font-size: 18px;
+
+      font-weight: 900;
+
+    "
+
+  >
+
+    주문하기
+
+  </button>
+
+</section>  
   <script>
 
     function openWeightSheet() {
@@ -695,33 +884,144 @@ function selectWeight(weight, price) {
 
 function showCart() {
 
-  let cartText = "장바구니\n\n";
+  const cartItems = document.getElementById("cartItems");
+
+  let total = 0;
+
+  cartItems.innerHTML = "";
 
   cart.forEach(function(item, index) {
 
-    cartText +=
+    const numericPrice = Number(item.price.replace(/[^0-9]/g, ""));
 
-      (index + 1) +
+    total += numericPrice;
 
-      ". " +
+    cartItems.innerHTML += `
 
-      item.product +
+      <div
 
-      " " +
+        style="
 
-      item.weight +
+          display: flex;
 
-      " · " +
+          align-items: center;
 
-      item.price +
+          justify-content: space-between;
 
-      "\n";
+          gap: 12px;
+
+          padding: 14px 0;
+
+          border-bottom: 1px solid #eeeeee;
+
+        "
+
+      >
+
+        <div style="text-align: left;">
+
+          <strong style="font-size: 17px;">
+
+            ${item.product} ${item.weight}
+
+          </strong>
+
+          <div
+
+            style="
+
+              margin-top: 5px;
+
+              color: #c91d1d;
+
+              font-weight: 800;
+
+            "
+
+          >
+
+            ${item.price}
+
+          </div>
+
+        </div>
+
+        <button
+
+          type="button"
+
+          onclick="removeCartItem(${index})"
+
+          style="
+
+            border: 0;
+
+            border-radius: 12px;
+
+            padding: 9px 12px;
+
+            background: #f3f3f3;
+
+            color: #666666;
+
+            font-weight: 700;
+
+          "
+
+        >
+
+          삭제
+
+        </button>
+
+      </div>
+
+    `;
 
   });
 
-  alert(cartText);
+  document.getElementById("cartTotal").textContent =
 
-}  </script>
+    total.toLocaleString("ko-KR") + "원";
+
+  document.getElementById("cartOverlay").style.display = "block";
+
+  document.getElementById("cartSheet").style.transform =
+
+    "translate(-50%, 0)";
+
+}
+
+function closeCartSheet() {
+
+  document.getElementById("cartOverlay").style.display = "none";
+
+  document.getElementById("cartSheet").style.transform =
+
+    "translate(-50%, 110%)";
+
+}
+
+function removeCartItem(index) {
+
+  cart.splice(index, 1);
+
+  document.getElementById("cartCount").textContent = cart.length;
+
+  if (cart.length === 0) {
+
+    document.getElementById("cartBar").style.display = "none";
+
+    closeCartSheet();
+
+    return;
+
+  }
+
+  showCart();
+
+} 
+  </script>
 
 </body>
 
