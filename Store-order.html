@@ -1146,7 +1146,53 @@ function removeCartItem(index) {
   showCart();
 
 } 
-  </script>
+    let selectedRequestProduct = "";
+
+function openRequestSheet(product) {
+
+  selectedRequestProduct = product;
+
+  document.getElementById("requestSheetTitle").textContent =
+
+    product + " 주문 요청";
+
+  document.getElementById("requestOverlay").style.display = "block";
+
+  document.getElementById("requestSheet").style.transform =
+
+    "translate(-50%, 0)";
+
+}
+
+function closeRequestSheet() {
+
+  document.getElementById("requestOverlay").style.display = "none";
+
+  document.getElementById("requestSheet").style.transform =
+
+    "translate(-50%, 110%)";
+
+}
+
+function addRequestProduct() {
+
+  cart.push({
+
+    product: selectedRequestProduct,
+
+    weight: "주문 요청",
+
+    price: "가격 확인 필요"
+
+  });
+
+  document.getElementById("cartCount").textContent = cart.length;
+
+  document.getElementById("cartBar").style.display = "block";
+
+  closeRequestSheet();
+
+}  </script>
 
 </body>
 
