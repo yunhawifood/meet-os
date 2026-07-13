@@ -1197,6 +1197,69 @@ function addRequestProduct() {
 
   closeRequestSheet();
 
+} 
+    let selectedFrontLegUse = "";
+
+function openFrontLegSheet() {
+
+  selectedFrontLegUse = "";
+
+  document.getElementById("frontLegOverlay").style.display = "block";
+
+  document.getElementById("frontLegSheet").style.transform =
+
+    "translate(-50%, 0)";
+
+}
+
+function closeFrontLegSheet() {
+
+  document.getElementById("frontLegOverlay").style.display = "none";
+
+  document.getElementById("frontLegSheet").style.transform =
+
+    "translate(-50%, 110%)";
+
+}
+
+function selectFrontLegUse(use) {
+
+  selectedFrontLegUse = use;
+
+}
+
+function addFrontLegToCart(weight, multiplier) {
+
+  if (!selectedFrontLegUse) {
+
+    alert("먼저 용도를 선택해주세요.");
+
+    return;
+
+  }
+
+  const numericPrice = 1700 * multiplier;
+
+  const formattedPrice =
+
+    numericPrice.toLocaleString("ko-KR") + "원";
+
+  cart.push({
+
+    product: "앞다리 " + selectedFrontLegUse,
+
+    weight: weight,
+
+    price: formattedPrice
+
+  });
+
+  document.getElementById("cartCount").textContent = cart.length;
+
+  document.getElementById("cartBar").style.display = "block";
+
+  closeFrontLegSheet();
+
 }  </script>
 
 </body>
