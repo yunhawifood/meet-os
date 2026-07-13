@@ -695,19 +695,245 @@
 
 </section>
 
-<div id="frontLegOverlay" ...>
+<div
 
-  ...
+  id="frontLegOverlay"
 
-</div>
+  onclick="closeFrontLegSheet()"
 
-<section id="frontLegSheet" ...>
+  style="
 
-  ...
+    display: none;
 
-</section>
+    position: fixed;
 
-<button
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.45);
+
+    z-index: 1300;
+
+  "
+
+></div>
+
+<section
+
+  id="frontLegSheet"
+
+  style="
+
+    position: fixed;
+
+    left: 50%;
+
+    bottom: 0;
+
+    transform: translate(-50%, 110%);
+
+    width: min(100%, 520px);
+
+    box-sizing: border-box;
+
+    padding: 24px 20px 28px;
+
+    background: #ffffff;
+
+    border-radius: 22px 22px 0 0;
+
+    z-index: 1400;
+
+    transition: transform 0.25s ease;
+
+  "
+
+>
+
+  <h2 style="margin: 0 0 18px; font-size: 23px;">
+
+    앞다리 용도 선택
+
+  </h2>
+
+  <p style="margin: 0 0 10px; font-weight: 700;">
+
+    어떻게 드실 건가요?
+
+  </p>
+
+  <div
+
+    style="
+
+      display: grid;
+
+      grid-template-columns: 1fr;
+
+      gap: 10px;
+
+      margin-bottom: 20px;
+
+    "
+
+  >
+
+    <button
+
+      type="button"
+
+      onclick="selectFrontLegUse('찌개용')"
+
+      style="
+
+        padding: 16px;
+
+        border: 2px solid #111;
+
+        border-radius: 14px;
+
+        background: #fff7e6;
+
+        text-align: left;
+
+        font-size: 17px;
+
+        font-weight: 700;
+
+      "
+
+    >
+
+      추천 · 찌개용<br>
+
+      <span style="font-size: 14px; font-weight: 400;">
+
+        김치찌개·짜글이용으로 먹기 좋게 썰어드려요
+
+      </span>
+
+    </button>
+
+    <button
+
+      type="button"
+
+      onclick="selectFrontLegUse('불고기용')"
+
+      style="
+
+        padding: 16px;
+
+        border: 1px solid #ddd;
+
+        border-radius: 14px;
+
+        background: #fff;
+
+        text-align: left;
+
+        font-size: 17px;
+
+        font-weight: 700;
+
+      "
+
+    >
+
+      불고기용<br>
+
+      <span style="font-size: 14px; font-weight: 400;">
+
+        얇게 썰어드려요
+
+      </span>
+
+    </button>
+
+    <button
+
+      type="button"
+
+      onclick="selectFrontLegUse('수육용')"
+
+      style="
+
+        padding: 16px;
+
+        border: 1px solid #ddd;
+
+        border-radius: 14px;
+
+        background: #fff;
+
+        text-align: left;
+
+        font-size: 17px;
+
+        font-weight: 700;
+
+      "
+
+    >
+
+      수육용<br>
+
+      <span style="font-size: 14px; font-weight: 400;">
+
+        덩어리로 준비해드려요
+
+      </span>
+
+    </button>
+
+  </div>
+
+  <p style="margin: 0 0 10px; font-weight: 700;">
+
+    중량을 선택해주세요
+
+  </p>
+
+  <div
+
+    style="
+
+      display: grid;
+
+      grid-template-columns: repeat(2, 1fr);
+
+      gap: 10px;
+
+    "
+
+  >
+
+    <button type="button" onclick="addFrontLegToCart('500g', 5)">
+
+      500g<br><strong>8,500원</strong>
+
+    </button>
+
+    <button type="button" onclick="addFrontLegToCart('1kg', 10)">
+
+      1kg<br><strong>17,000원</strong>
+
+    </button>
+
+    <button type="button" onclick="addFrontLegToCart('1.5kg', 15)">
+
+      1.5kg<br><strong>25,500원</strong>
+
+    </button>
+
+    <button type="button" onclick="addFrontLegToCart('2kg', 20)">
+
+      2kg<br><strong>34,000원</strong>
+
+    </button>
+
+  </div>
+
+</section><button
 
   id="cartBar"
   type="button"
