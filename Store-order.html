@@ -1451,12 +1451,31 @@ function closeFrontLegSheet() {
 
 }
 
-function selectFrontLegUse(use) {
+function selectFrontLegUse(use, selectedButton) {
 
   selectedFrontLegUse = use;
 
-}
+  document
 
+    .querySelectorAll(".front-leg-use-button")
+
+    .forEach(function (button) {
+
+      button.style.background = "#ffffff";
+
+      button.style.border = "1px solid #dddddd";
+
+      button.style.color = "#111111";
+
+    });
+
+  selectedButton.style.background = "#fff1c7";
+
+  selectedButton.style.border = "3px solid #111111";
+
+  selectedButton.style.color = "#111111";
+
+}
 function addFrontLegToCart(weight, multiplier) {
 
   if (!selectedFrontLegUse) {
