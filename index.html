@@ -6,7 +6,13 @@
 
   <meta charset="UTF-8" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+
+    name="viewport"
+
+    content="width=device-width, initial-scale=1.0"
+
+  />
 
   <title>한농직판장 | 내 손안의 정육점</title>
 
@@ -22,15 +28,43 @@
 
       margin: 0;
 
-      background: #ffffff;
+      background:
 
-      color: #171717;
+        linear-gradient(
 
-      font-family: -apple-system, BlinkMacSystemFont,
+          180deg,
 
-        "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+          #eaf4ff 0%,
+
+          #f4f8fd 55%,
+
+          #ffffff 100%
+
+        );
+
+      color: #17263b;
+
+      font-family:
+
+        -apple-system,
+
+        BlinkMacSystemFont,
+
+        "Apple SD Gothic Neo",
+
+        "Noto Sans KR",
+
+        sans-serif;
 
       text-align: center;
+
+    }
+
+    button {
+
+      font-family: inherit;
+
+      -webkit-tap-highlight-color: transparent;
 
     }
 
@@ -38,11 +72,33 @@
 
       width: 100%;
 
-      max-width: 480px;
+      max-width: 520px;
+
+      min-height: 100vh;
 
       margin: 0 auto;
 
-      padding: 16px 18px 28px;
+      padding: 18px 18px 34px;
+
+    }
+
+    .hero {
+
+      width: 100%;
+
+      margin: 0 auto 28px;
+
+      overflow: hidden;
+
+      border: 1px solid rgba(180, 208, 238, 0.65);
+
+      border-radius: 30px;
+
+      background: #ffffff;
+
+      box-shadow:
+
+        0 16px 38px rgba(43, 91, 140, 0.12);
 
     }
 
@@ -52,109 +108,141 @@
 
       width: 100%;
 
-      height: 145px;
+      height: 180px;
 
       object-fit: cover;
 
       object-position: center 35%;
 
-      margin: 0 auto;
     }
 
-    .hero {
-
-  width: 96%;
-
-  margin: 0 auto 24px;
-
-  background: #fff;
-
-  border-radius: 28px;
-
-  overflow: hidden;
-
-  box-shadow: 0 10px 28px rgba(0,0,0,0.08);
-
-  padding: 0;
-
-}
     .hero-text {
 
-  padding: 24px 16px 26px;
+      padding: 27px 18px 30px;
 
-}
+    }
 
-h1 { 
+    h1 {
+
       margin: 0;
 
-      font-size: 38px;
+      color: #10243f;
 
-      line-height: 1.15;
+      font-size: 40px;
+
+      line-height: 1.14;
 
       font-weight: 900;
 
-      letter-spacing: -2.5px;
+      letter-spacing: -2.7px;
 
     }
 
     .tagline {
 
-      margin: 16px 0 0;
+      margin: 15px 0 0;
 
-      color: #6d6d6d;
+      color: #6b7d92;
 
       font-size: 17px;
 
-      font-weight: 600;
+      line-height: 1.5;
+
+      font-weight: 650;
 
       letter-spacing: -0.5px;
 
     }
 
-   .main-button {
+    .main-buttons {
 
-  background: #f5f9ff;
+      display: grid;
 
-  color: #173b63;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
 
-  border: 1px solid #cfe0f5;
+      gap: 14px;
 
-  box-shadow: 0 10px 24px rgba(80, 130, 180, 0.12);
-}
-    
-
-    .main-button {
-
-      aspect-ratio: 1 / 1;
-
-      border: 0;
-
-      border-radius: 27px;
-
-      color: white;
-
-      padding: 20px 14px;
-
-      font-family: inherit;
-
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.13);
-
-      cursor: pointer;
+      width: 100%;
 
     }
 
- .store-order {
+    .main-button {
 
-  background: #f8fbff;
-}
+      min-width: 0;
 
-.morning-delivery {
+      min-height: 270px;
 
-  background: #eef6ff;
+      padding: 27px 15px 19px;
 
-  border: 1px solid #bcd6f3;
-}
-    .icon {
+      border: 1px solid #bed8f3;
+
+      border-radius: 29px;
+
+      background: rgba(249, 252, 255, 0.95);
+
+      color: #164e89;
+
+      box-shadow:
+
+        0 13px 29px rgba(62, 111, 162, 0.14);
+
+      cursor: pointer;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: flex-start;
+
+      transition:
+
+        transform 0.15s ease,
+
+        box-shadow 0.15s ease;
+
+    }
+
+    .main-button:active {
+
+      transform: scale(0.98);
+
+      box-shadow:
+
+        0 7px 17px rgba(62, 111, 162, 0.12);
+
+    }
+
+    .store-order {
+
+      background: #f8fbff;
+
+    }
+
+    .morning-delivery {
+
+      background: #eaf4ff;
+
+      border-color: #9fc8ee;
+
+    }
+
+    .icon-wrap {
+
+      width: 78px;
+
+      height: 78px;
+
+      margin-bottom: 20px;
+
+      border-radius: 50%;
+
+      background: #dcecff;
+
+      box-shadow:
+
+        inset 0 0 0 1px rgba(123, 171, 220, 0.12);
 
       display: flex;
 
@@ -162,17 +250,13 @@ h1 {
 
       justify-content: center;
 
-      width: 64px;
+    }
 
-      height: 64px;
+    .icon {
 
-      margin: 0 auto 15px;
+      font-size: 36px;
 
-      border-radius: 50%;
-
-      background: rgba(255, 255, 255, 0.17);
-
-      font-size: 32px;
+      line-height: 1;
 
     }
 
@@ -180,13 +264,17 @@ h1 {
 
       display: block;
 
-      font-size: 24px;
+      margin-bottom: 15px;
 
-      line-height: 1.2;
+      color: #15519a;
 
-      font-weight: 850;
+      font-size: 25px;
 
-      letter-spacing: -1px;
+      line-height: 1.25;
+
+      font-weight: 900;
+
+      letter-spacing: -1.2px;
 
     }
 
@@ -194,184 +282,97 @@ h1 {
 
       display: block;
 
-      margin-top: 16px;
+      width: 100%;
+
+      min-height: 58px;
 
       padding-top: 15px;
 
-      border-top: 1px solid rgba(255, 255, 255, 0.55);
+      border-top: 1px solid #d7e6f5;
+
+      color: #536b84;
 
       font-size: 15px;
 
-      line-height: 1.45;
+      line-height: 1.5;
 
-      font-weight: 600;
+      font-weight: 650;
+
+      letter-spacing: -0.3px;
+
+    }
+
+    .arrow {
+
+      width: 43px;
+
+      height: 43px;
+
+      margin-top: auto;
+
+      border-radius: 50%;
+
+      background: #2582e8;
+
+      color: #ffffff;
+
+      font-size: 25px;
+
+      line-height: 40px;
+
+      font-weight: 700;
+
+      text-align: center;
+
+      box-shadow:
+
+        0 7px 14px rgba(37, 130, 232, 0.25);
 
     }
 
     .origin {
 
-      margin: 23px 0 0;
+      margin: 25px 0 0;
 
-      color: #666666;
+      padding: 13px 15px;
 
-      font-size: 17px;
+      border: 1px solid #d7e7f7;
 
-      font-weight: 700;
+      border-radius: 999px;
 
-    }
+      background: rgba(255, 255, 255, 0.65);
 
-    .start-title {
+      color: #3f5872;
 
-      display: flex;
+      font-size: 16px;
 
-      align-items: center;
+      line-height: 1.4;
 
-      gap: 13px;
+      font-weight: 750;
 
-      margin: 31px 0 18px;
-
-      font-size: 18px;
-
-      font-weight: 800;
-
-      white-space: nowrap;
+      letter-spacing: -0.5px;
 
     }
 
-    .start-title::before,
-
-    .start-title::after {
-
-      content: "";
-
-      flex: 1;
-
-      height: 1px;
-
-      background: #e5e5e5;
-
-    }
-
-    .login-buttons {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 14px;
-
-    margin-top: 20px;
-
-}
-    .login-button {
-
-      height: 78px;
-
-      border: 1px solid #eeeeee;
-
-      border-radius: 20px;
-
-      background: white;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      gap: 9px;
-
-      padding: 0 10px;
-
-      font-family: inherit;
-
-      font-size: 13px;
-
-      font-weight: 800;
-
-      white-space: nowrap;
-      
-      box-shadow: 0 7px 18px rgba(0, 0, 0, 0.07);
-
-      cursor: pointer;
-
-    }
-
-    .kakao-logo,
-
-    .naver-logo {
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      width: 34px;
-
-      height: 34px;
-
-      flex-shrink: 0;
-
-      font-weight: 900;
-
-    }
-
-    .kakao-logo {
-
-      background: #fee500;
-
-      border-radius: 9px;
-
-      color: #111111;
-
-      font-size: 11px;
-
-    }
-
-    .naver-logo {
-
-      background: #03c75a;
-
-      border-radius: 4px;
-
-      color: white;
-
-      font-size: 23px;
-
-    }
-
-    .footer {
-
-      margin: 29px 0 0;
-
-      color: #969696;
-
-      font-size: 14px;
-
-      line-height: 1.6;
-
-    }
-
-    @media (max-width: 360px) {
+    @media (max-width: 390px) {
 
       .wrap {
 
-        padding-left: 13px;
+        padding:
 
-        padding-right: 13px;
+          13px 12px 28px;
 
       }
 
       .store-photo {
 
-        height: 180px;
+        height: 160px;
 
       }
 
       h1 {
 
-        font-size: 36px;
+        font-size: 35px;
 
       }
 
@@ -383,13 +384,33 @@ h1 {
 
       .main-button {
 
-        padding: 17px 10px;
+        min-height: 245px;
+
+        padding:
+
+          23px 11px 16px;
+
+        border-radius: 25px;
+
+      }
+
+      .icon-wrap {
+
+        width: 68px;
+
+        height: 68px;
+
+      }
+
+      .icon {
+
+        font-size: 31px;
 
       }
 
       .main-button strong {
 
-        font-size: 24px;
+        font-size: 22px;
 
       }
 
@@ -400,173 +421,16 @@ h1 {
       }
 
     }
-.main-button {
 
-  background: #f3f8ff;
-
-  color: #173b63;
-
-  border: 1px solid #c9ddf5;
-
-  box-shadow: 0 10px 24px rgba(64, 112, 160, 0.12);
-
-}
-
-.main-button strong {
-
-  color: #173b63;
-
-}
-
-.main-button small {
-
-  color: #526b86;
-
-}
-
-.store-order {
-
-  background: #f8fbff;
-
-}
-
-.morning-delivery {
-
-  background: #eaf4ff;
-
-  border-color: #a9ccef;
-
-} 
-  body {
-
-  background: #edf5ff;
-
-}
-
-.main-buttons {
-
-  display: grid;
-
-  grid-template-columns: repeat(2, 1fr);
-
-  gap: 14px;
-
-  margin-top: 26px;
-
-}
-
-.main-button {
-
-  min-height: 260px;
-
-  padding: 28px 18px 20px;
-
-  border: 1px solid #bed7f3;
-
-  border-radius: 28px;
-
-  background: #f8fbff;
-
-  color: #123f74;
-
-  box-shadow: 0 12px 28px rgba(62, 112, 165, 0.14);
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-  justify-content: flex-start;
-
-}
-
-.morning-delivery {
-
-  background: #eaf4ff;
-
-  border-color: #9fc7ee;
-
-}
-
-.icon-wrap {
-
-  width: 76px;
-
-  height: 76px;
-
-  margin-bottom: 18px;
-
-  border-radius: 50%;
-
-  background: #dcecff;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-}
-
-.icon {
-
-  font-size: 34px;
-
-}
-
-.main-button strong {
-
-  margin-bottom: 14px;
-
-  font-size: 25px;
-
-  color: #144b87;
-
-}
-
-.main-button small {
-
-  width: 100%;
-
-  padding-top: 14px;
-
-  border-top: 1px solid #d6e5f5;
-
-  font-size: 15px;
-
-  color: #526b86;
-
-}
-
-.arrow {
-
-  width: 42px;
-
-  height: 42px;
-
-  margin-top: auto;
-
-  border-radius: 50%;
-
-  background: #2582e8;
-
-  color: #ffffff;
-
-  font-size: 25px;
-
-  line-height: 39px;
-
-  text-align: center;
-
-}  </style>
+  </style>
 
 </head>
+
 <body>
 
   <main class="wrap">
 
-    <div class="hero">
+    <section class="hero">
 
       <img
 
@@ -576,77 +440,91 @@ h1 {
 
         alt="한농직판장 매장 사진"
 
-      >
+      />
 
       <div class="hero-text">
 
         <h1>내 손안의 정육점</h1>
 
-        <p class="tagline">고기가 생각날 때 어디서든!</p>
+        <p class="tagline">
+
+          고기가 생각날 때 어디서든!
+
+        </p>
 
       </div>
 
-    </div>
+    </section>
+
     <section class="main-buttons">
 
       <button
 
-        <section class="main-buttons">
+        class="main-button store-order"
 
-  <button
+        type="button"
 
-    class="main-button store-order"
+        onclick="location.href='Store-order.html'"
 
-    type="button"
+      >
 
-    onclick="location.href='Store-order.html'"
+        <span class="icon-wrap">
 
-  >
+          <span class="icon">🛍️</span>
 
-    <span class="icon-wrap">
+        </span>
 
-      <span class="icon">🛍️</span>
+        <strong>매장 주문</strong>
 
-    </span>
+        <small>
 
-    <strong>매장 주문</strong>
+          상품을 미리 골라<br />
 
-    <small>직접 방문하여 구매</small>
+          편하게 찾아가세요
 
-    <span class="arrow">→</span>
+        </small>
 
-  </button>
+        <span class="arrow">→</span>
 
-  <button
+      </button>
 
-    class="main-button morning-delivery"
+      <button
 
-    type="button"
+        class="main-button morning-delivery"
 
-    onclick="alert('아침 배송 화면은 다음 단계에서 연결합니다.')"
+        type="button"
 
-  >
+        onclick="alert('아침 배송 화면은 다음 단계에서 연결합니다.')"
 
-    <span class="icon-wrap">
+      >
 
-      <span class="icon">🚚</span>
+        <span class="icon-wrap">
 
-    </span>
+          <span class="icon">🚚</span>
 
-    <strong>아침 배송</strong>
+        </span>
 
-    <small>전날 저녁 9시까지 주문</small>
+        <strong>아침 배송</strong>
 
-    <span class="arrow">→</span>
+        <small>
 
-  </button>
+          전날 저녁 9시까지 주문<br />
 
-</section>    <p class="origin">국내산 한우 · 한돈만 취급합니다.</p>
+          다음 날 아침 배송
 
+        </small>
 
-    
+        <span class="arrow">→</span>
 
-    
+      </button>
+
+    </section>
+
+    <p class="origin">
+
+      국내산 한우 · 한돈만 취급합니다.
+
+    </p>
 
   </main>
 
