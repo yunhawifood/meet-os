@@ -1510,13 +1510,85 @@ function addFrontLegToCart(weight, multiplier) {
   closeFrontLegSheet();
 
 }  
-  function copyOrderText() {
+function copyOrderText() {
 
   if (cart.length === 0) {
 
     alert("장바구니에 상품을 먼저 담아주세요.");
 
     return;
+
+  }
+
+  const phoneInput = prompt(
+
+    "결제는 매장에서 합니다.\n\n" +
+
+    "안심하고 연락받으실 전화번호를 입력해 주세요.\n\n" +
+
+    "예: 01012345678"
+
+  );
+
+  // 취소를 눌렀을 때 주문 진행 중단
+
+  if (phoneInput === null) {
+
+    return;
+
+  }
+
+  // 숫자 이외의 문자 제거
+
+  const phoneNumbers = phoneInput.replace(/[^0-9]/g, "");
+
+  // 휴대전화 번호 확인
+
+  if (
+
+    phoneNumbers.length !== 10 &&
+
+    phoneNumbers.length !== 11
+
+  ) {
+
+    alert("전화번호를 정확하게 입력해 주세요.");
+
+    return;
+
+  }
+
+  // 전화번호 자동 하이픈
+
+  let formattedPhone = "";
+
+  if (phoneNumbers.length === 11) {
+
+    formattedPhone =
+
+      phoneNumbers.slice(0, 3) +
+
+      "-" +
+
+      phoneNumbers.slice(3, 7) +
+
+      "-" +
+
+      phoneNumbers.slice(7);
+
+  } else {
+
+    formattedPhone =
+
+      phoneNumbers.slice(0, 3) +
+
+      "-" +
+
+      phoneNumbers.slice(3, 6) +
+
+      "-" +
+
+      phoneNumbers.slice(6);
 
   }
 
@@ -1566,32 +1638,38 @@ function addFrontLegToCart(weight, multiplier) {
 
     "원\n" +
 
-    "문의상품은 재고와 가격 확인 부탁드립니다.";
+    "연락처: " +
+
+    formattedPhone +
+
+    "\n\n문의상품은 재고와 가격 확인 부탁드립니다.";
 
   navigator.clipboard
 
     .writeText(orderText)
 
- .then(function () {
+    .then(function () {
 
-alert(
+      alert(
 
-  "주문내용이 복사됐습니다.\n\n" +
+        "주문내용이 복사됐습니다.\n\n" +
 
-  "닫기 버튼을 누르면 카카오톡 채팅창이 열립니다.\n\n" +
+        "닫기 버튼을 누르면 카카오톡 채팅창이 열립니다.\n\n" +
 
-  "입력창을 길게 눌러\n" +
+        "입력창을 길게 눌러\n" +
 
-  "붙여넣기 → 전송을 눌러주세요.\n\n" +
+        "붙여넣기 → 전송을 눌러주세요.\n\n" +
 
-  "확인 후 바로 답장드리겠습니다."
+        "확인 후 바로 답장드리겠습니다."
 
-);
-   window.location.href =
+      );
 
-    "https://pf.kakao.com/_rjhxen/chat";
+      window.location.href =
 
-})
+        "https://pf.kakao.com/_rjhxen/chat";
+
+    })
+
     .catch(function () {
 
       alert("주문내용 복사에 실패했습니다.");
