@@ -431,21 +431,25 @@
 
 .title-block h1 {
 
-  margin: 0;
+  width: 100%;
+
+  margin: 0 auto;
 
   color: #10243f;
 
-  font-size: 52px;
+  font-size: clamp(42px, 11vw, 58px);
 
-  line-height: 1.08;
+  line-height: 1.02;
 
   font-weight: 900;
 
-  letter-spacing: -3px;
+  letter-spacing: -4px;
 
-}
+  white-space: nowrap;
 
-.title-block .tagline {
+  text-align: center;
+
+}.title-block .tagline {
 
   margin: 14px 0 0;
 
