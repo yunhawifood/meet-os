@@ -1572,16 +1572,19 @@ function addFrontLegToCart(weight, multiplier) {
 
     .writeText(orderText)
 
-    .then(function () {
+ .then(function () {
 
-      alert(
+  alert(
 
-        "주문내용이 복사되었습니다.\n카카오톡 채팅창에 붙여넣어 주세요."
+    "주문내용이 복사되었습니다.\n카카오톡 채팅창에 붙여넣은 뒤 전송해주세요."
 
-      );
+  );
 
-    })
+  window.location.href =
 
+    "https://pf.kakao.com/_rjhxen/chat";
+
+})
     .catch(function () {
 
       alert("주문내용 복사에 실패했습니다.");
