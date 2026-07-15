@@ -1644,30 +1644,6 @@ function copyOrderText() {
 
     "\n\n문의상품은 재고와 가격 확인 부탁드립니다.";
 
-  navigator.clipboard
-
-    .writeText(orderText)
-
-    .then(function () {
-
-      alert(
-
-        "주문내용이 복사됐습니다.\n\n" +
-
-        "닫기 버튼을 누르면 카카오톡 채팅창이 열립니다.\n\n" +
-
-        "입력창을 길게 눌러\n" +
-
-        "붙여넣기 → 전송을 눌러주세요.\n\n" +
-
-        "확인 후 바로 답장드리겠습니다."
-
-      );
-
-      window.location.href =
-
-        "https://pf.kakao.com/_rjhxen/chat";
-
     })
 
     .catch(function () {
