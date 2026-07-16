@@ -6,7 +6,13 @@
 
   <meta charset="UTF-8" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta
+
+    name="viewport"
+
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+
+  />
 
   <meta name="theme-color" content="#f7fbf8" />
 
@@ -72,9 +78,29 @@
 
     }
 
-    button {
+    button,
+
+    input,
+
+    select,
+
+    textarea {
 
       font: inherit;
+
+    }
+
+    button {
+
+      cursor: pointer;
+
+    }
+
+    body.sheet-open,
+
+    body.modal-open {
+
+      overflow: hidden;
 
     }
 
@@ -113,8 +139,6 @@
       background: #f3f3f3;
 
       font-size: 25px;
-
-      cursor: pointer;
 
     }
 
@@ -436,8 +460,6 @@
 
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
 
-      cursor: pointer;
-
       -webkit-tap-highlight-color: transparent;
 
     }
@@ -590,8 +612,6 @@
 
       font-weight: 800;
 
-      cursor: pointer;
-
     }
 
     .talk {
@@ -654,19 +674,61 @@
 
       font-weight: 900;
 
-      cursor: pointer;
+    }
+
+    .cart-bar {
+
+      display: none;
+
+      position: fixed;
+
+      left: 50%;
+
+      bottom: calc(14px + env(safe-area-inset-bottom));
+
+      z-index: 80;
+
+      width: min(calc(100% - 28px), 692px);
+
+      min-height: 58px;
+
+      padding: 15px 20px;
+
+      transform: translateX(-50%);
+
+      border: 0;
+
+      border-radius: 19px;
+
+      background: var(--green);
+
+      color: #ffffff;
+
+      font-size: 17px;
+
+      font-weight: 900;
+
+      box-shadow: 0 12px 30px rgba(35, 95, 63, 0.28);
 
     }
 
-    .modal-overlay {
+    .modal-overlay,
+
+    .sheet-overlay {
 
       position: fixed;
 
       inset: 0;
 
-      z-index: 100;
-
       display: none;
+
+      background: rgba(0, 0, 0, 0.5);
+
+    }
+
+    .modal-overlay {
+
+      z-index: 100;
 
       align-items: flex-end;
 
@@ -674,13 +736,17 @@
 
       padding: 18px;
 
-      background: rgba(0, 0, 0, 0.55);
-
     }
 
     .modal-overlay.show {
 
       display: flex;
+
+    }
+
+    .sheet-overlay {
+
+      z-index: 200;
 
     }
 
@@ -820,8 +886,6 @@
 
       font-weight: 900;
 
-      cursor: pointer;
-
     }
 
     .confirm {
@@ -844,9 +908,375 @@
 
     }
 
-    body.modal-open {
+    .bottom-sheet {
 
-      overflow: hidden;
+      position: fixed;
+
+      left: 50%;
+
+      bottom: 0;
+
+      z-index: 210;
+
+      width: min(100%, 520px);
+
+      max-height: 88vh;
+
+      overflow-y: auto;
+
+      padding: 18px 18px calc(28px + env(safe-area-inset-bottom));
+
+      transform: translate(-50%, 110%);
+
+      border-radius: 26px 26px 0 0;
+
+      background: #ffffff;
+
+      box-shadow: 0 -12px 35px rgba(0, 0, 0, 0.18);
+
+      transition: transform 0.25s ease;
+
+    }
+
+    .sheet-handle {
+
+      width: 46px;
+
+      height: 5px;
+
+      margin: 0 auto 18px;
+
+      border-radius: 999px;
+
+      background: #dddddd;
+
+    }
+
+    .sheet-header {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 12px;
+
+      margin-bottom: 18px;
+
+    }
+
+    .sheet-header h2 {
+
+      margin: 0;
+
+      font-size: 23px;
+
+    }
+
+    .close-button {
+
+      flex: 0 0 auto;
+
+      width: 40px;
+
+      height: 40px;
+
+      border: 0;
+
+      border-radius: 50%;
+
+      background: #f2f2f2;
+
+      font-size: 22px;
+
+    }
+
+    .weight-grid {
+
+      display: grid;
+
+      grid-template-columns: repeat(2, 1fr);
+
+      gap: 10px;
+
+    }
+
+    .weight-button {
+
+      width: 100%;
+
+      min-height: 90px;
+
+      padding: 18px 10px;
+
+      border: 1px solid #dddddd;
+
+      border-radius: 16px;
+
+      background: #ffffff;
+
+      font-size: 21px;
+
+      font-weight: 800;
+
+      line-height: 1.5;
+
+    }
+
+    .weight-button strong {
+
+      color: var(--red);
+
+      font-size: 18px;
+
+    }
+
+    .request-description {
+
+      margin: 0 0 22px;
+
+      color: #555555;
+
+      line-height: 1.6;
+
+    }
+
+    .primary-button {
+
+      width: 100%;
+
+      min-height: 54px;
+
+      padding: 15px;
+
+      border: 0;
+
+      border-radius: 16px;
+
+      background: var(--green);
+
+      color: #ffffff;
+
+      font-size: 17px;
+
+      font-weight: 900;
+
+    }
+
+    .front-use-title {
+
+      margin: 0 0 10px;
+
+      font-weight: 800;
+
+    }
+
+    .front-use-list {
+
+      display: grid;
+
+      gap: 10px;
+
+      margin-bottom: 20px;
+
+    }
+
+    .front-use-button {
+
+      padding: 16px;
+
+      border: 1px solid #dddddd;
+
+      border-radius: 14px;
+
+      background: #ffffff;
+
+      text-align: left;
+
+      font-size: 17px;
+
+      font-weight: 800;
+
+    }
+
+    .front-use-button span {
+
+      font-size: 14px;
+
+      font-weight: 400;
+
+    }
+
+    .front-use-button.selected {
+
+      border: 3px solid #111111;
+
+      background: #fff1c7;
+
+    }
+
+    .cart-item {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 12px;
+
+      padding: 14px 0;
+
+      border-bottom: 1px solid #eeeeee;
+
+    }
+
+    .cart-item-name {
+
+      font-size: 17px;
+
+      font-weight: 850;
+
+    }
+
+    .cart-item-price {
+
+      margin-top: 5px;
+
+      color: var(--red);
+
+      font-weight: 800;
+
+    }
+
+    .delete-button {
+
+      flex: 0 0 auto;
+
+      padding: 9px 12px;
+
+      border: 0;
+
+      border-radius: 12px;
+
+      background: #f3f3f3;
+
+      color: #666666;
+
+      font-weight: 700;
+
+    }
+
+    .cart-total {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      margin-top: 20px;
+
+      padding-top: 18px;
+
+      border-top: 1px solid #eeeeee;
+
+      font-size: 18px;
+
+      font-weight: 900;
+
+    }
+
+    .delivery-form {
+
+      display: grid;
+
+      gap: 14px;
+
+    }
+
+    .field label {
+
+      display: block;
+
+      margin-bottom: 7px;
+
+      font-size: 15px;
+
+      font-weight: 850;
+
+    }
+
+    .field input,
+
+    .field select,
+
+    .field textarea {
+
+      width: 100%;
+
+      border: 1px solid #dddddd;
+
+      border-radius: 14px;
+
+      background: #ffffff;
+
+      color: #171717;
+
+      font-size: 16px;
+
+      outline: none;
+
+    }
+
+    .field input,
+
+    .field select {
+
+      min-height: 52px;
+
+      padding: 0 14px;
+
+    }
+
+    .field textarea {
+
+      min-height: 90px;
+
+      padding: 13px 14px;
+
+      resize: vertical;
+
+      line-height: 1.5;
+
+    }
+
+    .field input:focus,
+
+    .field select:focus,
+
+    .field textarea:focus {
+
+      border-color: var(--green-2);
+
+      box-shadow: 0 0 0 3px rgba(47, 139, 80, 0.12);
+
+    }
+
+    .form-note {
+
+      margin: 0;
+
+      padding: 13px;
+
+      border-radius: 14px;
+
+      background: #f3f7f4;
+
+      color: #555555;
+
+      font-size: 13px;
+
+      line-height: 1.55;
 
     }
 
@@ -1042,7 +1472,13 @@
 
     <section class="products" aria-label="아침배송 상품 목록">
 
-      <article class="product" onclick="productNextStep('삼겹살')">
+      <article
+
+        class="product"
+
+        onclick="openWeightSheet('삼겹살', 3200)"
+
+      >
 
         <div class="image-box">
 
@@ -1076,7 +1512,13 @@
 
       </article>
 
-      <article class="product" onclick="productNextStep('목살')">
+      <article
+
+        class="product"
+
+        onclick="openWeightSheet('목살', 2700)"
+
+      >
 
         <div class="image-box">
 
@@ -1110,7 +1552,13 @@
 
       </article>
 
-      <article class="product" onclick="productNextStep('앞다리')">
+      <article
+
+        class="product"
+
+        onclick="openFrontLegSheet()"
+
+      >
 
         <div class="image-box">
 
@@ -1144,7 +1592,13 @@
 
       </article>
 
-      <article class="product" onclick="productNextStep('알사태')">
+      <article
+
+        class="product"
+
+        onclick="openWeightSheet('알사태', 990)"
+
+      >
 
         <div class="image-box">
 
@@ -1178,7 +1632,13 @@
 
       </article>
 
-      <article class="product" onclick="productNextStep('갈비')">
+      <article
+
+        class="product"
+
+        onclick="openRequestSheet('갈비')"
+
+      >
 
         <div class="image-box">
 
@@ -1212,7 +1672,13 @@
 
       </article>
 
-      <article class="product" onclick="productNextStep('등갈비')">
+      <article
+
+        class="product"
+
+        onclick="openRequestSheet('등갈비')"
+
+      >
 
         <div class="image-box">
 
@@ -1246,7 +1712,13 @@
 
       </article>
 
-      <article class="product" onclick="productNextStep('등심')">
+      <article
+
+        class="product"
+
+        onclick="openRequestSheet('등심')"
+
+      >
 
         <div class="image-box">
 
@@ -1280,7 +1752,13 @@
 
       </article>
 
-      <article class="product" onclick="productNextStep('안심')">
+      <article
+
+        class="product"
+
+        onclick="openRequestSheet('안심')"
+
+      >
 
         <div class="image-box">
 
@@ -1314,7 +1792,13 @@
 
       </article>
 
-      <article class="product" onclick="productNextStep('항정살')">
+      <article
+
+        class="product"
+
+        onclick="openRequestSheet('항정살')"
+
+      >
 
         <div class="image-box">
 
@@ -1348,7 +1832,13 @@
 
       </article>
 
-      <article class="product" onclick="productNextStep('가브리살')">
+      <article
+
+        class="product"
+
+        onclick="openRequestSheet('가브리살')"
+
+      >
 
         <div class="image-box">
 
@@ -1382,7 +1872,13 @@
 
       </article>
 
-      <article class="product" onclick="productNextStep('갈매기살')">
+      <article
+
+        class="product"
+
+        onclick="openRequestSheet('갈매기살')"
+
+      >
 
         <div class="image-box">
 
@@ -1416,7 +1912,13 @@
 
       </article>
 
-      <article class="product cow-card" onclick="productNextStep('한우 문의')">
+      <article
+
+        class="product cow-card"
+
+        onclick="openRequestSheet('한우')"
+
+      >
 
         <div class="image-box">
 
@@ -1446,7 +1948,7 @@
 
       class="talk-box"
 
-      onclick="productNextStep('기타 상품 문의')"
+      onclick="openRequestSheet('기타 상품')"
 
     >
 
@@ -1462,7 +1964,7 @@
 
   </main>
 
-  <div class="bottom-guide">
+  <div class="bottom-guide" id="bottomGuide">
 
     <button
 
@@ -1477,6 +1979,24 @@
     </button>
 
   </div>
+
+  <button
+
+    class="cart-bar"
+
+    id="cartBar"
+
+    type="button"
+
+    onclick="showCart()"
+
+  >
+
+    장바구니 보기 · <span id="cartCount">0</span>개
+
+  </button>
+
+  <!-- 배송지역 안내창 -->
 
   <div
 
@@ -1580,9 +2100,561 @@
 
   </div>
 
+  <!-- 공통 오버레이 -->
+
+  <div
+
+    class="sheet-overlay"
+
+    id="sheetOverlay"
+
+    onclick="closeAllSheets()"
+
+  ></div>
+
+  <!-- 중량 선택 -->
+
+  <section class="bottom-sheet" id="weightSheet">
+
+    <div class="sheet-handle"></div>
+
+    <div class="sheet-header">
+
+      <h2 id="weightSheetTitle">
+
+        상품 중량 선택
+
+      </h2>
+
+      <button
+
+        class="close-button"
+
+        type="button"
+
+        onclick="closeAllSheets()"
+
+      >
+
+        ×
+
+      </button>
+
+    </div>
+
+    <div class="weight-grid">
+
+      <button
+
+        class="weight-button"
+
+        type="button"
+
+        onclick="selectWeight('500g', 5)"
+
+      >
+
+        500g<br />
+
+        <strong id="price500">0원</strong>
+
+      </button>
+
+      <button
+
+        class="weight-button"
+
+        type="button"
+
+        onclick="selectWeight('1kg', 10)"
+
+      >
+
+        1kg<br />
+
+        <strong id="price1000">0원</strong>
+
+      </button>
+
+      <button
+
+        class="weight-button"
+
+        type="button"
+
+        onclick="selectWeight('1.5kg', 15)"
+
+      >
+
+        1.5kg<br />
+
+        <strong id="price1500">0원</strong>
+
+      </button>
+
+      <button
+
+        class="weight-button"
+
+        type="button"
+
+        onclick="selectWeight('2kg', 20)"
+
+      >
+
+        2kg<br />
+
+        <strong id="price2000">0원</strong>
+
+      </button>
+
+    </div>
+
+  </section>
+
+  <!-- 가격 문의 상품 -->
+
+  <section class="bottom-sheet" id="requestSheet">
+
+    <div class="sheet-handle"></div>
+
+    <div class="sheet-header">
+
+      <h2 id="requestSheetTitle">
+
+        상품 주문 요청
+
+      </h2>
+
+      <button
+
+        class="close-button"
+
+        type="button"
+
+        onclick="closeAllSheets()"
+
+      >
+
+        ×
+
+      </button>
+
+    </div>
+
+    <p class="request-description">
+
+      당일 재고와 가격을 확인해드립니다.
+
+    </p>
+
+    <button
+
+      class="primary-button"
+
+      type="button"
+
+      onclick="addRequestProduct()"
+
+    >
+
+      요청상품으로 장바구니에 담기
+
+    </button>
+
+  </section>
+
+  <!-- 앞다리 -->
+
+  <section class="bottom-sheet" id="frontLegSheet">
+
+    <div class="sheet-handle"></div>
+
+    <div class="sheet-header">
+
+      <h2>앞다리 용도 선택</h2>
+
+      <button
+
+        class="close-button"
+
+        type="button"
+
+        onclick="closeAllSheets()"
+
+      >
+
+        ×
+
+      </button>
+
+    </div>
+
+    <p class="front-use-title">
+
+      어떻게 드실 건가요?
+
+    </p>
+
+    <div class="front-use-list">
+
+      <button
+
+        class="front-use-button"
+
+        type="button"
+
+        onclick="selectFrontLegUse('찌개용', this)"
+
+      >
+
+        추천 · 찌개용<br />
+
+        <span>김치찌개·짜글이용으로 먹기 좋게 썰어드려요.</span>
+
+      </button>
+
+      <button
+
+        class="front-use-button"
+
+        type="button"
+
+        onclick="selectFrontLegUse('불고기용', this)"
+
+      >
+
+        불고기용<br />
+
+        <span>얇게 썰어드려요.</span>
+
+      </button>
+
+      <button
+
+        class="front-use-button"
+
+        type="button"
+
+        onclick="selectFrontLegUse('수육용', this)"
+
+      >
+
+        수육용<br />
+
+        <span>덩어리로 준비해드려요.</span>
+
+      </button>
+
+    </div>
+
+    <p class="front-use-title">
+
+      중량을 선택해주세요.
+
+    </p>
+
+    <div class="weight-grid">
+
+      <button
+
+        class="weight-button"
+
+        type="button"
+
+        onclick="addFrontLegToCart('500g', 5)"
+
+      >
+
+        500g<br />
+
+        <strong>8,500원</strong>
+
+      </button>
+
+      <button
+
+        class="weight-button"
+
+        type="button"
+
+        onclick="addFrontLegToCart('1kg', 10)"
+
+      >
+
+        1kg<br />
+
+        <strong>17,000원</strong>
+
+      </button>
+
+      <button
+
+        class="weight-button"
+
+        type="button"
+
+        onclick="addFrontLegToCart('1.5kg', 15)"
+
+      >
+
+        1.5kg<br />
+
+        <strong>25,500원</strong>
+
+      </button>
+
+      <button
+
+        class="weight-button"
+
+        type="button"
+
+        onclick="addFrontLegToCart('2kg', 20)"
+
+      >
+
+        2kg<br />
+
+        <strong>34,000원</strong>
+
+      </button>
+
+    </div>
+
+  </section>
+
+  <!-- 장바구니 -->
+
+  <section class="bottom-sheet" id="cartSheet">
+
+    <div class="sheet-handle"></div>
+
+    <div class="sheet-header">
+
+      <h2>장바구니</h2>
+
+      <button
+
+        class="close-button"
+
+        type="button"
+
+        onclick="closeAllSheets()"
+
+      >
+
+        ×
+
+      </button>
+
+    </div>
+
+    <div id="cartItems"></div>
+
+    <div class="cart-total">
+
+      <span>총 주문금액</span>
+
+      <span id="cartTotal">0원</span>
+
+    </div>
+
+    <button
+
+      class="primary-button"
+
+      type="button"
+
+      style="margin-top: 18px;"
+
+      onclick="openDeliveryForm()"
+
+    >
+
+      배송정보 입력하기
+
+    </button>
+
+  </section>
+
+  <!-- 배송정보 -->
+
+  <section class="bottom-sheet" id="deliverySheet">
+
+    <div class="sheet-handle"></div>
+
+    <div class="sheet-header">
+
+      <h2>배송정보 입력</h2>
+
+      <button
+
+        class="close-button"
+
+        type="button"
+
+        onclick="closeAllSheets()"
+
+      >
+
+        ×
+
+      </button>
+
+    </div>
+
+    <div class="delivery-form">
+
+      <div class="field">
+
+        <label for="customerName">받는 분</label>
+
+        <input
+
+          id="customerName"
+
+          type="text"
+
+          placeholder="예: 이윤상"
+
+          autocomplete="name"
+
+        />
+
+      </div>
+
+      <div class="field">
+
+        <label for="customerPhone">전화번호</label>
+
+        <input
+
+          id="customerPhone"
+
+          type="tel"
+
+          inputmode="numeric"
+
+          placeholder="예: 01012345678"
+
+          autocomplete="tel"
+
+        />
+
+      </div>
+
+      <div class="field">
+
+        <label for="apartmentSelect">배송 아파트</label>
+
+        <select id="apartmentSelect">
+
+          <option value="">아파트를 선택해주세요.</option>
+
+          <option value="효자성원맨션">효자성원맨션</option>
+
+          <option value="유진청하맨션">유진청하맨션</option>
+
+          <option value="미송하이존아파트">미송하이존아파트</option>
+
+          <option value="삼성효자맨션">삼성효자맨션</option>
+
+          <option value="효자뷰티빌아파트">효자뷰티빌아파트</option>
+
+          <option value="롯데아파트">롯데아파트</option>
+
+        </select>
+
+      </div>
+
+      <div class="field">
+
+        <label for="detailAddress">동·호수</label>
+
+        <input
+
+          id="detailAddress"
+
+          type="text"
+
+          placeholder="예: 101동 1001호"
+
+        />
+
+      </div>
+
+      <div class="field">
+
+        <label for="entranceInfo">공동현관 출입방법</label>
+
+        <input
+
+          id="entranceInfo"
+
+          type="text"
+
+          placeholder="예: 공동현관 1234#"
+
+        />
+
+      </div>
+
+      <div class="field">
+
+        <label for="deliveryRequest">배송 요청사항</label>
+
+        <textarea
+
+          id="deliveryRequest"
+
+          placeholder="예: 문 앞에 놓아주세요. 도착 후 문자 부탁드립니다."
+
+        ></textarea>
+
+      </div>
+
+      <p class="form-note">
+
+        입력한 정보는 아침배송 주문 확인을 위해 사용됩니다.
+
+        주문내용을 카카오톡으로 보내야 최종 접수됩니다.
+
+      </p>
+
+      <button
+
+        class="primary-button"
+
+        type="button"
+
+        onclick="copyDeliveryOrder()"
+
+      >
+
+        카카오로 아침배송 요청하기
+
+      </button>
+
+    </div>
+
+  </section>
+
   <script>
 
     const regionModal = document.getElementById("regionModal");
+
+    const sheetOverlay = document.getElementById("sheetOverlay");
+
+    let cart = [];
+
+    let selectedProduct = "";
+
+    let selectedUnitPrice = 0;
+
+    let selectedRequestProduct = "";
+
+    let selectedFrontLegUse = "";
 
     window.addEventListener("DOMContentLoaded", function () {
 
@@ -1618,15 +2690,589 @@
 
     }
 
-    function productNextStep(productName) {
+    function openSheet(sheetId) {
+
+      closeAllSheets(false);
+
+      sheetOverlay.style.display = "block";
+
+      document.getElementById(sheetId).style.transform =
+
+        "translate(-50%, 0)";
+
+      document.body.classList.add("sheet-open");
+
+    }
+
+    function closeAllSheets(hideOverlay = true) {
+
+      document.querySelectorAll(".bottom-sheet").forEach(function (sheet) {
+
+        sheet.style.transform = "translate(-50%, 110%)";
+
+      });
+
+      if (hideOverlay) {
+
+        sheetOverlay.style.display = "none";
+
+        document.body.classList.remove("sheet-open");
+
+      }
+
+    }
+
+    function openWeightSheet(product, unitPrice) {
+
+      selectedProduct = product;
+
+      selectedUnitPrice = unitPrice;
+
+      document.getElementById("weightSheetTitle").textContent =
+
+        product + " 중량 선택";
+
+      document.getElementById("price500").textContent =
+
+        (unitPrice * 5).toLocaleString("ko-KR") + "원";
+
+      document.getElementById("price1000").textContent =
+
+        (unitPrice * 10).toLocaleString("ko-KR") + "원";
+
+      document.getElementById("price1500").textContent =
+
+        (unitPrice * 15).toLocaleString("ko-KR") + "원";
+
+      document.getElementById("price2000").textContent =
+
+        (unitPrice * 20).toLocaleString("ko-KR") + "원";
+
+      openSheet("weightSheet");
+
+    }
+
+    function selectWeight(weight, multiplier) {
+
+      const numericPrice = selectedUnitPrice * multiplier;
+
+      cart.push({
+
+        product: selectedProduct,
+
+        weight: weight,
+
+        numericPrice: numericPrice,
+
+        priceText:
+
+          numericPrice.toLocaleString("ko-KR") + "원"
+
+      });
+
+      updateCartBar();
+
+      closeAllSheets();
+
+    }
+
+    function openRequestSheet(product) {
+
+      selectedRequestProduct = product;
+
+      document.getElementById("requestSheetTitle").textContent =
+
+        product + " 주문 요청";
+
+      openSheet("requestSheet");
+
+    }
+
+    function addRequestProduct() {
+
+      cart.push({
+
+        product: selectedRequestProduct,
+
+        weight: "주문 요청",
+
+        numericPrice: 0,
+
+        priceText: "가격 확인 필요"
+
+      });
+
+      updateCartBar();
+
+      closeAllSheets();
+
+    }
+
+    function openFrontLegSheet() {
+
+      selectedFrontLegUse = "";
+
+      document
+
+        .querySelectorAll(".front-use-button")
+
+        .forEach(function (button) {
+
+          button.classList.remove("selected");
+
+        });
+
+      openSheet("frontLegSheet");
+
+    }
+
+    function selectFrontLegUse(use, selectedButton) {
+
+      selectedFrontLegUse = use;
+
+      document
+
+        .querySelectorAll(".front-use-button")
+
+        .forEach(function (button) {
+
+          button.classList.remove("selected");
+
+        });
+
+      selectedButton.classList.add("selected");
+
+    }
+
+    function addFrontLegToCart(weight, multiplier) {
+
+      if (!selectedFrontLegUse) {
+
+        alert("먼저 앞다리 용도를 선택해주세요.");
+
+        return;
+
+      }
+
+      const numericPrice = 1700 * multiplier;
+
+      cart.push({
+
+        product: "앞다리 " + selectedFrontLegUse,
+
+        weight: weight,
+
+        numericPrice: numericPrice,
+
+        priceText:
+
+          numericPrice.toLocaleString("ko-KR") + "원"
+
+      });
+
+      updateCartBar();
+
+      closeAllSheets();
+
+    }
+
+    function updateCartBar() {
+
+      document.getElementById("cartCount").textContent = cart.length;
+
+      if (cart.length > 0) {
+
+        document.getElementById("cartBar").style.display = "block";
+
+        document.getElementById("bottomGuide").style.display = "none";
+
+      } else {
+
+        document.getElementById("cartBar").style.display = "none";
+
+        document.getElementById("bottomGuide").style.display = "block";
+
+      }
+
+    }
+
+    function showCart() {
+
+      const cartItems = document.getElementById("cartItems");
+
+      let total = 0;
+
+      cartItems.innerHTML = "";
+
+      cart.forEach(function (item, index) {
+
+        total += item.numericPrice;
+
+        cartItems.innerHTML += `
+
+          <div class="cart-item">
+
+            <div>
+
+              <div class="cart-item-name">
+
+                ${item.product} ${item.weight}
+
+              </div>
+
+              <div class="cart-item-price">
+
+                ${item.priceText}
+
+              </div>
+
+            </div>
+
+            <button
+
+              class="delete-button"
+
+              type="button"
+
+              onclick="removeCartItem(${index})"
+
+            >
+
+              삭제
+
+            </button>
+
+          </div>
+
+        `;
+
+      });
+
+      document.getElementById("cartTotal").textContent =
+
+        total.toLocaleString("ko-KR") + "원";
+
+      openSheet("cartSheet");
+
+    }
+
+    function removeCartItem(index) {
+
+      cart.splice(index, 1);
+
+      updateCartBar();
+
+      if (cart.length === 0) {
+
+        closeAllSheets();
+
+        return;
+
+      }
+
+      showCart();
+
+    }
+
+    function openDeliveryForm() {
+
+      if (cart.length === 0) {
+
+        alert("장바구니에 상품을 먼저 담아주세요.");
+
+        return;
+
+      }
+
+      openSheet("deliverySheet");
+
+    }
+
+    function formatPhone(phoneNumbers) {
+
+      if (phoneNumbers.length === 11) {
+
+        return (
+
+          phoneNumbers.slice(0, 3) +
+
+          "-" +
+
+          phoneNumbers.slice(3, 7) +
+
+          "-" +
+
+          phoneNumbers.slice(7)
+
+        );
+
+      }
+
+      return (
+
+        phoneNumbers.slice(0, 3) +
+
+        "-" +
+
+        phoneNumbers.slice(3, 6) +
+
+        "-" +
+
+        phoneNumbers.slice(6)
+
+      );
+
+    }
+
+    function fallbackCopy(text) {
+
+      const copyArea = document.createElement("textarea");
+
+      copyArea.value = text;
+
+      copyArea.setAttribute("readonly", "");
+
+      copyArea.style.position = "fixed";
+
+      copyArea.style.left = "-9999px";
+
+      copyArea.style.top = "0";
+
+      document.body.appendChild(copyArea);
+
+      copyArea.focus();
+
+      copyArea.select();
+
+      copyArea.setSelectionRange(0, copyArea.value.length);
+
+      const success = document.execCommand("copy");
+
+      document.body.removeChild(copyArea);
+
+      return success;
+
+    }
+
+    function openKakaoAfterCopy() {
 
       alert(
 
-        productName +
+        "아침배송 주문내용이 복사됐습니다.\n\n" +
 
-          " 중량 선택과 장바구니 기능은 다음 단계에서 연결합니다."
+        "닫기 버튼을 누르면 카카오톡 채팅창이 열립니다.\n\n" +
+
+        "입력창을 길게 눌러\n" +
+
+        "붙여넣기 → 전송을 눌러주세요.\n\n" +
+
+        "매장 확인 후 답장드리겠습니다."
 
       );
+
+      window.location.href =
+
+        "https://pf.kakao.com/_rjhxen/chat";
+
+    }
+
+    function copyDeliveryOrder() {
+
+      if (cart.length === 0) {
+
+        alert("장바구니에 상품을 먼저 담아주세요.");
+
+        return;
+
+      }
+
+      const customerName =
+
+        document.getElementById("customerName").value.trim();
+
+      const phoneInput =
+
+        document.getElementById("customerPhone").value.trim();
+
+      const apartment =
+
+        document.getElementById("apartmentSelect").value;
+
+      const detailAddress =
+
+        document.getElementById("detailAddress").value.trim();
+
+      const entranceInfo =
+
+        document.getElementById("entranceInfo").value.trim();
+
+      const deliveryRequest =
+
+        document.getElementById("deliveryRequest").value.trim();
+
+      if (!customerName) {
+
+        alert("받는 분 성함을 입력해주세요.");
+
+        return;
+
+      }
+
+      const phoneNumbers = phoneInput.replace(/[^0-9]/g, "");
+
+      if (
+
+        phoneNumbers.length !== 10 &&
+
+        phoneNumbers.length !== 11
+
+      ) {
+
+        alert("전화번호를 정확하게 입력해주세요.");
+
+        return;
+
+      }
+
+      if (!apartment) {
+
+        alert("배송 아파트를 선택해주세요.");
+
+        return;
+
+      }
+
+      if (!detailAddress) {
+
+        alert("동·호수를 입력해주세요.");
+
+        return;
+
+      }
+
+      const formattedPhone = formatPhone(phoneNumbers);
+
+      let confirmedTotal = 0;
+
+      const itemLines = cart.map(function (item, index) {
+
+        confirmedTotal += item.numericPrice;
+
+        return (
+
+          (index + 1) +
+
+          ". " +
+
+          item.product +
+
+          " " +
+
+          item.weight +
+
+          " / " +
+
+          item.priceText
+
+        );
+
+      });
+
+      const orderText =
+
+        "[한농직판장 아침배송 주문 요청]\n\n" +
+
+        itemLines.join("\n") +
+
+        "\n\n확정상품 합계: " +
+
+        confirmedTotal.toLocaleString("ko-KR") +
+
+        "원\n\n" +
+
+        "[배송정보]\n" +
+
+        "받는 분: " +
+
+        customerName +
+
+        "\n" +
+
+        "연락처: " +
+
+        formattedPhone +
+
+        "\n" +
+
+        "배송지: " +
+
+        apartment +
+
+        " " +
+
+        detailAddress +
+
+        "\n" +
+
+        "공동현관: " +
+
+        (entranceInfo || "별도 안내 없음") +
+
+        "\n" +
+
+        "배송 요청사항: " +
+
+        (deliveryRequest || "별도 요청 없음") +
+
+        "\n\n" +
+
+        "문의상품은 재고와 가격 확인 부탁드립니다.";
+
+      if (
+
+        navigator.clipboard &&
+
+        typeof navigator.clipboard.writeText === "function"
+
+      ) {
+
+        navigator.clipboard
+
+          .writeText(orderText)
+
+          .then(function () {
+
+            openKakaoAfterCopy();
+
+          })
+
+          .catch(function () {
+
+            if (fallbackCopy(orderText)) {
+
+              openKakaoAfterCopy();
+
+            } else {
+
+              alert("주문내용 복사에 실패했습니다.");
+
+            }
+
+          });
+
+      } else {
+
+        if (fallbackCopy(orderText)) {
+
+          openKakaoAfterCopy();
+
+        } else {
+
+          alert("주문내용 복사에 실패했습니다.");
+
+        }
+
+      }
 
     }
 
