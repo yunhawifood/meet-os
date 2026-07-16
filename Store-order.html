@@ -1750,7 +1750,119 @@ body.store-sheet-open {
   </button>
 
 </section>  
-  <script>
+  <div
+
+  id="storeOrderOverlay"
+
+  class="store-order-overlay"
+
+  onclick="closeStoreOrderForm()"
+
+></div>
+
+<section
+
+  id="storeOrderSheet"
+
+  class="store-order-sheet"
+
+>
+
+  <div class="store-sheet-handle"></div>
+
+  <div class="store-sheet-header">
+
+    <h2>주문정보 입력</h2>
+
+    <button
+
+      class="store-sheet-close"
+
+      type="button"
+
+      onclick="closeStoreOrderForm()"
+
+      aria-label="닫기"
+
+    >
+
+      ×
+
+    </button>
+
+  </div>
+
+  <p class="store-payment-notice">
+
+    결제는 상품을 찾으러 오셨을 때 매장에서 합니다.<br>
+
+    안심하고 연락받으실 전화번호를 입력해주세요.
+
+  </p>
+
+  <div class="store-order-form">
+
+    <div class="store-field">
+
+      <label for="storePhone">전화번호</label>
+
+      <input
+
+        id="storePhone"
+
+        type="tel"
+
+        inputmode="numeric"
+
+        autocomplete="tel"
+
+        placeholder="예: 01012345678"
+
+      >
+
+    </div>
+
+    <div class="store-field">
+
+      <label for="storeRequest">
+
+        요청사항
+
+        <span style="color:#888; font-weight:500;">
+
+          (선택)
+
+        </span>
+
+      </label>
+
+      <textarea
+
+        id="storeRequest"
+
+        placeholder="예: 오후 6시쯤 방문할게요."
+
+      ></textarea>
+
+    </div>
+
+    <button
+
+      class="store-submit-button"
+
+      type="button"
+
+      onclick="submitStoreOrder()"
+
+    >
+
+      주문내용 복사 후 카카오톡 열기
+
+    </button>
+
+  </div>
+
+</section>  <script>
 
    function openWeightSheet(product, unitPrice) {
 
