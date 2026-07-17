@@ -1328,11 +1328,19 @@
 
 }
 
+.payment-options {
+
+  grid-template-columns: repeat(3, 1fr);
+
+}
+
 .option-card {
 
   display: flex;
 
   align-items: center;
+
+  justify-content: flex-start;
 
   gap: 8px;
 
@@ -1408,9 +1416,9 @@
 
 .delivery-notice {
 
-  padding: 13px 14px;
+  padding: 11px 13px;
 
-  border-radius: 14px;
+  border-radius: 13px;
 
   background: #f3faf5;
 
@@ -1418,7 +1426,7 @@
 
   font-size: 13px;
 
-  line-height: 1.55;
+  line-height: 1.5;
 
   font-weight: 700;
 
@@ -1430,25 +1438,69 @@
 
 }
 
-@media (max-width: 360px) {
+@media (max-width: 420px) {
 
-  .option-group {
+  .page {
 
-    grid-template-columns: 1fr;
+    padding-left: 14px;
+
+    padding-right: 14px;
 
   }
 
-}    @media (max-width: 420px) {
+  .products {
 
-      .page {
+    gap: 11px;
 
-        padding-left: 14px;
+  }
 
-        padding-right: 14px;
+  .product-info h3 {
 
-      }
+    font-size: 18px;
 
-      .products {
+  }
+
+  .price strong {
+
+    font-size: 18px;
+
+  }
+
+  .delivery-summary {
+
+    gap: 7px;
+
+  }
+
+  .summary-item {
+
+    padding-left: 4px;
+
+    padding-right: 4px;
+
+  }
+
+  .option-card {
+
+    min-height: 50px;
+
+    padding: 9px 8px;
+
+  }
+
+  .option-card strong {
+
+    font-size: 13px;
+
+  }
+
+  .payment-options {
+
+    grid-template-columns: repeat(3, 1fr);
+
+  }
+
+}      .products {
 
         gap: 11px;
 
