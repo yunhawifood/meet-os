@@ -1336,17 +1336,19 @@
 }
 .option-card {
 
-  position: relative;
-
   display: flex;
+
+  flex-direction: column;
 
   align-items: center;
 
   justify-content: center;
 
-  min-height: 52px;
+  gap: 6px;
 
-  padding: 10px 12px;
+  min-height: 70px;
+
+  padding: 10px 8px;
 
   border: 1px solid #dddddd;
 
@@ -1356,14 +1358,15 @@
 
   cursor: pointer;
 
+  text-align: center;
+
 }
+
 .option-card input {
 
-  position: absolute;
+  position: static;
 
-  top: 10px;
-
-  left: 50%;
+  flex: 0 0 auto;
 
   width: 19px;
 
@@ -1371,20 +1374,21 @@
 
   margin: 0;
 
-  transform: translateX(-50%);
+  transform: none;
 
   accent-color: var(--green-2);
 
 }
-    .option-card-text {
+
+.option-card-text {
 
   min-width: 0;
 
-  padding-top: 25px;
+  padding-top: 0;
 
   text-align: center;
 
-}.option-card strong {
+}    .option-card strong {
 
   display: block;
 
