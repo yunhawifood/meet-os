@@ -10,9 +10,11 @@
 
     name="viewport"
 
-    content="width=device-width, initial-scale=1.0"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 
   />
+
+  <meta name="theme-color" content="#edf6ff" />
 
   <title>한농직판장 | 내 손안의 정육점</title>
 
@@ -21,6 +23,14 @@
     * {
 
       box-sizing: border-box;
+
+    }
+
+    html,
+
+    body {
+
+      min-height: 100%;
 
     }
 
@@ -36,7 +46,7 @@
 
           #eaf4ff 0%,
 
-          #f4f8fd 55%,
+          #f5f9fd 58%,
 
           #ffffff 100%
 
@@ -58,6 +68,8 @@
 
       text-align: center;
 
+      -webkit-font-smoothing: antialiased;
+
     }
 
     button {
@@ -74,11 +86,55 @@
 
       max-width: 520px;
 
-      min-height: 100vh;
+      min-height: 100dvh;
 
       margin: 0 auto;
 
-      padding: 18px 18px 34px;
+      padding:
+
+        calc(18px + env(safe-area-inset-top))
+
+        18px
+
+        calc(26px + env(safe-area-inset-bottom));
+
+    }
+
+    .brand-header {
+
+      margin: 0 0 14px;
+
+      text-align: center;
+
+    }
+
+    .brand-name {
+
+      margin: 0;
+
+      color: #174b78;
+
+      font-size: 30px;
+
+      line-height: 1.2;
+
+      font-weight: 900;
+
+      letter-spacing: -1.7px;
+
+    }
+
+    .brand-line {
+
+      width: 34px;
+
+      height: 3px;
+
+      margin: 9px auto 0;
+
+      border-radius: 999px;
+
+      background: #5ea2e4;
 
     }
 
@@ -86,19 +142,19 @@
 
       width: 100%;
 
-      margin: 0 auto 28px;
+      margin: 0 auto 18px;
 
       overflow: hidden;
 
-      border: 1px solid rgba(180, 208, 238, 0.65);
+      border: 1px solid rgba(180, 208, 238, 0.72);
 
-      border-radius: 30px;
+      border-radius: 26px;
 
       background: #ffffff;
 
       box-shadow:
 
-        0 16px 38px rgba(43, 91, 140, 0.12);
+        0 13px 30px rgba(43, 91, 140, 0.12);
 
     }
 
@@ -108,49 +164,51 @@
 
       width: 100%;
 
-      height: 180px;
+      height: 155px;
 
       object-fit: cover;
 
-      object-position: center 35%;
+      object-position: center 38%;
 
     }
 
-    .hero-text {
+    .title-block {
 
-      padding: 27px 18px 30px;
+      margin: 0 0 21px;
+
+      text-align: center;
 
     }
 
-    h1 {
+    .title-block h1 {
 
       margin: 0;
 
       color: #10243f;
 
-      font-size: 40px;
+      font-size: clamp(34px, 9vw, 42px);
 
-      line-height: 1.14;
+      line-height: 1.08;
 
       font-weight: 900;
 
-      letter-spacing: -2.7px;
+      letter-spacing: -2.5px;
 
     }
 
-    .tagline {
+    .title-block .tagline {
 
-      margin: 15px 0 0;
+      margin: 9px 0 0;
 
       color: #6b7d92;
 
-      font-size: 17px;
+      font-size: 16px;
 
-      line-height: 1.5;
+      line-height: 1.45;
 
-      font-weight: 650;
+      font-weight: 700;
 
-      letter-spacing: -0.5px;
+      letter-spacing: -0.45px;
 
     }
 
@@ -160,7 +218,7 @@
 
       grid-template-columns: repeat(2, minmax(0, 1fr));
 
-      gap: 14px;
+      gap: 12px;
 
       width: 100%;
 
@@ -170,21 +228,21 @@
 
       min-width: 0;
 
-      min-height: 270px;
+      min-height: 232px;
 
-      padding: 27px 15px 19px;
+      padding: 22px 12px 16px;
 
       border: 1px solid #bed8f3;
 
-      border-radius: 29px;
+      border-radius: 26px;
 
-      background: rgba(249, 252, 255, 0.95);
+      background: rgba(249, 252, 255, 0.96);
 
       color: #164e89;
 
       box-shadow:
 
-        0 13px 29px rgba(62, 111, 162, 0.14);
+        0 11px 25px rgba(62, 111, 162, 0.13);
 
       cursor: pointer;
 
@@ -210,13 +268,13 @@
 
       box-shadow:
 
-        0 7px 17px rgba(62, 111, 162, 0.12);
+        0 6px 15px rgba(62, 111, 162, 0.11);
 
     }
 
     .store-order {
 
-      background: #f8fbff;
+      background: #f9fcff;
 
     }
 
@@ -230,11 +288,11 @@
 
     .icon-wrap {
 
-      width: 78px;
+      width: 68px;
 
-      height: 78px;
+      height: 68px;
 
-      margin-bottom: 20px;
+      margin-bottom: 15px;
 
       border-radius: 50%;
 
@@ -242,7 +300,7 @@
 
       box-shadow:
 
-        inset 0 0 0 1px rgba(123, 171, 220, 0.12);
+        inset 0 0 0 1px rgba(123, 171, 220, 0.13);
 
       display: flex;
 
@@ -254,7 +312,7 @@
 
     .icon {
 
-      font-size: 36px;
+      font-size: 32px;
 
       line-height: 1;
 
@@ -264,17 +322,17 @@
 
       display: block;
 
-      margin-bottom: 15px;
+      margin-bottom: 12px;
 
       color: #15519a;
 
-      font-size: 25px;
+      font-size: 24px;
 
       line-height: 1.25;
 
       font-weight: 900;
 
-      letter-spacing: -1.2px;
+      letter-spacing: -1.1px;
 
     }
 
@@ -284,19 +342,19 @@
 
       width: 100%;
 
-      min-height: 58px;
+      min-height: 52px;
 
-      padding-top: 15px;
+      padding-top: 12px;
 
       border-top: 1px solid #d7e6f5;
 
       color: #536b84;
 
-      font-size: 15px;
+      font-size: 14px;
 
-      line-height: 1.5;
+      line-height: 1.48;
 
-      font-weight: 650;
+      font-weight: 700;
 
       letter-spacing: -0.3px;
 
@@ -304,9 +362,9 @@
 
     .arrow {
 
-      width: 43px;
+      width: 41px;
 
-      height: 43px;
+      height: 41px;
 
       margin-top: auto;
 
@@ -316,9 +374,9 @@
 
       color: #ffffff;
 
-      font-size: 25px;
+      font-size: 24px;
 
-      line-height: 40px;
+      line-height: 38px;
 
       font-weight: 700;
 
@@ -326,31 +384,31 @@
 
       box-shadow:
 
-        0 7px 14px rgba(37, 130, 232, 0.25);
+        0 6px 13px rgba(37, 130, 232, 0.24);
 
     }
 
     .origin {
 
-      margin: 25px 0 0;
+      margin: 18px 0 0;
 
-      padding: 13px 15px;
+      padding: 11px 14px;
 
       border: 1px solid #d7e7f7;
 
       border-radius: 999px;
 
-      background: rgba(255, 255, 255, 0.65);
+      background: rgba(255, 255, 255, 0.68);
 
       color: #3f5872;
 
-      font-size: 16px;
+      font-size: 14px;
 
       line-height: 1.4;
 
-      font-weight: 750;
+      font-weight: 800;
 
-      letter-spacing: -0.5px;
+      letter-spacing: -0.4px;
 
     }
 
@@ -360,122 +418,119 @@
 
         padding:
 
-          13px 12px 28px;
+          calc(13px + env(safe-area-inset-top))
+
+          12px
+
+          calc(22px + env(safe-area-inset-bottom));
+
+      }
+
+      .brand-header {
+
+        margin-bottom: 11px;
+
+      }
+
+      .brand-name {
+
+        font-size: 27px;
+
+      }
+
+      .hero {
+
+        margin-bottom: 15px;
+
+        border-radius: 23px;
 
       }
 
       .store-photo {
 
-        height: 160px;
+        height: 135px;
 
       }
 
-      h1 {
+      .title-block {
 
-        font-size: 35px;
+        margin-bottom: 17px;
+
+      }
+
+      .title-block h1 {
+
+        font-size: 33px;
+
+        letter-spacing: -2.1px;
+
+      }
+
+      .title-block .tagline {
+
+        margin-top: 7px;
+
+        font-size: 15px;
 
       }
 
       .main-buttons {
 
-        gap: 10px;
+        gap: 9px;
 
       }
 
       .main-button {
 
-        min-height: 245px;
+        min-height: 218px;
 
-        padding:
+        padding: 19px 9px 14px;
 
-          23px 11px 16px;
-
-        border-radius: 25px;
+        border-radius: 23px;
 
       }
 
       .icon-wrap {
 
-        width: 68px;
+        width: 62px;
 
-        height: 68px;
+        height: 62px;
+
+        margin-bottom: 13px;
 
       }
 
       .icon {
 
-        font-size: 31px;
+        font-size: 29px;
 
       }
 
       .main-button strong {
 
-        font-size: 22px;
+        font-size: 21px;
 
       }
 
       .main-button small {
+
+        min-height: 50px;
+
+        font-size: 12.5px;
+
+      }
+
+      .origin {
+
+        margin-top: 15px;
 
         font-size: 13px;
 
       }
 
     }
-.title-block {
 
-  margin: 8px 0 26px;
-
-  text-align: center;
-
-}
-
-.title-block h1 {
-
-  width: 100%;
-
-  margin: 0 auto;
-
-  color: #10243f;
-
-  font-size: clamp(42px, 11vw, 58px);
-
-  line-height: 1.02;
-
-  font-weight: 900;
-
-  letter-spacing: -4px;
-
-  white-space: nowrap;
-
-  text-align: center;
-
-}.title-block .tagline {
-
-  margin: 14px 0 0;
-
-  color: #6b7d92;
-
-  font-size: 18px;
-
-  font-weight: 700;
-
-}
-
-@media (max-width: 390px) {
-
-  .title-block h1 {
-
-    font-size: 42px;
-
-  }
-
-  .title-block .tagline {
-
-    font-size: 16px;
-
-  }
-
-}  </style>
+  </style>
 
 </head>
 
@@ -483,27 +538,41 @@
 
   <main class="wrap">
 
+    <header class="brand-header">
+
+      <p class="brand-name">한농직판장</p>
+
+      <div class="brand-line"></div>
+
+    </header>
+
     <section class="hero">
 
-  <img
+      <img
 
-    class="store-photo"
+        class="store-photo"
 
-    src="IMG_1920.jpeg"
+        src="IMG_1920.jpeg"
 
-    alt="한농직판장 매장 사진"
+        alt="한농직판장 매장 사진"
 
-  />
+      />
 
-</section>
+    </section>
 
-<section class="title-block">
+    <section class="title-block">
 
-  <h1>내 손안의 정육점</h1>
+      <h1>내 손안의 정육점</h1>
 
-  <p class="tagline">언제 어디서나 간편하게!</p>
+      <p class="tagline">
 
-</section>    <section class="main-buttons">
+        언제 어디서나 간편하게!
+
+      </p>
+
+    </section>
+
+    <section class="main-buttons" aria-label="주문 방법 선택">
 
       <button
 
@@ -541,7 +610,8 @@
 
         type="button"
 
-       onclick="location.href='morning-delivery.html'"
+        onclick="location.href='morning-delivery.html'"
+
       >
 
         <span class="icon-wrap">
