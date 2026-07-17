@@ -2788,105 +2788,6 @@
 </div>
 
 <div class="field">
-
-  <label>결제 방법</label>
-
-  <div class="option-group">
-
-    <label class="option-card">
-
-      <input
-
-        type="radio"
-
-        name="paymentMethod"
-
-        value="계좌이체"
-
-      />
-
-      <span class="option-card-text">
-
-        <strong>계좌이체</strong>
-
-        <span>주문 확인 후 입금 계좌를 안내해드립니다.</span>
-
-      </span>
-
-    </label>
-
-    <label class="option-card">
-
-      <input
-
-        type="radio"
-
-        name="paymentMethod"
-
-        value="배송 시 카드결제"
-
-      />
-
-      <span class="option-card-text">
-
-        <strong>배송 시 카드결제</strong>
-
-        <span>이동식 카드단말기로 결제하며 직접 수령이 필요합니다.</span>
-
-      </span>
-
-    </label>
-
-    <label class="option-card">
-
-      <input
-
-        type="radio"
-
-        name="paymentMethod"
-
-        value="배송 시 현금결제"
-
-      />
-
-      <span class="option-card-text">
-
-        <strong>배송 시 현금결제</strong>
-
-        <span>직접 수령이 필요합니다.</span>
-
-      </span>
-
-    </label>
-
-    <label class="option-card disabled">
-
-      <input
-
-        type="radio"
-
-        name="paymentMethod"
-
-        value="온라인 카드결제"
-
-        disabled
-
-      />
-
-      <span class="option-card-text">
-
-        <strong>온라인 카드결제 · 준비 중</strong>
-
-        <span>카드와 간편결제를 준비하고 있습니다.</span>
-
-      </span>
-
-    </label>
-
-  </div>
-
-</div>
-
 <div class="field">
 
   <label>배송 방법</label>
@@ -2901,15 +2802,15 @@
 
         name="deliveryMethod"
 
-        value="문 앞 비대면 배송"
+        value="문 앞 배송"
+
+        checked
 
       />
 
       <span class="option-card-text">
 
-        <strong>문 앞 비대면 배송</strong>
-
-        <span>초인종이나 노크 없이 배송하고 완료 후 문자드립니다.</span>
+        <strong>문 앞 배송</strong>
 
       </span>
 
@@ -2931,7 +2832,99 @@
 
         <strong>직접 수령</strong>
 
-        <span>배송 시 카드 또는 현금결제를 선택한 고객용입니다.</span>
+      </span>
+
+    </label>
+
+  </div>
+
+</div>
+
+<div class="field">
+
+  <label>결제 방법</label>
+
+  <div class="option-group">
+
+    <label class="option-card">
+
+      <input
+
+        type="radio"
+
+        name="paymentMethod"
+
+        value="계좌이체"
+
+        checked
+
+      />
+
+      <span class="option-card-text">
+
+        <strong>계좌이체</strong>
+
+      </span>
+
+    </label>
+
+    <label class="option-card">
+
+      <input
+
+        type="radio"
+
+        name="paymentMethod"
+
+        value="배송 시 카드결제"
+
+      />
+
+      <span class="option-card-text">
+
+        <strong>배송 시 카드</strong>
+
+      </span>
+
+    </label>
+
+    <label class="option-card">
+
+      <input
+
+        type="radio"
+
+        name="paymentMethod"
+
+        value="배송 시 현금결제"
+
+      />
+
+      <span class="option-card-text">
+
+        <strong>배송 시 현금</strong>
+
+      </span>
+
+    </label>
+
+    <label class="option-card disabled">
+
+      <input
+
+        type="radio"
+
+        name="paymentMethod"
+
+        value="온라인 카드결제"
+
+        disabled
+
+      />
+
+      <span class="option-card-text">
+
+        <strong>온라인 카드 · 준비 중</strong>
 
       </span>
 
@@ -2943,37 +2936,19 @@
 
 <div class="delivery-notice">
 
-  <strong>조용한 아침배송 원칙</strong><br />
+  문 앞 배송은 <strong>초인종 없이 배송 후 문자</strong>드립니다.<br />
 
-  고객님의 아침을 방해하지 않도록 초인종을 누르거나
-
-  문을 두드리지 않습니다. 배송 완료 후 문자로 알려드립니다.
+  배송 시 카드·현금결제는 직접 수령이 필요합니다.
 
 </div>
 
-<div class="field">
+<textarea
 
-  <label for="deliveryRequest">배송 요청사항</label>
+  id="deliveryRequest"
 
-  <textarea
+  style="display: none;"
 
-    id="deliveryRequest"
-
-    placeholder="예: 문 앞에 놓아주세요. 도착 후 문자 부탁드립니다."
-
-  ></textarea>
-
-</div>
-
-<p class="form-note">
-
-  카카오톡으로 주문내용을 보내면 매장에서 재고와 금액을 확인해드립니다.<br />
-
-  계좌이체는 입금 확인 후 주문이 확정되며,
-
-  현장결제는 직접 수령이 필요합니다.
-
-</p>
+></textarea>
 
 <button
 
