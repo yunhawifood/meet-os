@@ -2801,7 +2801,6 @@
 </div>
 
 <div class="field">
-<div class="field">
 
   <label>배송 방법</label>
 
@@ -2853,11 +2852,19 @@
 
 </div>
 
+<div class="delivery-notice">
+
+  문 앞 배송은 초인종 없이 배송 후 문자드립니다.<br />
+
+  <strong>카드결제 시 직접 수령을 선택해주세요.</strong>
+
+</div>
+
 <div class="field">
 
   <label>결제 방법</label>
 
-  <div class="option-group">
+  <div class="option-group payment-options">
 
     <label class="option-card">
 
@@ -2895,27 +2902,7 @@
 
       <span class="option-card-text">
 
-        <strong>배송 시 카드</strong>
-
-      </span>
-
-    </label>
-
-    <label class="option-card">
-
-      <input
-
-        type="radio"
-
-        name="paymentMethod"
-
-        value="배송 시 현금결제"
-
-      />
-
-      <span class="option-card-text">
-
-        <strong>배송 시 현금</strong>
+        <strong>카드결제</strong>
 
       </span>
 
@@ -2937,7 +2924,7 @@
 
       <span class="option-card-text">
 
-        <strong>온라인 카드 · 준비 중</strong>
+        <strong>온라인결제<br />준비 중</strong>
 
       </span>
 
@@ -2947,23 +2934,13 @@
 
 </div>
 
-<div class="delivery-notice">
-
-  문 앞 배송은 <strong>초인종 없이 배송 후 문자</strong>드립니다.<br />
-
-  배송 시 카드·현금결제는 직접 수령이 필요합니다.
-
-</div>
-
 <textarea
 
   id="deliveryRequest"
 
   style="display: none;"
 
-></textarea>
-
-<button
+></textarea><button
 
   class="primary-button"
 
