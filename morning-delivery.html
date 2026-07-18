@@ -2842,59 +2842,133 @@ let selectedFrontLegUse = "";
 
     function openWeightSheet(product, unitPrice) {
 
-      selectedProduct = product;
+  selectedProduct = product;
 
-      selectedUnitPrice = unitPrice;
+  selectedUnitPrice = unitPrice;
 
-      document.getElementById("weightSheetTitle").textContent =
+  const productUses = {
 
-        product + " 중량 선택";
+    "삼겹살": ["구이용", "수육용"],
 
-      document.getElementById("price500").textContent =
+    "목살": ["구이용", "수육용", "찌개용"],
 
-        (unitPrice * 5).toLocaleString("ko-KR") + "원";
+    "알사태": ["수육용", "찌개용", "카레용", "잡채용"]
 
-      document.getElementById("price1000").textContent =
+  };
 
-        (unitPrice * 10).toLocaleString("ko-KR") + "원";
+  const defaultUses = {
 
-      document.getElementById("price1500").textContent =
+    "삼겹살": "구이용",
 
-        (unitPrice * 15).toLocaleString("ko-KR") + "원";
+    "목살": "구이용",
 
-      document.getElementById("price2000").textContent =
+    "알사태": "수육용"
 
-        (unitPrice * 20).toLocaleString("ko-KR") + "원";
+  };
 
-      openSheet("weightSheet");
+  selectedProductUse = defaultUses[product] || "";
 
-    }
+  document.getElementById("weightSheetTitle").textContent =
 
-    function selectWeight(weight, multiplier) {
+    product + " 주문";
 
-      const numericPrice = selectedUnitPrice * multiplier;
+  const useList =
 
-      cart.push({
+    document.getElementById("productUseList");
 
-        product: selectedProduct,
+  useList.innerHTML = "";
 
-        weight: weight,
+  (productUses[product] || []).forEach(function (use) {
 
-        numericPrice: numericPrice,
+    const button = document.createElement("button");
 
-        priceText:
+    button.type = "button";
 
-          numericPrice.toLocaleString("ko-KR") + "원"
+    button.className =
 
-      });
+      "product-use-button" +
 
-      updateCartBar();
+      (use === selectedProductUse ? " selected" : "");
 
-      closeAllSheets();
+    button.textContent = use;
 
-    }
+    button.onclick = function () {
 
-    function openRequestSheet(product) {
+      selectedProductUse = use;
+
+      document
+
+        .querySelectorAll(".product-use-button")
+
+        .forEach(function (useButton) {
+
+          useButton.classList.remove("selected");
+
+        });
+
+      button.classList.add("selected");
+
+    };
+
+    useList.appendChild(button);
+
+  });
+
+  document.getElementById("price500").textContent =
+
+    (unitPrice * 5).toLocaleString("ko-KR") + "원";
+
+  document.getElementById("price1000").textContent =
+
+    (unitPrice * 10).toLocaleString("ko-KR") + "원";
+
+  document.getElementById("price1500").textContent =
+
+    (unitPrice * 15).toLocaleString("ko-KR") + "원";
+
+  document.getElementById("price2000").textContent =
+
+    (unitPrice * 20).toLocaleString("ko-KR") + "원";
+
+  openSheet("weightSheet");
+
+}
+
+function selectWeight(weight, multiplier) {
+
+  if (!selectedProductUse) {
+
+    alert("용도를 선택해주세요.");
+
+    return;
+
+  }
+
+  const numericPrice =
+
+    selectedUnitPrice * multiplier;
+
+  cart.push({
+
+    product:
+
+      selectedProduct + " " + selectedProductUse,
+
+    weight: weight,
+
+    numericPrice: numericPrice,
+
+    priceText:
+
+      numericPrice.toLocaleString("ko-KR") + "원"
+
+  });
+
+  updateCartBar();
+
+  closeAllSheets();
+
+}    function openRequestSheet(product) {
 
       selectedRequestProduct = product;
 
