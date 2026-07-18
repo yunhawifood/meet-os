@@ -1336,6 +1336,8 @@ body.store-sheet-open {
   중량을 선택해주세요.
 
 </p>
+</p>
+
 <div
 
   class="store-weight-grid"
@@ -1362,26 +1364,13 @@ body.store-sheet-open {
 
     onclick="selectWeight('500g', 5)"
 
-  >    <div
+  >
 
-      style="
+    500g<br>
 
-        display: grid;
+    <strong id="price500">0원</strong>
 
-        grid-template-columns: repeat(2, 1fr);
-
-        gap: 10px;
-
-      "
-
-    >
-
-      <button id="weight500" type="button" onclick="selectWeight('500g', 5)">
-
-  500g<br><strong id="price500">0원</strong>
-
-</button>
-
+  </button>
 <button id="weight1000" type="button" onclick="selectWeight('1kg', 10)">
 
   1kg<br><strong id="price1000">0원</strong>
