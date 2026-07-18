@@ -1954,111 +1954,93 @@
 
   <!-- 배송지역 안내창 -->
 
-  <div
+<div
 
-    class="modal-overlay"
+  class="modal-overlay"
 
-    id="regionModal"
+  id="regionModal"
 
-    role="dialog"
+  role="dialog"
 
-    aria-modal="true"
+  aria-modal="true"
 
-    aria-labelledby="modalTitle"
+  aria-labelledby="modalTitle"
 
-  >
+>
 
-    <section class="modal">
+  <section class="modal">
 
-      <div class="modal-icon">🚚</div>
+    <div class="modal-icon">🚚</div>
 
-      <h2 id="modalTitle">
+    <h2 id="modalTitle">
 
-        아침배송 가능 지역 안내
+      아침배송 가능 지역 안내
 
-      </h2>
+    </h2>
 
-      <div class="test-label">
+    <p class="intro">
 
-        현재 테스트 운영 중
+      아래 8개 아파트에 아침배송합니다.
 
-      </div>
+    </p>
 
-      <p class="intro">
+    <ul class="apartments">
 
-        현재 아침배송은 아래 아파트에 한해<br />
+      <li>유진 청하</li>
 
-        테스트 운영 중입니다.
+      <li>효자 성원</li>
 
-      </p>
+      <li>롯데</li>
 
-      <ul class="apartments">
+      <li>효자 삼호</li>
 
-  <li>유진 청하</li>
+      <li>뷰티빌</li>
 
-  <li>효자 성원</li>
+      <li>남양</li>
 
-  <li>롯데</li>
+      <li>라미안</li>
 
-  <li>효자 삼호</li>
+      <li>미송 하이존</li>
 
-  <li>뷰티빌</li>
+    </ul>
 
-  <li>남양</li>
+    <div class="modal-buttons">
 
-  <li>라미안</li>
+      <button
 
-  <li>미송 하이존</li>
+        class="confirm"
 
-</ul>      <p class="expand-note">
+        type="button"
 
-        현재는 테스트 운영 기간으로, 위 아파트 외 지역은 배송이 어렵습니다.<br />
+        onclick="confirmRegion()"
 
-        <strong>
+      >
 
-          더 많은 지역에서 이용하실 수 있도록 배송지역을 순차적으로 확대하겠습니다.
+        배송지역을 확인했습니다
 
-        </strong>
+      </button>
 
-      </p>
+      <button
 
-      <div class="modal-buttons">
+        class="return"
 
-        <button
+        type="button"
 
-          class="confirm"
+        onclick="location.href='index.html'"
 
-          type="button"
+      >
 
-          onclick="confirmRegion()"
+        첫 화면으로 돌아가기
 
-        >
+      </button>
 
-          배송지역을 확인했습니다
+    </div>
 
-        </button>
+  </section>
 
-        <button
+</div>
 
-          class="return"
-
-          type="button"
-
-          onclick="location.href='index.html'"
-
-        >
-
-          첫 화면으로 돌아가기
-
-        </button>
-
-      </div>
-
-    </section>
-
-  </div>
-
-  <!-- 공통 오버레이 -->
+<!-- 공통 오버레이 -->  <!-- 공통 오버레이 -->
 
   <div
 
