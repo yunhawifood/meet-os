@@ -2685,27 +2685,29 @@ let selectedFrontLegUse = "";
 
   selectedUnitPrice = unitPrice;
 
-  const productUses = {
+const productUses = {
 
-    "삼겹살": ["구이용", "수육용"],
+  "삼겹살": ["구이용", "수육용"],
 
-    "목살": ["구이용", "수육용", "찌개용"],
+  "목살": ["구이용", "수육용", "찌개용"],
 
-    "알사태": ["수육용", "찌개용", "카레용", "잡채용"]
+  "앞다리": ["찌개용", "불고기용", "수육용"],
 
-  };
+  "알사태": ["수육용", "찌개용", "카레용", "잡채용"]
 
-  const defaultUses = {
+};
 
-    "삼겹살": "구이용",
+const defaultUses = {
 
-    "목살": "구이용",
+  "삼겹살": "구이용",
 
-    "알사태": "수육용"
+  "목살": "구이용",
 
-  };
+  "앞다리": "찌개용",
 
-  selectedProductUse = defaultUses[product] || "";
+  "알사태": "수육용"
+
+};  selectedProductUse = defaultUses[product] || "";
 
   document.getElementById("weightSheetTitle").textContent =
 
