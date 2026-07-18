@@ -1154,8 +1154,47 @@
       background: #fff1c7;
 
     }
+.product-use-list {
 
-    .cart-item {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 9px;
+
+  margin-bottom: 20px;
+
+}
+
+.product-use-button {
+
+  min-height: 52px;
+
+  padding: 11px 8px;
+
+  border: 1px solid #dddddd;
+
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  color: #222222;
+
+  font-size: 15px;
+
+  font-weight: 850;
+
+}
+
+.product-use-button.selected {
+
+  border: 2px solid var(--green-2);
+
+  background: var(--green-soft);
+
+  color: var(--green);
+
+}    .cart-item {
 
       display: flex;
 
