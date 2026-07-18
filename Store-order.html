@@ -1758,15 +1758,83 @@ body.store-sheet-open {
 
 </section>  <script>
 
-   function openWeightSheet(product, unitPrice) {
+ function openWeightSheet(product, unitPrice) {
 
   selectedProduct = product;
 
   selectedUnitPrice = unitPrice;
 
+  const productUses = {
+
+    "삼겹살": ["구이용", "수육용"],
+
+    "목살": ["구이용", "수육용", "찌개용"],
+
+    "앞다리": ["찌개용", "불고기용", "수육용"],
+
+    "알사태": ["수육용", "찌개용", "카레용", "잡채용"]
+
+  };
+
+  const defaultUses = {
+
+    "삼겹살": "구이용",
+
+    "목살": "구이용",
+
+    "앞다리": "찌개용",
+
+    "알사태": "수육용"
+
+  };
+
+  selectedProductUse = defaultUses[product] || "";
+
   document.getElementById("weightSheetTitle").textContent =
 
-    product + " 중량 선택";
+    product + " 주문";
+
+  const useList =
+
+    document.getElementById("productUseList");
+
+  useList.innerHTML = "";
+
+  (productUses[product] || []).forEach(function (use) {
+
+    const button = document.createElement("button");
+
+    button.type = "button";
+
+    button.className =
+
+      "product-use-button" +
+
+      (use === selectedProductUse ? " selected" : "");
+
+    button.textContent = use;
+
+    button.onclick = function () {
+
+      selectedProductUse = use;
+
+      document
+
+        .querySelectorAll(".product-use-button")
+
+        .forEach(function (useButton) {
+
+          useButton.classList.remove("selected");
+
+        });
+
+      button.classList.add("selected");
+
+    };
+
+    useList.appendChild(button);
+
+  });
 
   document.getElementById("price500").textContent =
 
@@ -1790,9 +1858,7 @@ body.store-sheet-open {
 
     "translate(-50%, 0)";
 
-}
-
-    function closeWeightSheet() {
+}    function closeWeightSheet() {
 
       document.getElementById("sheetOverlay").style.display = "none";
 
