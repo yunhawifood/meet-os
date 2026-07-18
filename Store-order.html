@@ -1873,7 +1873,18 @@ let selectedProductUse = "";
 let cart = [];
 
 function selectWeight(weight, multiplier) {
-  const numericPrice = selectedUnitPrice * multiplier;
+
+  if (!selectedProductUse) {
+
+    alert("용도를 선택해주세요.");
+
+    return;
+
+  }
+
+  const numericPrice =
+
+    selectedUnitPrice * multiplier;
 
   const formattedPrice =
 
@@ -1881,7 +1892,9 @@ function selectWeight(weight, multiplier) {
 
   cart.push({
 
-    product: selectedProduct,
+    product:
+
+      selectedProduct + " " + selectedProductUse,
 
     weight: weight,
 
@@ -1889,14 +1902,17 @@ function selectWeight(weight, multiplier) {
 
   });
 
-  document.getElementById("cartCount").textContent = cart.length;
+  document.getElementById("cartCount").textContent =
 
-  document.getElementById("cartBar").style.display = "block";
+    cart.length;
+
+  document.getElementById("cartBar").style.display =
+
+    "block";
 
   closeWeightSheet();
 
-}
-function showCart() {
+}function showCart() {
 
   const cartItems = document.getElementById("cartItems");
 
