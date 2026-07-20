@@ -3055,8 +3055,33 @@ function selectWeight(weight, multiplier) {
       openSheet("deliverySheet");
 
     }
+function syncPaymentMethod(deliveryMethod) {
 
-    function formatPhone(phoneNumbers) {
+  const transferRadio = document.querySelector(
+
+    'input[name="paymentMethod"][value="계좌이체"]'
+
+  );
+
+  const cardRadio = document.querySelector(
+
+    'input[name="paymentMethod"][value="배송 시 카드결제"]'
+
+  );
+
+  if (deliveryMethod === "문 앞 배송") {
+
+    transferRadio.checked = true;
+
+  }
+
+  if (deliveryMethod === "직접 수령") {
+
+    cardRadio.checked = true;
+
+  }
+
+}    function formatPhone(phoneNumbers) {
 
       if (phoneNumbers.length === 11) {
 
