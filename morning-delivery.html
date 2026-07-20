@@ -3168,192 +3168,287 @@ function syncPaymentMethod(deliveryMethod) {
         "https://pf.kakao.com/_rjhxen/chat";
 
     }
+function copyDeliveryOrder() {
 
-    function copyDeliveryOrder() {
+  if (cart.length === 0) {
 
-      if (cart.length === 0) {
+    alert("장바구니에 상품을 먼저 담아주세요.");
 
-        alert("장바구니에 상품을 먼저 담아주세요.");
+    return;
 
-        return;
+  }
 
-      }
+  const customerName =
 
-      const customerName =
+    document.getElementById("customerName").value.trim();
 
-        document.getElementById("customerName").value.trim();
+  const phoneInput =
 
-      const phoneInput =
+    document.getElementById("customerPhone").value.trim();
 
-        document.getElementById("customerPhone").value.trim();
+  const apartment =
 
-      const apartment =
+    document.getElementById("apartmentSelect").value;
 
-        document.getElementById("apartmentSelect").value;
+  const detailAddress =
 
-      const detailAddress =
+    document.getElementById("detailAddress").value.trim();
 
-        document.getElementById("detailAddress").value.trim();
+  const entranceInfo =
 
-      const entranceInfo =
+    document.getElementById("entranceInfo").value.trim();
 
-        document.getElementById("entranceInfo").value.trim();
+  const deliveryRequest =
 
-      const deliveryRequest =
+    document.getElementById("deliveryRequest").value.trim();
 
-        document.getElementById("deliveryRequest").value.trim();
+  const selectedDelivery =
 
-      if (!customerName) {
+    document.querySelector(
 
-        alert("받는 분 성함을 입력해주세요.");
+      'input[name="deliveryMethod"]:checked'
 
-        return;
+    );
 
-      }
+  const selectedPayment =
 
-      const phoneNumbers = phoneInput.replace(/[^0-9]/g, "");
+    document.querySelector(
 
-      if (
+      'input[name="paymentMethod"]:checked'
 
-        phoneNumbers.length !== 10 &&
+    );
 
-        phoneNumbers.length !== 11
+  if (!customerName) {
 
-      ) {
+    alert("받는 분 성함을 입력해주세요.");
 
-        alert("전화번호를 정확하게 입력해주세요.");
+    document.getElementById("customerName").focus();
 
-        return;
+    return;
 
-      }
+  }
 
-      if (!apartment) {
+  const phoneNumbers =
 
-        alert("배송 아파트를 선택해주세요.");
+    phoneInput.replace(/[^0-9]/g, "");
 
-        return;
+  if (
 
-      }
+    phoneNumbers.length !== 10 &&
 
-      if (!detailAddress) {
+    phoneNumbers.length !== 11
 
-        alert("동·호수를 입력해주세요.");
+  ) {
 
-        return;
+    alert("전화번호를 정확하게 입력해주세요.");
 
-      }
+    document.getElementById("customerPhone").focus();
 
-      const formattedPhone = formatPhone(phoneNumbers);
+    return;
 
-      let confirmedTotal = 0;
+  }
 
-      const itemLines = cart.map(function (item, index) {
+  if (!apartment) {
 
-        confirmedTotal += item.numericPrice;
+    alert("배송 아파트를 선택해주세요.");
 
-        return (
+    document.getElementById("apartmentSelect").focus();
 
-          (index + 1) +
+    return;
 
-          ". " +
+  }
 
-          item.product +
+  if (!detailAddress) {
 
-          " " +
+    alert("동·호수를 입력해주세요.");
 
-          item.weight +
+    document.getElementById("detailAddress").focus();
 
-          " / " +
+    return;
 
-          item.priceText
+  }
 
-        );
+  if (!selectedDelivery) {
 
-      });
+    alert("배송 방법을 선택해주세요.");
 
-      const orderText =
+    return;
 
-        "[한농직판장 아침배송 주문 요청]\n\n" +
+  }
 
-        itemLines.join("\n") +
+  if (!selectedPayment) {
 
-        "\n\n확정상품 합계: " +
+    alert("결제 방법을 선택해주세요.");
 
-        confirmedTotal.toLocaleString("ko-KR") +
+    return;
 
-        "원\n\n" +
+  }
 
-        "[배송정보]\n" +
+  const deliveryMethod =
 
-        "받는 분: " +
+    selectedDelivery.value;
 
-        customerName +
+  const paymentMethod =
 
-        "\n" +
+    selectedPayment.value;
 
-        "연락처: " +
+  if (
 
-        formattedPhone +
+    deliveryMethod === "문 앞 배송" &&
 
-        "\n" +
+    paymentMethod === "배송 시 카드결제"
 
-        "배송지: " +
+  ) {
 
-        apartment +
+    alert(
 
-        " " +
+      "현장 카드결제는 직접 수령을 선택해주세요."
 
-        detailAddress +
+    );
 
-        "\n" +
+    return;
 
-        "공동현관: " +
+  }
 
-        (entranceInfo || "별도 안내 없음") +
+  if (
 
-        "\n" +
+    deliveryMethod === "직접 수령" &&
 
-        "배송 요청사항: " +
+    paymentMethod === "계좌이체"
 
-        (deliveryRequest || "별도 요청 없음") +
+  ) {
 
-        "\n\n" +
+    alert(
 
-        "문의상품은 재고와 가격 확인 부탁드립니다.";
+      "직접 수령은 현장 카드결제를 선택해주세요."
 
-      if (
+    );
 
-        navigator.clipboard &&
+    return;
 
-        typeof navigator.clipboard.writeText === "function"
+  }
 
-      ) {
+  const formattedPhone =
 
-        navigator.clipboard
+    formatPhone(phoneNumbers);
 
-          .writeText(orderText)
+  let confirmedTotal = 0;
 
-          .then(function () {
+  const itemLines = cart.map(function (item, index) {
 
-            openKakaoAfterCopy();
+    confirmedTotal += item.numericPrice;
 
-          })
+    return (
 
-          .catch(function () {
+      (index + 1) +
 
-            if (fallbackCopy(orderText)) {
+      ". " +
 
-              openKakaoAfterCopy();
+      item.product +
 
-            } else {
+      " " +
 
-              alert("주문내용 복사에 실패했습니다.");
+      item.weight +
 
-            }
+      " / " +
 
-          });
+      item.priceText
 
-      } else {
+    );
+
+  });
+
+  const paymentText =
+
+    paymentMethod === "배송 시 카드결제"
+
+      ? "현장 카드결제"
+
+      : paymentMethod;
+
+  const orderText =
+
+    "[한농직판장 아침배송 주문 요청]\n\n" +
+
+    itemLines.join("\n") +
+
+    "\n\n확정상품 합계: " +
+
+    confirmedTotal.toLocaleString("ko-KR") +
+
+    "원\n\n" +
+
+    "[배송정보]\n" +
+
+    "받는 분: " +
+
+    customerName +
+
+    "\n" +
+
+    "연락처: " +
+
+    formattedPhone +
+
+    "\n" +
+
+    "배송지: " +
+
+    apartment +
+
+    " " +
+
+    detailAddress +
+
+    "\n" +
+
+    "공동현관: " +
+
+    (entranceInfo || "별도 안내 없음") +
+
+    "\n" +
+
+    "배송 방법: " +
+
+    deliveryMethod +
+
+    "\n" +
+
+    "결제 방법: " +
+
+    paymentText +
+
+    "\n" +
+
+    "배송 요청사항: " +
+
+    (deliveryRequest || "별도 요청 없음") +
+
+    "\n\n" +
+
+    "선택한 용도에 맞춰 손질되는 상품입니다.\n" +
+
+    "용도 선택 착오로 인한 교환·환불은 어렵습니다.";
+
+  if (
+
+    navigator.clipboard &&
+
+    typeof navigator.clipboard.writeText === "function"
+
+  ) {
+
+    navigator.clipboard
+
+      .writeText(orderText)
+
+      .then(function () {
+
+        openKakaoAfterCopy();
+
+      })
+
+      .catch(function () {
 
         if (fallbackCopy(orderText)) {
 
@@ -3365,10 +3460,23 @@ function syncPaymentMethod(deliveryMethod) {
 
         }
 
-      }
+      });
+
+  } else {
+
+    if (fallbackCopy(orderText)) {
+
+      openKakaoAfterCopy();
+
+    } else {
+
+      alert("주문내용 복사에 실패했습니다.");
 
     }
 
+  }
+
+}    
   </script>
 
 </body>
