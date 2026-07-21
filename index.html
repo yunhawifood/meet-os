@@ -775,9 +775,22 @@
       </button>
 
     </section>
-    <section class="home-tip" aria-label="홈 화면 추가 안내">
+    
+<section
 
-      <p class="home-tip-title">
+  class="home-tip"
+
+  aria-label="홈 화면 추가 안내"
+
+  role="button"
+
+  tabindex="0"
+
+  onclick="openHomeGuide()"
+
+  onkeydown="if(event.key === 'Enter' || event.key === ' ') openHomeGuide()"
+
+>      <p class="home-tip-title">
 
         홈 화면에 추가하고 편하게 이용하세요
 
