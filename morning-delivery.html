@@ -1651,83 +1651,63 @@
 
     </header>
 
-    <section class="hero">
+<section class="compact-delivery-guide" aria-label="아침배송 핵심 안내">
 
-      <div class="hero-badge">
+  <div class="compact-guide-title">
 
-        🚚 가까운 아파트부터 테스트 운영
+    🚚 가까운 아파트부터 테스트 운영
 
-      </div>
+  </div>
 
-      <h1>아침배송 주문하기</h1>
+  <div class="compact-guide-grid">
 
-      <p>
+    <div class="compact-guide-item">
 
-        오늘 저녁 <strong>9시까지 주문</strong><br />
+      <span>🌙</span>
 
-        다음 날 아침 문 앞으로 배송해드립니다.
+      <strong>저녁 9시</strong>
 
-      </p>
+      <small>주문 마감</small>
 
-    </section>
+    </div>
 
-    <section class="delivery-summary" aria-label="아침배송 이용안내">
+    <div class="compact-guide-item">
 
-      <div class="summary-item">
+      <span>🌅</span>
 
-        <span>🌙</span>
+      <strong>다음 날</strong>
 
-        <strong>
+      <small>아침 8시 이전 배송</small>
 
-          저녁 9시<br />
+    </div>
 
-          주문 마감
+    <div class="compact-guide-item">
 
-        </strong>
+      <span>🏠</span>
 
-      </div>
+      <strong>지정 아파트</strong>
 
-      <div class="summary-item">
+      <small>배송 가능</small>
 
-        <span>🌅</span>
+    </div>
 
-        <strong>
+  </div>
 
-          다음 날<br />
+  <button
 
-          아침 배송
+    class="compact-region-button"
 
-        </strong>
+    type="button"
 
-      </div>
+    onclick="document.getElementById('regionModal').classList.add('show')"
 
-      <div class="summary-item">
+  >
 
-        <span>🏠</span>
+    배송 가능 지역 확인하기 →
 
-        <strong>
+  </button>
 
-          지정 아파트<br />
-
-          배송 가능
-
-        </strong>
-
-      </div>
-
-    </section>
-
-    <section class="region-card" id="deliveryRegion">
-
-      <h2>📍 아침배송 가능 지역</h2>
-
-      <p class="intro">
-
-        현재 아침배송은 아래 아파트에 한해 테스트 운영 중입니다.
-
-      </p>
-
-     <ul class="apartments">
+</section>     <ul class="apartments">
 
   <li>유진 청하</li>
 
