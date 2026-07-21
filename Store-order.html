@@ -846,9 +846,11 @@ body.store-sheet-open {
   }
 .top {
 
+  position: relative;
+
   margin-top: 0;
 
-  padding-top: 0;
+  padding-top: 8px;
 
 }
 
@@ -856,13 +858,25 @@ body.store-sheet-open {
 
   margin-top: 0;
 
-}  
-    .back-button:active {
+}
 
-    transform: scale(0.96);
+.top .back-button {
 
-  }
+  position: absolute;
 
+  top: 8px;
+
+  left: 0;
+
+  margin: 0;
+
+}
+
+.back-button:active {
+
+  transform: scale(0.96);
+
+}
 </style>
 
 </head>
