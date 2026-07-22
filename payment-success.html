@@ -1,1 +1,775 @@
+<!DOCTYPE html>
 
+<html lang="ko">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+
+    name="viewport"
+
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+
+  />
+
+  <meta name="theme-color" content="#f7fbf8" />
+
+  <title>결제 확인 중 | 한농직판장</title>
+
+  <style>
+
+    :root {
+
+      --green: #235f3f;
+
+      --green-2: #2f8b50;
+
+      --green-soft: #eef8f1;
+
+      --red: #c62828;
+
+      --text: #171717;
+
+      --muted: #666666;
+
+      --line: #e5e5e5;
+
+    }
+
+    * {
+
+      box-sizing: border-box;
+
+    }
+
+    body {
+
+      margin: 0;
+
+      min-height: 100dvh;
+
+      background: #f7fbf8;
+
+      color: var(--text);
+
+      font-family:
+
+        -apple-system,
+
+        BlinkMacSystemFont,
+
+        "Apple SD Gothic Neo",
+
+        "Noto Sans KR",
+
+        sans-serif;
+
+      -webkit-font-smoothing: antialiased;
+
+    }
+
+    button,
+
+    a {
+
+      font: inherit;
+
+    }
+
+    .page {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      width: min(100%, 720px);
+
+      min-height: 100dvh;
+
+      margin: 0 auto;
+
+      padding:
+
+        calc(24px + env(safe-area-inset-top))
+
+        18px
+
+        calc(24px + env(safe-area-inset-bottom));
+
+    }
+
+    .card {
+
+      width: 100%;
+
+      max-width: 480px;
+
+      padding: 34px 22px 24px;
+
+      border: 1px solid #dcebe1;
+
+      border-radius: 28px;
+
+      background: #ffffff;
+
+      text-align: center;
+
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.08);
+
+    }
+
+    .status-icon {
+
+      display: grid;
+
+      place-items: center;
+
+      width: 74px;
+
+      height: 74px;
+
+      margin: 0 auto 18px;
+
+      border-radius: 50%;
+
+      background: var(--green-soft);
+
+      font-size: 38px;
+
+    }
+
+    .spinner {
+
+      width: 32px;
+
+      height: 32px;
+
+      border: 4px solid #cfe3d6;
+
+      border-top-color: var(--green-2);
+
+      border-radius: 50%;
+
+      animation: spin 0.8s linear infinite;
+
+    }
+
+    @keyframes spin {
+
+      to {
+
+        transform: rotate(360deg);
+
+      }
+
+    }
+
+    h1 {
+
+      margin: 0;
+
+      color: var(--green);
+
+      font-size: 29px;
+
+      line-height: 1.25;
+
+      letter-spacing: -0.045em;
+
+    }
+
+    .description {
+
+      margin: 14px 0 0;
+
+      color: var(--muted);
+
+      font-size: 16px;
+
+      line-height: 1.65;
+
+      font-weight: 650;
+
+      word-break: keep-all;
+
+    }
+
+    .order-box {
+
+      display: none;
+
+      margin-top: 24px;
+
+      padding: 18px;
+
+      border: 1px solid #dcebe1;
+
+      border-radius: 18px;
+
+      background: #f7fcf9;
+
+      text-align: left;
+
+    }
+
+    .order-row {
+
+      display: flex;
+
+      align-items: flex-start;
+
+      justify-content: space-between;
+
+      gap: 15px;
+
+      padding: 10px 0;
+
+      border-bottom: 1px solid #e5eee8;
+
+      font-size: 15px;
+
+      line-height: 1.45;
+
+    }
+
+    .order-row:last-child {
+
+      border-bottom: 0;
+
+    }
+
+    .order-row span {
+
+      flex: 0 0 auto;
+
+      color: #666666;
+
+    }
+
+    .order-row strong {
+
+      min-width: 0;
+
+      color: #222222;
+
+      text-align: right;
+
+      word-break: break-all;
+
+    }
+
+    .delivery-message {
+
+      display: none;
+
+      margin-top: 18px;
+
+      padding: 15px;
+
+      border-radius: 16px;
+
+      background: var(--green-soft);
+
+      color: var(--green);
+
+      font-size: 15px;
+
+      line-height: 1.55;
+
+      font-weight: 850;
+
+    }
+
+    .error-message {
+
+      display: none;
+
+      margin-top: 18px;
+
+      padding: 15px;
+
+      border-radius: 16px;
+
+      background: #fff0f0;
+
+      color: var(--red);
+
+      font-size: 15px;
+
+      line-height: 1.55;
+
+      font-weight: 750;
+
+    }
+
+    .buttons {
+
+      display: none;
+
+      gap: 10px;
+
+      margin-top: 22px;
+
+    }
+
+    .button {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      width: 100%;
+
+      min-height: 56px;
+
+      padding: 13px;
+
+      border: 0;
+
+      border-radius: 17px;
+
+      text-decoration: none;
+
+      font-size: 16px;
+
+      font-weight: 900;
+
+      cursor: pointer;
+
+    }
+
+    .home-button {
+
+      background: var(--green);
+
+      color: #ffffff;
+
+    }
+
+    .kakao-button {
+
+      background: #fee500;
+
+      color: #111111;
+
+    }
+
+    .retry-button {
+
+      background: #eeeeee;
+
+      color: #333333;
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <main class="page">
+
+    <section class="card">
+
+      <div class="status-icon" id="statusIcon">
+
+        <div class="spinner"></div>
+
+      </div>
+
+      <h1 id="statusTitle">결제를 확인하고 있습니다</h1>
+
+      <p class="description" id="statusDescription">
+
+        결제창을 닫거나 새로고침하지 말고<br />
+
+        잠시만 기다려주세요.
+
+      </p>
+
+      <div class="order-box" id="orderBox">
+
+        <div class="order-row">
+
+          <span>주문상품</span>
+
+          <strong id="orderName">-</strong>
+
+        </div>
+
+        <div class="order-row">
+
+          <span>결제금액</span>
+
+          <strong id="orderAmount">-</strong>
+
+        </div>
+
+        <div class="order-row">
+
+          <span>결제수단</span>
+
+          <strong id="paymentMethod">-</strong>
+
+        </div>
+
+        <div class="order-row">
+
+          <span>주문번호</span>
+
+          <strong id="orderIdText">-</strong>
+
+        </div>
+
+      </div>
+
+      <div
+
+        class="delivery-message"
+
+        id="deliveryMessage"
+
+      >
+
+        주문이 정상 접수되었습니다.<br />
+
+        다음 날 아침 8시 이전에 배송해드립니다.
+
+      </div>
+
+      <div
+
+        class="error-message"
+
+        id="errorMessage"
+
+      ></div>
+
+      <div class="buttons" id="successButtons">
+
+        <a
+
+          class="button home-button"
+
+          href="index.html"
+
+        >
+
+          첫 화면으로 돌아가기
+
+        </a>
+
+        <a
+
+          class="button kakao-button"
+
+          href="https://pf.kakao.com/_rjhxen/chat"
+
+        >
+
+          카카오톡 문의
+
+        </a>
+
+      </div>
+
+      <div class="buttons" id="failButtons">
+
+        <a
+
+          class="button retry-button"
+
+          href="morning-delivery.html"
+
+        >
+
+          아침배송으로 돌아가기
+
+        </a>
+
+        <a
+
+          class="button kakao-button"
+
+          href="https://pf.kakao.com/_rjhxen/chat"
+
+        >
+
+          카카오톡 문의
+
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+
+    const PAYMENT_API =
+
+      "https://yunhawi-payment-api.yunhawifood.workers.dev";
+
+    const params =
+
+      new URLSearchParams(window.location.search);
+
+    const paymentKey =
+
+      params.get("paymentKey");
+
+    const orderId =
+
+      params.get("orderId");
+
+    const amount =
+
+      Number(params.get("amount"));
+
+    function showSuccess(result) {
+
+      document.getElementById(
+
+        "statusIcon"
+
+      ).textContent = "✓";
+
+      document.getElementById(
+
+        "statusTitle"
+
+      ).textContent = "결제가 완료되었습니다";
+
+      document.getElementById(
+
+        "statusDescription"
+
+      ).textContent =
+
+        "한농직판장 아침배송 주문이 정상적으로 접수되었습니다.";
+
+      document.getElementById(
+
+        "orderName"
+
+      ).textContent =
+
+        result.orderName || "아침배송 주문";
+
+      document.getElementById(
+
+        "orderAmount"
+
+      ).textContent =
+
+        Number(result.amount || amount)
+
+          .toLocaleString("ko-KR") + "원";
+
+      document.getElementById(
+
+        "paymentMethod"
+
+      ).textContent =
+
+        result.method || "카드결제";
+
+      document.getElementById(
+
+        "orderIdText"
+
+      ).textContent =
+
+        result.orderId || orderId;
+
+      document.getElementById(
+
+        "orderBox"
+
+      ).style.display = "block";
+
+      document.getElementById(
+
+        "deliveryMessage"
+
+      ).style.display = "block";
+
+      document.getElementById(
+
+        "successButtons"
+
+      ).style.display = "grid";
+
+      localStorage.removeItem(
+
+        "yunhawiPendingOrder"
+
+      );
+
+    }
+
+    function showError(message) {
+
+      document.getElementById(
+
+        "statusIcon"
+
+      ).textContent = "!";
+
+      document.getElementById(
+
+        "statusIcon"
+
+      ).style.background = "#fff0f0";
+
+      document.getElementById(
+
+        "statusIcon"
+
+      ).style.color = "#c62828";
+
+      document.getElementById(
+
+        "statusTitle"
+
+      ).textContent =
+
+        "결제를 완료하지 못했습니다";
+
+      document.getElementById(
+
+        "statusTitle"
+
+      ).style.color = "#c62828";
+
+      document.getElementById(
+
+        "statusDescription"
+
+      ).textContent =
+
+        "주문 상태를 확인한 뒤 다시 시도해주세요.";
+
+      const errorBox =
+
+        document.getElementById("errorMessage");
+
+      errorBox.textContent =
+
+        message ||
+
+        "결제 승인 중 오류가 발생했습니다.";
+
+      errorBox.style.display = "block";
+
+      document.getElementById(
+
+        "failButtons"
+
+      ).style.display = "grid";
+
+    }
+
+    async function confirmPayment() {
+
+      if (
+
+        !paymentKey ||
+
+        !orderId ||
+
+        !Number.isInteger(amount) ||
+
+        amount <= 0
+
+      ) {
+
+        showError(
+
+          "결제정보가 올바르지 않습니다."
+
+        );
+
+        return;
+
+      }
+
+      try {
+
+        const response = await fetch(
+
+          PAYMENT_API + "/payments/confirm",
+
+          {
+
+            method: "POST",
+
+            headers: {
+
+              "Content-Type":
+
+                "application/json"
+
+            },
+
+            body: JSON.stringify({
+
+              paymentKey,
+
+              orderId,
+
+              amount
+
+            })
+
+          }
+
+        );
+
+        const result =
+
+          await response.json();
+
+        if (!response.ok || !result.ok) {
+
+          throw new Error(
+
+            result.message ||
+
+            "결제 승인에 실패했습니다."
+
+          );
+
+        }
+
+        showSuccess(result);
+
+      } catch (error) {
+
+        showError(
+
+          error.message ||
+
+          "결제 승인 중 오류가 발생했습니다."
+
+        );
+
+      }
+
+    }
+
+    confirmPayment();
+
+  </script>
+
+</body>
+
+</html>
