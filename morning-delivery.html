@@ -3326,14 +3326,7 @@
 
         .trim();
 
-    const selectedDelivery =
-
-      document.querySelector(
-
-        'input[name="deliveryMethod"]:checked'
-
-      );
-
+  
     if (!customerName) {
 
       alert(
@@ -3428,17 +3421,6 @@
 
     }
 
-    if (!selectedDelivery) {
-
-      alert(
-
-        "배송 방법을 선택해주세요."
-
-      );
-
-      return null;
-
-    }
 
     return {
 
