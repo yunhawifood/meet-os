@@ -3736,8 +3736,31 @@ return {
 };
 
   }
+function showPaymentConfirm() {
 
-  async function startOnlinePayment() {
+  const ok = confirm(
+
+`🚚
+
+주문하신 상품은
+
+제가 직접 손질하여
+
+내일 아침 문앞까지 배송해 드리겠습니다.
+
+────────────────
+
+결제를 진행합니다`
+
+  );
+
+  if (ok) {
+
+    startOnlinePayment();
+
+  }
+
+}  async function startOnlinePayment() {
 
   if (cart.length === 0) {
 
