@@ -4006,7 +4006,52 @@ async function confirmOnlinePayment() {
 
   }
 
-}    async function startOnlinePayment() {
+}   
+    document.addEventListener(
+
+  "click",
+
+  function (event) {
+
+    const overlay =
+
+      document.getElementById(
+
+        "paymentConfirmOverlay"
+
+      );
+
+    if (
+
+      overlay &&
+
+      event.target === overlay
+
+    ) {
+
+      closePaymentConfirm();
+
+    }
+
+  }
+
+);
+
+document.addEventListener(
+
+  "keydown",
+
+  function (event) {
+
+    if (event.key === "Escape") {
+
+      closePaymentConfirm();
+
+    }
+
+  }
+
+);    async function startOnlinePayment() {
 
   if (cart.length === 0) {
 
