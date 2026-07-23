@@ -3902,29 +3902,111 @@ return {
   }
 function showPaymentConfirm() {
 
-  const ok = confirm(
+  const overlay =
 
-`🚚
+    document.getElementById(
 
-주문하신 상품은
+      "paymentConfirmOverlay"
 
-제가 직접 손질하여
+    );
 
-내일 아침 문앞까지 배송해 드리겠습니다.
-
-────────────────
-
-결제를 진행합니다`
-
-  );
-
-  if (ok) {
+  if (!overlay) {
 
     startOnlinePayment();
 
+    return;
+
   }
 
-}  async function startOnlinePayment() {
+  overlay.classList.add("show");
+
+  overlay.setAttribute(
+
+    "aria-hidden",
+
+    "false"
+
+  );
+
+  document.body.style.overflow =
+
+    "hidden";
+
+}
+
+function closePaymentConfirm() {
+
+  const overlay =
+
+    document.getElementById(
+
+      "paymentConfirmOverlay"
+
+    );
+
+  if (!overlay) {
+
+    return;
+
+  }
+
+  overlay.classList.remove("show");
+
+  overlay.setAttribute(
+
+    "aria-hidden",
+
+    "true"
+
+  );
+
+  document.body.style.overflow =
+
+    "";
+
+}
+
+async function confirmOnlinePayment() {
+
+  const button =
+
+    document.getElementById(
+
+      "paymentConfirmPayButton"
+
+    );
+
+  if (button) {
+
+    button.disabled = true;
+
+    button.textContent =
+
+      "결제창을 준비하고 있습니다";
+
+  }
+
+  closePaymentConfirm();
+
+  try {
+
+    await startOnlinePayment();
+
+  } finally {
+
+    if (button) {
+
+      button.disabled = false;
+
+      button.textContent =
+
+        "💳 결제 진행하기";
+
+    }
+
+  }
+
+}    async function startOnlinePayment() {
 
   if (cart.length === 0) {
 
