@@ -4210,6 +4210,103 @@ function showPaymentConfirm() {
   }
 
 </script>
-  <!-- redeploy 2026-07-21 --></body>
+  <!-- redeploy 2026-07-21 -->
+<!-- 결제 전 안내 모달 -->
+
+<div
+
+  class="payment-confirm-overlay"
+
+  id="paymentConfirmOverlay"
+
+  aria-hidden="true"
+
+>
+
+  <div
+
+    class="payment-confirm-modal"
+
+    role="dialog"
+
+    aria-modal="true"
+
+    aria-labelledby="paymentConfirmMessage"
+
+  >
+
+    <div class="payment-confirm-icon">
+
+      🚚
+
+    </div>
+
+    <p
+
+      class="payment-confirm-message"
+
+      id="paymentConfirmMessage"
+
+    >
+
+      주문하신 상품은<br>
+
+      <strong>
+
+        제가 직접 손질하여
+
+      </strong><br>
+
+      내일 아침 문앞까지<br>
+
+      배송해 드리겠습니다.
+
+    </p>
+
+    <div class="payment-confirm-divider"></div>
+
+    <p class="payment-confirm-caption">
+
+      결제를 진행합니다.
+
+    </p>
+
+    <div class="payment-confirm-buttons">
+
+      <button
+
+        class="payment-confirm-pay"
+
+        id="paymentConfirmPayButton"
+
+        type="button"
+
+        onclick="confirmOnlinePayment()"
+
+      >
+
+        💳 결제 진행하기
+
+      </button>
+
+      <button
+
+        class="payment-confirm-edit"
+
+        type="button"
+
+        onclick="closePaymentConfirm()"
+
+      >
+
+        ← 주문 수정하기
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div></body>
 
 </html>
