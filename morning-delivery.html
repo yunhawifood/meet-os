@@ -2823,25 +2823,30 @@
 
 </div>
 
-<div class="order-agreement">
+<label class="order-consent">
 
-  결제 버튼을 누르면
+  <input
 
-  <strong>
+    id="orderConsent"
 
-    상품정보, 배송안내, 주문제작 상품 및
+    type="checkbox"
 
-    교환·환불 안내
+  />
 
-  </strong>
+  <span>
 
-  를 확인하고 동의한 것으로 봅니다.
+    주문내용 및
 
-</div>
+    <strong>배송·교환·환불 안내</strong>에 동의합니다.
+
+  </span>
+
+</label>
 
 <button
 
   class="primary-button"
+
   type="button"
 
   onclick="startOnlinePayment()"
@@ -2850,8 +2855,7 @@
 
   결제하고 주문하기
 
-</button>
-  </div>
+</button>  </div>
 </section> 
   <script>
 
