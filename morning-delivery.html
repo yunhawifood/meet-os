@@ -1811,7 +1811,100 @@
 
   color: #222222;
 
-}.policy-section {
+}
+  .payment-policy {
+
+  border: 1px solid #dfe8e2;
+
+  border-radius: 14px;
+
+  background: #fafcfa;
+
+  overflow: hidden;
+
+}
+
+.payment-policy summary {
+
+  position: relative;
+
+  padding: 15px 42px 15px 14px;
+
+  color: var(--green);
+
+  font-size: 14px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+
+  list-style: none;
+
+}
+
+.payment-policy summary::-webkit-details-marker {
+
+  display: none;
+
+}
+
+.payment-policy summary::after {
+
+  content: "＋";
+
+  position: absolute;
+
+  top: 50%;
+
+  right: 15px;
+
+  transform: translateY(-50%);
+
+  font-size: 20px;
+
+  font-weight: 500;
+
+}
+
+.payment-policy[open] summary::after {
+
+  content: "−";
+
+}
+
+.payment-policy-content {
+
+  padding: 0 14px 15px;
+
+  border-top: 1px solid #e5ebe7;
+
+}
+
+.payment-policy-content strong {
+
+  display: block;
+
+  margin-top: 14px;
+
+  color: #235f3f;
+
+  font-size: 14px;
+
+}
+
+.payment-policy-content p {
+
+  margin: 6px 0 0;
+
+  color: #555555;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+
+  word-break: keep-all;
+
+}  .policy-section {
 
   margin-top: 28px;
 
