@@ -3699,22 +3699,49 @@ return {
 
   async function startOnlinePayment() {
 
-    if (cart.length === 0) {
+  if (cart.length === 0) {
 
-      alert(
+    alert(
 
-        "장바구니에 상품을 먼저 담아주세요."
+      "장바구니에 상품을 먼저 담아주세요."
 
-      );
+    );
 
-      return;
+    return;
+
+  }
+
+  const orderConsent =
+
+    document.getElementById("orderConsent");
+
+  if (
+
+    !orderConsent ||
+
+    !orderConsent.checked
+
+  ) {
+
+    alert(
+
+      "배송 및 교환·환불 안내에 동의해주세요."
+
+    );
+
+    if (orderConsent) {
+
+      orderConsent.focus();
 
     }
 
-    if (
+    return;
 
-      !TOSS_CLIENT_KEY ||
+  }
 
+  if (
+
+    !TOSS_CLIENT_KEY ||
       !TOSS_CLIENT_KEY.startsWith(
 
         "test_ck_"
