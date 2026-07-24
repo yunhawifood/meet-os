@@ -3058,18 +3058,19 @@
 
 </button></section> 
   <script>
+const PAYMENT_API =
 
-  const PAYMENT_API =
+  "https://yunhawi-payment-api.yunhawifood.workers.dev";
 
-    "https://yunhawi-payment-api.yunhawifood.workers.dev";
+const NICE_CLIENT_KEY =
 
-  const TOSS_CLIENT_KEY =
+  "여기에 Server 승인 클라이언트 키 입력";
 
-    "클라이언트 키 삭제";
+const NICE_RETURN_URL =
 
-  const PRODUCT_IDS = {
+  PAYMENT_API + "/payments/nice/callback";
 
-    "삼겹살": "samgyeopsal",
+const PRODUCT_IDS = {    "삼겹살": "samgyeopsal",
 
     "목살": "moksal",
 
