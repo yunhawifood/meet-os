@@ -4048,7 +4048,9 @@ document.addEventListener(
 
   }
 
-);    async function startOnlinePayment() {
+);    
+
+  async function startOnlinePayment() {
 
   if (cart.length === 0) {
 
@@ -4064,7 +4066,11 @@ document.addEventListener(
 
   const orderConsent =
 
-    document.getElementById("orderConsent");
+    document.getElementById(
+
+      "orderConsent"
+
+    );
 
   if (
 
@@ -4092,74 +4098,97 @@ document.addEventListener(
 
   if (
 
-    !TOSS_CLIENT_KEY ||
-      !TOSS_CLIENT_KEY.startsWith(
+    !NICE_CLIENT_KEY ||
 
-        "test_ck_"
+    NICE_CLIENT_KEY.includes(
 
-      )
+      "여기에"
 
-    ) {
+    )
 
-      alert(
+  ) {
 
-        "토스 테스트 클라이언트 키를 확인해주세요."
+    alert(
 
-      );
+      "NICEPAY Server 승인 클라이언트 키를 확인해주세요."
 
-      return;
+    );
 
-    }
+    return;
 
-    const customer =
+  }
 
-      validateDeliveryForm();
+  if (
 
-    if (!customer) {
+    typeof AUTHNICE === "undefined" ||
 
-      return;
+    typeof AUTHNICE.requestPay !==
 
-    }
+      "function"
 
-    const paymentButton =
+  ) {
 
-      document.querySelector(
+    alert(
 
-        'button[onclick="startOnlinePayment()"]'
+      "NICEPAY 결제 모듈을 불러오지 못했습니다. 인터넷 연결을 확인한 뒤 다시 시도해주세요."
 
-      );
+    );
 
-    if (paymentButton) {
+    return;
 
-      paymentButton.disabled = true;
+  }
 
-      paymentButton.textContent =
+  const customer =
 
-        "결제 준비 중...";
+    validateDeliveryForm();
 
-    }
+  if (!customer) {
 
-    try {
+    return;
 
-      const response = await fetch(
+  }
 
-        PAYMENT_API + "/orders",
+  const paymentButton =
 
-        {
+    document.getElementById(
 
-          method: "POST",
+      "paymentConfirmPayButton"
 
-          headers: {
+    );
 
-            "Content-Type":
+  if (paymentButton) {
 
-              "application/json"
+    paymentButton.disabled = true;
 
-          },
+    paymentButton.textContent =
 
-          body: JSON.stringify({
+      "결제창을 준비하고 있습니다";
 
-            items: cart.map(function (item) {
+  }
+
+  try {
+
+    const response = await fetch(
+
+      PAYMENT_API + "/orders",
+
+      {
+
+        method: "POST",
+
+        headers: {
+
+          "Content-Type":
+
+            "application/json"
+
+        },
+
+        body: JSON.stringify({
+
+          items: cart.map(
+
+            function (item) {
 
               return {
 
@@ -4177,79 +4206,45 @@ document.addEventListener(
 
               };
 
-            }),
+            }
 
-            customer
+          ),
 
-          })
-
-        }
-
-      );
-
-      const order =
-
-        await response.json();
-
-      if (!response.ok || !order.ok) {
-
-        throw new Error(
-
-          order.message ||
-
-          "주문정보를 만들지 못했습니다."
-
-        );
-
-      }
-
-      localStorage.setItem(
-
-        "yunhawiPendingOrder",
-
-        JSON.stringify({
-
-          orderId: order.orderId,
-
-          orderName: order.orderName,
-
-          amount: order.amount,
-
-          customer,
-
-          createdAt:
-
-            new Date().toISOString()
+          customer
 
         })
 
+      }
+
+    );
+
+    const order =
+
+      await response.json();
+
+    if (
+
+      !response.ok ||
+
+      !order.ok
+
+    ) {
+
+      throw new Error(
+
+        order.message ||
+
+        "주문정보를 만들지 못했습니다."
+
       );
 
-      const tossPayments =
+    }
 
-        TossPayments(TOSS_CLIENT_KEY);
+    localStorage.setItem(
 
-      const payment =
+      "yunhawiPendingOrder",
 
-        tossPayments.payment({
-
-          customerKey:
-
-            TossPayments.ANONYMOUS
-
-        });
-
-      await payment.requestPayment({
-
-        method: "CARD",
-
-        amount: {
-
-          currency: "KRW",
-
-          value: order.amount
-
-        },
+      JSON.stringify({
 
         orderId:
 
@@ -4259,64 +4254,123 @@ document.addEventListener(
 
           order.orderName,
 
-        successUrl:
+        amount:
 
-          window.location.origin +
+          order.amount,
 
-          "/payment-success.html",
+        customer,
 
-        failUrl:
+        createdAt:
 
-          window.location.origin +
+          new Date().toISOString()
 
-          "/payment-fail.html",
+      })
 
-        customerName:
+    );
 
-          customer.name,
+    AUTHNICE.requestPay({
 
-        customerMobilePhone:
+      clientId:
 
-          customer.phone,
+        NICE_CLIENT_KEY,
 
-        card: {
+      method: "card",
 
-          flowMode: "DEFAULT",
+      orderId:
 
-          useCardPoint: false,
+        order.orderId,
 
-          useAppCardOnly: false
+      amount:
+
+        order.amount,
+
+      goodsName:
+
+        order.orderName,
+
+      returnUrl:
+
+        NICE_RETURN_URL,
+
+      buyerName:
+
+        customer.name,
+
+      buyerTel:
+
+        customer.phone,
+
+      useEscrow: false,
+
+      currency: "KRW",
+
+      returnCharSet: "utf-8",
+
+      skinType: "green",
+
+      fnError: function (result) {
+
+        console.error(
+
+          "NICEPAY 결제창 오류:",
+
+          result
+
+        );
+
+        const errorMessage =
+
+          result &&
+
+          result.errorMsg
+
+            ? result.errorMsg
+
+            : "결제창을 열지 못했습니다.";
+
+        alert(errorMessage);
+
+        if (paymentButton) {
+
+          paymentButton.disabled =
+
+            false;
+
+          paymentButton.textContent =
+
+            "💳 결제 진행하기";
 
         }
 
-      });
-
-    } catch (error) {
-
-      console.error(error);
-
-      alert(
-
-        error.message ||
-
-        "결제창을 열지 못했습니다."
-
-      );
-
-      if (paymentButton) {
-
-        paymentButton.disabled = false;
-
-        paymentButton.textContent =
-
-          "결제하고 주문하기";
-
       }
+
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(
+
+      error.message ||
+
+      "결제창을 열지 못했습니다."
+
+    );
+
+    if (paymentButton) {
+
+      paymentButton.disabled = false;
+
+      paymentButton.textContent =
+
+        "💳 결제 진행하기";
 
     }
 
   }
 
+}  
   function escapeHtml(value) {
 
     return String(value)
