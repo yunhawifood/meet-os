@@ -455,8 +455,7 @@
 
         if (adminError || !admin) {
 
-          await window.supabaseClient.auth.signOut();
-
+          await supabaseClient.auth.signOut();
           throw new Error("관리자 권한이 등록되지 않은 계정입니다.");
 
         }
