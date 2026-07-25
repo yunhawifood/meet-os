@@ -442,10 +442,9 @@
 
         const { data: admin, error: adminError } =
 
-          await window.supabaseClient
+          await supabaseClient
 
-            .from("admin_users")
-
+  .from("admin_users")
             .select("user_id, display_name, role, is_active")
 
             .eq("user_id", data.user.id)
