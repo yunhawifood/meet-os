@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+
+    name="viewport"
+
+    content="width=device-width, initial-scale=1.0"
+
+  />
+
+  <title>주문 관리 | 한농직판장 운영 OS</title>
+
+  <style>
+
+    * {
+
+      box-sizing: border-box;
+
+    }
+
+    body {
+
+      margin: 0;
+
+      background: #f4f4f4;
+
+      color: #222222;
+
+      font-family:
+
+        -apple-system,
+
+        BlinkMacSystemFont,
+
+        "Apple SD Gothic Neo",
+
+        "Noto Sans KR",
+
+        sans-serif;
+
+    }
+
+    header {
+
+      background: #ffffff;
+
+      border-bottom: 1px solid #dddddd;
+
+      padding: 16px;
+
+    }
+
+    .header-inner {
+
+      width: 100%;
+
+      max-width: 900px;
+
+      margin: 0 auto;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 12px;
+
+    }
+
+    .header-left {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+    }
+
+    .back-button,
+
+    .logout-button {
+
+      min-height: 42px;
+
+      padding: 9px 14px;
+
+      border: 1px solid #cccccc;
+
+      border-radius: 8px;
+
+      background: #ffffff;
+
+      color: #222222;
+
+      font-size: 15px;
+
+      text-decoration: none;
+
+      cursor: pointer;
+
+    }
+
+    h1 {
+
+      margin: 0;
+
+      font-size: 21px;
+
+    }
+
+    main {
+
+      width: calc(100% - 32px);
+
+      max-width: 900px;
+
+      margin: 22px auto 50px;
+
+    }
+
+    .page-intro {
+
+      margin-bottom: 16px;
+
+      padding: 20px;
+
+      border: 1px solid #dddddd;
+
+      border-radius: 12px;
+
+      background: #ffffff;
+
+    }
+
+    .page-intro h2 {
+
+      margin: 0 0 8px;
+
+      font-size: 21px;
+
+    }
+
+    .page-intro p {
+
+      margin: 0;
+
+      color: #666666;
+
+      line-height: 1.6;
+
+    }
+
+    .filter-box {
+
+      margin-bottom: 16px;
+
+      padding: 16px;
+
+      border: 1px solid #dddddd;
+
+      border-radius: 12px;
+
+      background: #ffffff;
+
+    }
+
+    .filter-buttons {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 8px;
+
+    }
+
+    .filter-button {
+
+      min-height: 42px;
+
+      padding: 9px 14px;
+
+      border: 1px solid #cccccc;
+
+      border-radius: 8px;
+
+      background: #ffffff;
+
+      color: #333333;
+
+      font-size: 15px;
+
+      cursor: pointer;
+
+    }
+
+    .filter-button.active {
+
+      border-color: #222222;
+
+      background: #222222;
+
+      color: #ffffff;
+
+    }
+
+    .orders-box {
+
+      padding: 20px;
+
+      border: 1px solid #dddddd;
+
+      border-radius: 12px;
+
+      background: #ffffff;
+
+    }
+
+    .orders-box h2 {
+
+      margin: 0 0 16px;
+
+      font-size: 19px;
+
+    }
+
+    .empty-state {
+
+      padding: 50px 20px;
+
+      border: 1px dashed #cccccc;
+
+      border-radius: 10px;
+
+      background: #fafafa;
+
+      text-align: center;
+
+    }
+
+    .empty-title {
+
+      margin-bottom: 8px;
+
+      font-size: 18px;
+
+      font-weight: 700;
+
+    }
+
+    .empty-description {
+
+      color: #777777;
+
+      line-height: 1.6;
+
+    }
+
+    .status-message {
+
+      display: none;
+
+      margin-bottom: 16px;
+
+      padding: 14px;
+
+      border-radius: 8px;
+
+      line-height: 1.5;
+
+    }
+
+    .status-message.error {
+
+      display: block;
+
+      border: 1px solid #e4b8b8;
+
+      background: #fff0f0;
+
+      color: #9c0000;
+
+    }
+
+    .loading-screen {
+
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 9999;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      background: #ffffff;
+
+      color: #333333;
+
+      font-size: 17px;
+
+    }
+
+    @media (max-width: 600px) {
+
+      header {
+
+        padding: 12px;
+
+      }
+
+      .header-inner {
+
+        align-items: flex-start;
+
+      }
+
+      .header-left {
+
+        align-items: flex-start;
+
+      }
+
+      h1 {
+
+        padding-top: 8px;
+
+        font-size: 19px;
+
+      }
+
+      .logout-button {
+
+        min-width: 74px;
+
+        padding-left: 10px;
+
+        padding-right: 10px;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div id="loadingScreen" class="loading-screen">
+
+    관리자 권한을 확인하고 있습니다...
+
+  </div>
+
+  <header>
+
+    <div class="header-inner">
+
+      <div class="header-left">
+
+        <a
+
+          class="back-button"
+
+          href="./admin-dashboard.html"
+
+        >
+
+          ← 대시보드
+
+        </a>
+
+        <h1>주문 관리</h1>
+
+      </div>
+
+      <button
+
+        id="logoutButton"
+
+        class="logout-button"
+
+        type="button"
+
+      >
+
+        로그아웃
+
+      </button>
+
+    </div>
+
+  </header>
+
+  <main>
+
+    <section class="page-intro">
+
+      <h2>전체 주문</h2>
+
+      <p>
+
+        접수된 주문의 상태를 확인하고 관리하는 화면입니다.
+
+      </p>
+
+    </section>
+
+    <div
+
+      id="statusMessage"
+
+      class="status-message"
+
+      role="alert"
+
+    ></div>
+
+    <section class="filter-box">
+
+      <div class="filter-buttons">
+
+        <button
+
+          class="filter-button active"
+
+          type="button"
+
+        >
+
+          전체
+
+        </button>
+
+        <button
+
+          class="filter-button"
+
+          type="button"
+
+        >
+
+          접수
+
+        </button>
+
+        <button
+
+          class="filter-button"
+
+          type="button"
+
+        >
+
+          결제완료
+
+        </button>
+
+        <button
+
+          class="filter-button"
+
+          type="button"
+
+        >
+
+          배송준비
+
+        </button>
+
+        <button
+
+          class="filter-button"
+
+          type="button"
+
+        >
+
+          배송완료
+
+        </button>
+
+        <button
+
+          class="filter-button"
+
+          type="button"
+
+        >
+
+          취소
+
+        </button>
+
+      </div>
+
+    </section>
+
+    <section class="orders-box">
+
+      <h2>주문 목록</h2>
+
+      <div class="empty-state">
+
+        <div class="empty-title">
+
+          아직 등록된 주문이 없습니다.
+
+        </div>
+
+        <div class="empty-description">
+
+          고객 주문이 데이터베이스에 저장되면<br />
+
+          이 화면에서 주문 내역을 확인할 수 있습니다.
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+
+    const SUPABASE_URL =
+
+      "https://rbtwvemljpgnwhlzayqy.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+
+      "sb_publishable_m-Uc3eR2-57P36HMP_eHsQ_F5h1tfzu";
+
+    const supabaseClient = window.supabase.createClient(
+
+      SUPABASE_URL,
+
+      SUPABASE_PUBLISHABLE_KEY
+
+    );
+
+    const loadingScreen =
+
+      document.getElementById("loadingScreen");
+
+    const logoutButton =
+
+      document.getElementById("logoutButton");
+
+    const statusMessage =
+
+      document.getElementById("statusMessage");
+
+    function showError(message) {
+
+      statusMessage.textContent = message;
+
+      statusMessage.className = "status-message error";
+
+    }
+
+    function moveToLogin() {
+
+      window.location.replace("./admin-login.html");
+
+    }
+
+    async function protectAdminPage() {
+
+      try {
+
+        const {
+
+          data: { session },
+
+          error: sessionError
+
+        } = await supabaseClient.auth.getSession();
+
+        if (sessionError) {
+
+          throw sessionError;
+
+        }
+
+        if (!session) {
+
+          moveToLogin();
+
+          return;
+
+        }
+
+        const {
+
+          data: admin,
+
+          error: adminError
+
+        } = await supabaseClient
+
+          .from("admin_users")
+
+          .select("user_id, is_active")
+
+          .eq("user_id", session.user.id)
+
+          .eq("is_active", true)
+
+          .maybeSingle();
+
+        if (adminError) {
+
+          throw adminError;
+
+        }
+
+        if (!admin) {
+
+          await supabaseClient.auth.signOut();
+
+          moveToLogin();
+
+          return;
+
+        }
+
+        loadingScreen.style.display = "none";
+
+      } catch (error) {
+
+        console.error(error);
+
+        loadingScreen.style.display = "none";
+
+        showError(
+
+          error.message ||
+
+          "관리자 정보를 확인하는 중 오류가 발생했습니다."
+
+        );
+
+      }
+
+    }
+
+    logoutButton.addEventListener(
+
+      "click",
+
+      async () => {
+
+        logoutButton.disabled = true;
+
+        logoutButton.textContent = "처리 중...";
+
+        try {
+
+          const { error } =
+
+            await supabaseClient.auth.signOut();
+
+          if (error) {
+
+            throw error;
+
+          }
+
+          moveToLogin();
+
+        } catch (error) {
+
+          console.error(error);
+
+          showError(
+
+            error.message ||
+
+            "로그아웃 중 오류가 발생했습니다."
+
+          );
+
+          logoutButton.disabled = false;
+
+          logoutButton.textContent = "로그아웃";
+
+        }
+
+      }
+
+    );
+
+    const filterButtons =
+
+      document.querySelectorAll(".filter-button");
+
+    filterButtons.forEach((button) => {
+
+      button.addEventListener("click", () => {
+
+        filterButtons.forEach((item) => {
+
+          item.classList.remove("active");
+
+        });
+
+        button.classList.add("active");
+
+      });
+
+    });
+
+    protectAdminPage();
+
+  </script>
+
+</body>
+
+</html>
