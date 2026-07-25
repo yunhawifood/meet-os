@@ -427,8 +427,7 @@
 
         const { data, error } =
 
-          await window.supabaseClient.auth.signInWithPassword({
-
+        await supabaseClient.auth.signInWithPassword({
             email,
 
             password
