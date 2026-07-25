@@ -460,14 +460,15 @@
 
         }
 
-        showMessage("로그인되었습니다. 관리자 화면으로 이동합니다.", "success");
+       showMessage("로그인되었습니다. 관리자 화면으로 이동합니다.", "success");
 
-        setTimeout(() => {
+return;
 
-          window.location.replace("./admin-dashboard.html");
+setTimeout(() => {
 
-        }, 500);
+  window.location.replace("./admin-dashboard.html");
 
+}, 500);
       } catch (error) {
 
         console.error(error);
