@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+
+    name="viewport"
+
+    content="width=device-width, initial-scale=1.0"
+
+  />
+
+  <title>한농직판장 운영 OS</title>
+
+  <style>
+
+    * {
+
+      box-sizing: border-box;
+
+    }
+
+    body {
+
+      margin: 0;
+
+      background: #f4f4f4;
+
+      color: #222222;
+
+      font-family:
+
+        -apple-system,
+
+        BlinkMacSystemFont,
+
+        "Apple SD Gothic Neo",
+
+        "Noto Sans KR",
+
+        sans-serif;
+
+    }
+
+    header {
+
+      background: #ffffff;
+
+      border-bottom: 1px solid #dddddd;
+
+      padding: 18px 20px;
+
+    }
+
+    .header-inner {
+
+      max-width: 900px;
+
+      margin: 0 auto;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 16px;
+
+    }
+
+    h1 {
+
+      margin: 0;
+
+      font-size: 22px;
+
+    }
+
+    .logout-button {
+
+      min-width: 88px;
+
+      padding: 10px 14px;
+
+      border: 1px solid #bbbbbb;
+
+      border-radius: 8px;
+
+      background: #ffffff;
+
+      color: #222222;
+
+      font-size: 15px;
+
+      cursor: pointer;
+
+    }
+
+    .logout-button:disabled {
+
+      opacity: 0.55;
+
+      cursor: default;
+
+    }
+
+    main {
+
+      width: calc(100% - 32px);
+
+      max-width: 900px;
+
+      margin: 24px auto 50px;
+
+    }
+
+    .welcome-box {
+
+      margin-bottom: 20px;
+
+      padding: 20px;
+
+      border: 1px solid #dddddd;
+
+      border-radius: 12px;
+
+      background: #ffffff;
+
+    }
+
+    .welcome-box h2 {
+
+      margin: 0 0 8px;
+
+      font-size: 21px;
+
+    }
+
+    .welcome-box p {
+
+      margin: 0;
+
+      color: #666666;
+
+      line-height: 1.6;
+
+    }
+
+    .status-message {
+
+      display: none;
+
+      margin-bottom: 20px;
+
+      padding: 14px;
+
+      border-radius: 8px;
+
+      line-height: 1.5;
+
+    }
+
+    .status-message.error {
+
+      display: block;
+
+      border: 1px solid #e6b6b6;
+
+      background: #fff0f0;
+
+      color: #a00000;
+
+    }
+
+    .summary-grid {
+
+      display: grid;
+
+      grid-template-columns: repeat(4, 1fr);
+
+      gap: 12px;
+
+      margin-bottom: 20px;
+
+    }
+
+    .summary-card {
+
+      min-height: 112px;
+
+      padding: 18px;
+
+      border: 1px solid #dddddd;
+
+      border-radius: 12px;
+
+      background: #ffffff;
+
+    }
+
+    .summary-label {
+
+      margin-bottom: 12px;
+
+      color: #666666;
+
+      font-size: 14px;
+
+    }
+
+    .summary-number {
+
+      font-size: 27px;
+
+      font-weight: 700;
+
+    }
+
+    .menu-box {
+
+      padding: 20px;
+
+      border: 1px solid #dddddd;
+
+      border-radius: 12px;
+
+      background: #ffffff;
+
+    }
+
+    .menu-box h2 {
+
+      margin: 0 0 16px;
+
+      font-size: 19px;
+
+    }
+
+    .menu-grid {
+
+      display: grid;
+
+      grid-template-columns: repeat(2, 1fr);
+
+      gap: 12px;
+
+    }
+
+    .menu-button {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      min-height: 72px;
+
+      padding: 16px;
+
+      border: 1px solid #cccccc;
+
+      border-radius: 10px;
+
+      background: #fafafa;
+
+      color: #222222;
+
+      font-size: 16px;
+
+      font-weight: 700;
+
+      text-decoration: none;
+
+    }
+
+    .menu-button span {
+
+      color: #888888;
+
+      font-size: 18px;
+
+    }
+
+    .loading-screen {
+
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 9999;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      background: #ffffff;
+
+      color: #333333;
+
+      font-size: 17px;
+
+    }
+
+    @media (max-width: 700px) {
+
+      .summary-grid {
+
+        grid-template-columns: repeat(2, 1fr);
+
+      }
+
+      .menu-grid {
+
+        grid-template-columns: 1fr;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div id="loadingScreen" class="loading-screen">
+
+    관리자 권한을 확인하고 있습니다...
+
+  </div>
+
+  <header>
+
+    <div class="header-inner">
+
+      <h1>한농직판장 운영 OS</h1>
+
+      <button
+
+        id="logoutButton"
+
+        class="logout-button"
+
+        type="button"
+
+      >
+
+        로그아웃
+
+      </button>
+
+    </div>
+
+  </header>
+
+  <main>
+
+    <section class="welcome-box">
+
+      <h2>
+
+        안녕하세요,
+
+        <span id="adminName">대표님</span>.
+
+      </h2>
+
+      <p>
+
+        한농직판장 주문과 고객 데이터를 관리하는 운영자 화면입니다.
+
+      </p>
+
+    </section>
+
+    <div
+
+      id="statusMessage"
+
+      class="status-message"
+
+      role="alert"
+
+    ></div>
+
+    <section class="summary-grid">
+
+      <article class="summary-card">
+
+        <div class="summary-label">오늘 주문</div>
+
+        <div class="summary-number">0건</div>
+
+      </article>
+
+      <article class="summary-card">
+
+        <div class="summary-label">신규 고객</div>
+
+        <div class="summary-number">0명</div>
+
+      </article>
+
+      <article class="summary-card">
+
+        <div class="summary-label">재주문 고객</div>
+
+        <div class="summary-number">0명</div>
+
+      </article>
+
+      <article class="summary-card">
+
+        <div class="summary-label">등록 아파트</div>
+
+        <div class="summary-number">0곳</div>
+
+      </article>
+
+    </section>
+
+    <section class="menu-box">
+
+      <h2>관리 메뉴</h2>
+
+      <div class="menu-grid">
+
+        <a class="menu-button" href="#">
+
+          주문 관리
+
+          <span>›</span>
+
+        </a>
+
+        <a class="menu-button" href="#">
+
+          고객 관리
+
+          <span>›</span>
+
+        </a>
+
+        <a class="menu-button" href="#">
+
+          상품 관리
+
+          <span>›</span>
+
+        </a>
+
+        <a class="menu-button" href="#">
+
+          아파트·전단지 관리
+
+          <span>›</span>
+
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+
+    const SUPABASE_URL =
+
+      "https://rbtwvemljpgnwhlzayqy.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+
+      "sb_publishable_m-Uc3eR2-57P36HMP_eHsQ_F5h1tfzu";
+
+    const supabaseClient = window.supabase.createClient(
+
+      SUPABASE_URL,
+
+      SUPABASE_PUBLISHABLE_KEY
+
+    );
+
+    const loadingScreen =
+
+      document.getElementById("loadingScreen");
+
+    const adminName =
+
+      document.getElementById("adminName");
+
+    const logoutButton =
+
+      document.getElementById("logoutButton");
+
+    const statusMessage =
+
+      document.getElementById("statusMessage");
+
+    function showError(message) {
+
+      statusMessage.textContent = message;
+
+      statusMessage.className = "status-message error";
+
+    }
+
+    async function moveToLogin() {
+
+      window.location.replace("./admin-login.html");
+
+    }
+
+    async function protectAdminPage() {
+
+      try {
+
+        const {
+
+          data: { session },
+
+          error: sessionError
+
+        } = await supabaseClient.auth.getSession();
+
+        if (sessionError) {
+
+          throw sessionError;
+
+        }
+
+        if (!session) {
+
+          await moveToLogin();
+
+          return;
+
+        }
+
+        const {
+
+          data: admin,
+
+          error: adminError
+
+        } = await supabaseClient
+
+          .from("admin_users")
+
+          .select(
+
+            "user_id, display_name, role, is_active"
+
+          )
+
+          .eq("user_id", session.user.id)
+
+          .eq("is_active", true)
+
+          .maybeSingle();
+
+        if (adminError) {
+
+          throw adminError;
+
+        }
+
+        if (!admin) {
+
+          await supabaseClient.auth.signOut();
+
+          await moveToLogin();
+
+          return;
+
+        }
+
+        adminName.textContent =
+
+          admin.display_name || "대표님";
+
+        loadingScreen.style.display = "none";
+
+      } catch (error) {
+
+        console.error(error);
+
+        loadingScreen.style.display = "none";
+
+        showError(
+
+          error.message ||
+
+          "관리자 정보를 확인하는 중 오류가 발생했습니다."
+
+        );
+
+      }
+
+    }
+
+    logoutButton.addEventListener(
+
+      "click",
+
+      async () => {
+
+        logoutButton.disabled = true;
+
+        logoutButton.textContent = "처리 중...";
+
+        try {
+
+          const { error } =
+
+            await supabaseClient.auth.signOut();
+
+          if (error) {
+
+            throw error;
+
+          }
+
+          await moveToLogin();
+
+        } catch (error) {
+
+          console.error(error);
+
+          showError(
+
+            error.message ||
+
+            "로그아웃 중 오류가 발생했습니다."
+
+          );
+
+          logoutButton.disabled = false;
+
+          logoutButton.textContent = "로그아웃";
+
+        }
+
+      }
+
+    );
+
+    protectAdminPage();
+
+  </script>
+
+</body>
+
+</html>
