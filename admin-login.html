@@ -381,8 +381,7 @@
 
         error
 
-      } = await window.supabaseClient.auth.getSession();
-
+     } = await supabaseClient.auth.getSession();
       if (error || !session) {
 
         return;
