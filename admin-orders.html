@@ -978,8 +978,237 @@
       }
 
     );
+const ordersList =
 
-    const filterButtons =
+  document.getElementById("ordersList");
+
+const emptyState =
+
+  document.getElementById("emptyState");
+
+const previewNotice =
+
+  document.getElementById("previewNotice");
+
+const previewOrders = [
+
+  {
+
+    id: "20260730-001",
+
+    phone: "010-1234-5678",
+
+    apartment: "효자성원아파트",
+
+    deliveryMethod: "아침 직접배송",
+
+    products: [
+
+      "구워 먹는 삼겹살 500g × 2",
+
+      "국 끓이기 좋은 한우 국거리 300g × 1"
+
+    ],
+
+    totalAmount: 48000,
+
+    status: "접수",
+
+    statusClass: "received",
+
+    orderedAt: "2026. 7. 30. 오후 2:35"
+
+  }
+
+];
+
+function formatPrice(amount) {
+
+  return Number(amount).toLocaleString("ko-KR") + "원";
+
+}
+
+function createOrderCard(order) {
+
+  const productText =
+
+    order.products.join("<br />");
+
+  return `
+
+    <article
+
+      class="order-card"
+
+      data-status="${order.status}"
+
+    >
+
+      <div class="order-card-top">
+
+        <div>
+
+          <div class="order-number">
+
+            주문번호 ${order.id}
+
+          </div>
+
+          <div class="order-time">
+
+            ${order.orderedAt}
+
+          </div>
+
+        </div>
+
+        <div class="order-status ${order.statusClass}">
+
+          ${order.status}
+
+        </div>
+
+      </div>
+
+      <div class="order-summary">
+
+        <div class="order-info-item">
+
+          <div class="order-info-label">
+
+            고객 전화번호
+
+          </div>
+
+          <div class="order-info-value">
+
+            ${order.phone}
+
+          </div>
+
+        </div>
+
+        <div class="order-info-item">
+
+          <div class="order-info-label">
+
+            배송 지역
+
+          </div>
+
+          <div class="order-info-value">
+
+            ${order.apartment}
+
+          </div>
+
+        </div>
+
+        <div class="order-info-item">
+
+          <div class="order-info-label">
+
+            배송 방법
+
+          </div>
+
+          <div class="order-info-value">
+
+            ${order.deliveryMethod}
+
+          </div>
+
+        </div>
+
+        <div class="order-info-item">
+
+          <div class="order-info-label">
+
+            현재 상태
+
+          </div>
+
+          <div class="order-info-value">
+
+            ${order.status}
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="order-products">
+
+        ${productText}
+
+      </div>
+
+      <div class="order-card-bottom">
+
+        <div class="order-total">
+
+          ${formatPrice(order.totalAmount)}
+
+        </div>
+
+        <a
+
+          class="detail-button"
+
+          href="./admin-order-detail.html?id=${encodeURIComponent(order.id)}"
+
+        >
+
+          주문 자세히 보기
+
+        </a>
+
+      </div>
+
+    </article>
+
+  `;
+
+}
+
+function renderOrders(orders, selectedStatus = "전체") {
+
+  const filteredOrders =
+
+    selectedStatus === "전체"
+
+      ? orders
+
+      : orders.filter(
+
+          (order) => order.status === selectedStatus
+
+        );
+
+  if (filteredOrders.length === 0) {
+
+    ordersList.innerHTML = "";
+
+    emptyState.hidden = false;
+
+    return;
+
+  }
+
+  emptyState.hidden = true;
+
+  ordersList.innerHTML =
+
+    filteredOrders
+
+      .map(createOrderCard)
+
+      .join("");
+
+}
+
+renderOrders(previewOrders);    const filterButtons =
 
       document.querySelectorAll(".filter-button");
 
