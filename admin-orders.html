@@ -1208,11 +1208,13 @@ function renderOrders(orders, selectedStatus = "전체") {
 
 }
 
-renderOrders(previewOrders);    const filterButtons =
+renderOrders(previewOrders);    
+    
+const filterButtons =
 
-      document.querySelectorAll(".filter-button");
+  document.querySelectorAll(".filter-button");
 
-    filterButtons.forEach((button) => {
+filterButtons.forEach((button) => {
 
   button.addEventListener("click", () => {
 
@@ -1225,6 +1227,20 @@ renderOrders(previewOrders);    const filterButtons =
     button.classList.add("active");
 
     const selectedStatus =
+
+      button.textContent.trim();
+
+    renderOrders(
+
+      previewOrders,
+
+      selectedStatus
+
+    );
+
+  });
+
+});    const selectedStatus =
 
       button.textContent.trim();
 
