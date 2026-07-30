@@ -1214,21 +1214,31 @@ renderOrders(previewOrders);    const filterButtons =
 
     filterButtons.forEach((button) => {
 
-      button.addEventListener("click", () => {
+  button.addEventListener("click", () => {
 
-        filterButtons.forEach((item) => {
+    filterButtons.forEach((item) => {
 
-          item.classList.remove("active");
-
-        });
-
-        button.classList.add("active");
-
-      });
+      item.classList.remove("active");
 
     });
 
-    protectAdminPage();
+    button.classList.add("active");
+
+    const selectedStatus =
+
+      button.textContent.trim();
+
+    renderOrders(
+
+      previewOrders,
+
+      selectedStatus
+
+    );
+
+  });
+
+});    protectAdminPage();
 
   </script>
 
