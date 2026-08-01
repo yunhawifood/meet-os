@@ -2633,7 +2633,45 @@ function submitStoreOrder() {
 }  </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-<script src="supabase-config.js"></script>
+<script src="supabase-config.js">
+
+  <script>
+
+async function testSupabaseConnection() {
+
+  try {
+
+    const { data, error } = await window.supabaseClient
+
+      .from("products")
+
+      .select("*")
+
+      .limit(1);
+
+    if (error) {
+
+      console.error("Supabase 오류:", error);
+
+    } else {
+
+      console.log("✅ Supabase 연결 성공");
+
+      console.log(data);
+
+    }
+
+  } catch (e) {
+
+    console.error(e);
+
+  }
+
+}
+
+testSupabaseConnection();
+
+</script>
 
 </body>
 
