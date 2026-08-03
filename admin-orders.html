@@ -672,110 +672,69 @@
 
     ></div>
 
-    <section class="filter-box">
-
-      <div class="filter-buttons">
-
-        <button
-
-          class="filter-button active"
-
-          type="button"
-
-        >
-
-          전체
-
-        </button>
-
-        <button
-
-          class="filter-button"
-
-          type="button"
-
-        >
-
-          접수
-
-        </button>
-
-        <button
-
-          class="filter-button"
-
-          type="button"
-
-        >
-
-          결제완료
-
-        </button>
-
-        <button
-
-          class="filter-button"
-
-          type="button"
-
-        >
-
-          배송준비
-
-        </button>
-
-        <button
-
-          class="filter-button"
-
-          type="button"
-
-        >
-
-          배송완료
-
-        </button>
-
-        <button
-
-          class="filter-button"
-
-          type="button"
-
-        >
-
-          취소
-
-        </button>
-
-      </div>
-
-    </section>
 <section class="orders-box">
 
   <h2>오늘 배송 목록</h2>
 
-  <div
+<div
+  id="ordersList"
+  class="orders-list"
+>
 
-    id="previewNotice"
+  <article class="order-card">
 
-    class="preview-notice"
+    <h3>
+      주문번호 20260803-001
+    </h3>
 
-  >
+    <p>
+      📞 전화번호<br>
+      010-XXXX-XXXX
+    </p>
 
-   오늘 배송해야 하는 주문입니다.
+    <p>
+      📍 배송지역<br>
+      효자성원아파트
+    </p>
 
-배송을 완료하면 목록에서 자동으로 사라집니다.
-  </div>
+    <p>
+      🚪 현관 출입문 비밀번호<br>
+      1234#
+    </p>
 
-  <div
 
-    id="ordersList"
+    <hr>
 
-    class="orders-list"
 
-  ></div>
+    <p>
+      🥩 주문 상품
+    </p>
 
+    <p>
+      삼겹살 구이용 500g × 2<br>
+      한우 국거리 300g × 1
+    </p>
+
+
+    <h3>
+      48,000원
+    </h3>
+
+
+    <button type="button">
+      📷 사진 전송하기
+    </button>
+
+
+    <button type="button">
+      ✅ 배송 완료
+    </button>
+
+
+  </article>
+
+
+</div>
   <div
 
     id="emptyState"
@@ -1025,144 +984,76 @@ function formatPrice(amount) {
   return Number(amount).toLocaleString("ko-KR") + "원";
 
 }
-
 function createOrderCard(order) {
 
   const productText =
-
     order.products.join("<br />");
 
   return `
 
-    <article
+    <article class="order-card">
 
-      class="order-card"
-
-      data-status="${order.status}"
-
-    >
-
-      <div class="order-card-top">
-
-        <div>
-
-          <div class="order-number">
-
-            주문번호 ${order.id}
-
-          </div>
-
-          <div class="order-time">
-
-            ${order.orderedAt}
-
-          </div>
-
-        </div>
-
-        <div class="order-status ${order.statusClass}">
-
-          ${order.status}
-
-        </div>
-
+      <div class="order-number">
+        주문번호 ${order.id}
       </div>
 
-      <div class="order-summary">
 
-        <div class="order-info-item">
+      <div class="order-info-item">
+       <div class="order-info-item">
 
-          <div class="order-info-label">
+  전화번호<br>
+  <strong>${order.phone}</strong>
 
-            고객 전화번호
+</div>
 
-          </div>
 
-          <div class="order-info-value">
+<div class="order-info-item">
 
-            ${order.phone}
+  배송지역<br>
+  <strong>${order.apartment}</strong>
 
-          </div>
+</div>
 
-        </div>
 
-        <div class="order-info-item">
+<div class="order-info-item">
 
-          <div class="order-info-label">
+  공동현관<br>
+  <strong>
+    ${order.password || "-"}
+  </strong>
 
-            배송 지역
+</div>
 
-          </div>
 
-          <div class="order-info-value">
+      <hr>
 
-            ${order.apartment}
-
-          </div>
-
-        </div>
-
-        <div class="order-info-item">
-
-          <div class="order-info-label">
-
-            배송 방법
-
-          </div>
-
-          <div class="order-info-value">
-
-            ${order.deliveryMethod}
-
-          </div>
-
-        </div>
-
-        <div class="order-info-item">
-
-          <div class="order-info-label">
-
-            현재 상태
-
-          </div>
-
-          <div class="order-info-value">
-
-            ${order.status}
-
-          </div>
-
-        </div>
-
-      </div>
 
       <div class="order-products">
+
+         주문 상품<br><br>
 
         ${productText}
 
       </div>
 
-      <div class="order-card-bottom">
 
-        <div class="order-total">
+      <div class="order-total">
 
-          ${formatPrice(order.totalAmount)}
-
-        </div>
-
-        <a
-
-          class="detail-button"
-
-          href="./admin-order-detail.html?id=${encodeURIComponent(order.id)}"
-
-        >
-
-          주문 자세히 보기
-
-        </a>
+        ${formatPrice(order.totalAmount)}
 
       </div>
+
+
+      <button type="button">
+        📷 사진 전송하기
+      </button>
+
+
+      <button type="button">
+        ✅ 배송 완료
+
+      </button>
+
 
     </article>
 
