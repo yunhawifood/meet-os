@@ -1116,37 +1116,50 @@ filterButtons.forEach((button) => {
     protectAdminPage();
 function completeDelivery(button) {
 
-  const card = button.closest(".order-card");
+    const card = button.closest(".order-card");
 
-  if (card) {
+    if (card) {
 
-    completedOrders.push(card.innerHTML);
+        completedOrders.push({
+            id: card.querySelector(".order-number").innerText,
+            text: card.innerText,
+            completedAt: new Date().toLocaleTimeString()
+        });
 
-    card.remove();
+        card.remove();
 
-  }
+    }
 
 }
+
+
 function showTodayOrders() {
 
-  renderOrders(previewOrders);
+    renderOrders(previewOrders);
 
 }
 
 
 function showCompletedOrders() {
 
-  ordersList.innerHTML = "";
+    ordersList.innerHTML = "";
 
-  completedOrders.forEach((order) => {
+    completedOrders.forEach((order) => {
 
-    ordersList.innerHTML += `
-      <article class="order-card">
-        ${order}
-      </article>
-    `;
+        ordersList.innerHTML += `
+        <article class="order-card">
 
-  });
+            <h3>${order.id}</h3>
+
+            <p>
+            완료시간<br>
+            ${order.completedAt}
+            </p>
+
+        </article>
+        `;
+
+    });
 
 }
   </script>
