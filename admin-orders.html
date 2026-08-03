@@ -653,15 +653,6 @@
 
    <section class="page-intro">
 
-  <h2>오늘 아침배송</h2>
-
-  <p>
-
-    오늘 배송해야 하는 주문만 표시됩니다.
-
-  </p>
-
-</section>
     <div
 
       id="statusMessage"
@@ -675,7 +666,10 @@
 <section class="orders-box">
 
   <h2>오늘 배송 목록</h2>
-
+<div class="order-tabs">
+  <button onclick="showTodayOrders()">오늘 배송</button>
+  <button onclick="showCompletedOrders()">완료 목록</button>
+</div>
 <div
   id="ordersList"
   class="orders-list"
@@ -978,7 +972,7 @@ doorPassword: "1234#",
   }
 
 ];
-
+let completedOrders = [];
 function formatPrice(amount) {
 
   return Number(amount).toLocaleString("ko-KR") + "원";
@@ -1037,12 +1031,12 @@ function createOrderCard(order) {
         📷 사진 전송하기
       </button>
 
-
-      <button type="button">
-        ✅ 배송 완료
-
-      </button>
-
+<button 
+  type="button"
+  onclick="completeDelivery(this)">
+  ✅ 배송 완료
+</button>
+     
 
     </article>
 
@@ -1120,7 +1114,41 @@ filterButtons.forEach((button) => {
 
  }); 
     protectAdminPage();
+function completeDelivery(button) {
 
+  const card = button.closest(".order-card");
+
+  if (card) {
+
+    completedOrders.push(card.innerHTML);
+
+    card.remove();
+
+  }
+
+}
+function showTodayOrders() {
+
+  renderOrders(previewOrders);
+
+}
+
+
+function showCompletedOrders() {
+
+  ordersList.innerHTML = "";
+
+  completedOrders.forEach((order) => {
+
+    ordersList.innerHTML += `
+      <article class="order-card">
+        ${order}
+      </article>
+    `;
+
+  });
+
+}
   </script>
 
 </body>
