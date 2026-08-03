@@ -238,7 +238,20 @@
   gap: 12px;
 
 }
+.order-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
 
+.order-tabs button {
+  flex: 1;
+  min-height: 48px;
+  padding: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 12px;
+}
 .order-card {
 
   padding: 18px;
@@ -404,7 +417,34 @@
   gap: 12px;
 
 }
+.order-actions {
 
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+
+  width: 100%;
+
+  margin-top: 16px;
+
+}
+
+
+.order-actions button {
+
+  width: 100%;
+
+  min-height: 54px;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+  border-radius: 12px;
+
+}
 .order-total {
 
   font-size: 18px;
@@ -1028,16 +1068,24 @@ function createOrderCard(order) {
 
       </div>
 
+<div class="order-actions">
 
-      <button type="button">
-        📷 사진 전송하기
-      </button>
+  <button
+    type="button"
+    onclick="sendPhotoMessage('${order.phone}')"
+  >
+    📷 고객에게 사진 보내기
+  </button>
 
-<button 
-  type="button"
-  onclick="completeDelivery(this)">
-  ✅ 배송 완료
-</button>
+  <button
+    type="button"
+    onclick="completeDelivery(this)"
+  >
+    ✅ 배송 완료
+  </button>
+
+</div>
+    
      
 
     </article>
