@@ -956,7 +956,7 @@ const previewOrders = [
     phone: "010-1234-5678",
 
     apartment: "효자성원아파트",
-
+doorPassword: "1234#",
     deliveryMethod: "아침 직접배송",
 
     products: [
@@ -996,35 +996,24 @@ function createOrderCard(order) {
       <div class="order-number">
         주문번호 ${order.id}
       </div>
+<div class="order-info">
 
+<p>
+전화번호<br>
+<strong>${order.phone}</strong>
+</p>
 
-      <div class="order-info-item">
-       <div class="order-info-item">
+<p>
+배송지역<br>
+<strong>${order.apartment}</strong>
+</p>
 
-  전화번호<br>
-  <strong>${order.phone}</strong>
-
-</div>
-
-
-<div class="order-info-item">
-
-  배송지역<br>
-  <strong>${order.apartment}</strong>
-
-</div>
-
-
-<div class="order-info-item">
-
-  공동현관<br>
-  <strong>
-    ${order.password || "-"}
-  </strong>
+<p>
+공동현관<br>
+<strong>${order.doorPassword || "-"}</strong>
+</p>
 
 </div>
-
-
       <hr>
 
 
@@ -1096,7 +1085,7 @@ function renderOrders(orders, selectedStatus = "전체") {
       .join("");
 
 }
-
+console.log(previewOrders);
 renderOrders(previewOrders);    
     
 const filterButtons =
