@@ -668,9 +668,19 @@ button:focus {
         padding-right: 10px;
 
       }
+.completed-toggle {
+  width:100%;
+  text-align:center;
+  margin-top:15px;
+}
 
-    }
-
+.completed-toggle button {
+  width:80px !important;
+  height:35px !important;
+  border-radius:12px !important;
+  border:1px solid #222 !important;
+  background:white !important;
+}
   </style>
 
 </head>
@@ -1215,33 +1225,39 @@ async function showCompletedOrders() {
 
       <article class="order-card" data-id="${order.id}">
 
-        <div class="completed-top">
+       <div class="completed-top">
 
-          <div>
+  <div>
+    <h3>
+      주문 번호 #${order.id.slice(0,8)}
+    </h3>
 
-            <h3>
-              주문 번호 #${order.id.slice(0,8)}
-            </h3>
+    <p>
+      완료시간<br>
+      ${order.updated_at || "-"}
+    </p>
 
-            <p>
-              완료시간<br>
-              ${order.updated_at || "-"}
-            </p>
+  </div>
 
-          </div>
+</div>
 
+<div style="width:100%; text-align:center; margin-top:15px;">
 
-          <button
-            type="button"
-            onclick="toggleCompletedDetail(this)">
-            열기
-          </button>
+<button
+type="button"
+onclick="toggleCompletedDetail(this)"
+style="
+width:80px;
+height:35px;
+border-radius:12px;
+border:1px solid #222;
+background:white;
+">
+열기
+</button>
 
-
-        </div>
-
-
-        <div class="completed-detail" style="display:none;">
+</div>
+<div class="completed-detail" style="display:none;">
 
           <br>
 
