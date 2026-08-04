@@ -683,6 +683,22 @@ button:focus {
   background:white !important;
   color:#222 !important;
 }
+.completed-actions {
+  display:flex;
+  gap:10px;
+  width:100%;
+  margin-top:15px;
+}
+
+.completed-actions button {
+  flex:1;
+  height:45px;
+  border-radius:12px;
+  border:1px solid #222;
+  background:white;
+  font-size:16px;
+  font-weight:700;
+}
   </style>
 
 </head>
@@ -1243,19 +1259,18 @@ async function showCompletedOrders() {
 
 </div>
 
-<div style="width:100%; text-align:center; margin-top:15px;">
+<div class="completed-toggle">
 
 <button
 type="button"
-onclick="toggleCompletedDetail(this)"
-style="
-width:80px;
-height:35px;
-border-radius:12px;
-border:1px solid #222;
-background:white;
-">
-열기
+onclick="toggleCompletedDetail(this)">
+확인하기
+</button>
+
+<button
+type="button"
+onclick="restoreOrder('${order.id}')">
+되돌리기
 </button>
 
 </div>
@@ -1299,6 +1314,34 @@ function toggleCompletedDetail(button) {
     button.innerText = "열기";
   }
 
+}
+async function restoreOrder(orderId) {
+
+  const confirmRestore = confirm(
+    "배송 완료를 취소하시겠습니까?\n\n오늘 배송 목록으로 다시 이동합니다."
+  );
+
+  if (!confirmRestore) {
+    return;
+  }
+
+  const { error } = await supabase
+    .from("orders")
+    .update({
+      order_status: "received"
+    })
+    .eq("id", orderId);
+
+  if (error) {
+    alert("되돌리기에 실패했습니다.");
+    console.error(error);
+    return;
+  }
+
+  alert("배송 목록으로 되돌렸습니다.");
+
+  showCompletedOrders();
+  showTodayOrders();
 }
 function sendPhotoMessage(phone) {
 
