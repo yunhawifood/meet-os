@@ -1047,8 +1047,9 @@ function formatPrice(amount) {
 }
 function createOrderCard(order) {
 
-  const productText =
-    order.products.join("<br />");
+  const productText = order.order_items
+  ? order.order_items.map(item => item.product_name).join("<br />")
+  : "";
 
   return `
 
@@ -1061,19 +1062,22 @@ function createOrderCard(order) {
 
 <p>
 전화번호<br>
-<strong>${order.phone}</strong>
+<strong>${order.customer_phone}</strong>
 </p>
 
 <p>
 배송지역<br>
-<strong>${order.apartment}</strong>
+<strong>
+${order.delivery_address_main} ${order.delivery_address_detail || ""}
+</strong>
 </p>
 
 <p>
 공동현관<br>
-<strong>${order.doorPassword || "-"}</strong>
+<strong>
+${order.door_password || "-"}
+</strong>
 </p>
-
 </div>
       <hr>
 
@@ -1089,7 +1093,7 @@ function createOrderCard(order) {
 
       <div class="order-total">
 
-        ${formatPrice(order.totalAmount)}
+        ${formatPrice(order.total_amount)}
 
       </div>
 
@@ -1097,7 +1101,7 @@ function createOrderCard(order) {
 
   <button
     type="button"
-    onclick="sendPhotoMessage('${order.phone}')"
+    onclick="sendPhotoMessage('${order.customer_phone}')"
   >
     📷 고객에게 사진 보내기
   </button>
@@ -1154,8 +1158,7 @@ function renderOrders(orders, selectedStatus = "전체") {
       .join("");
 
 }
-console.log(previewOrders);
-renderOrders(previewOrders);    
+showTodayOrders();
     
 const filterButtons =
 
@@ -1163,7 +1166,7 @@ const filterButtons =
 
 filterButtons.forEach((button) => {
 
-  button.addEventListener("click", () => {
+  button.addEventListener("click", async () => {
 
     filterButtons.forEach((item) => {
 
@@ -1173,17 +1176,15 @@ filterButtons.forEach((button) => {
 
     button.classList.add("active");
 
-    const selectedStatus =
+   const selectedStatus =
+    button.textContent.trim();
 
-      button.textContent.trim();
+const orders = await loadOrders();
 
-    renderOrders(
-
-      previewOrders,
-
-      selectedStatus
-
-    );
+renderOrders(
+    orders,
+    selectedStatus
+);
 
   });
 
@@ -1206,14 +1207,37 @@ function completeDelivery(button) {
     }
 
 }
+async function loadOrders() {
+
+    const { data, error } = await supabaseClient
+        .from("orders")
+        .select(`
+  *,
+  order_items (*)
+`)
+        .order("created_at", { ascending: false });
 
 
-function showTodayOrders() {
+    if (error) {
+        console.error(error);
+        return [];
+    }
 
-    renderOrders(previewOrders);
+
+    return data;
 
 }
 
+async function showTodayOrders() {
+
+    const orders = await loadOrders();
+const selectedStatus = "전체";
+    renderOrders(
+        orders,
+        selectedStatus
+    );
+
+}
 function showCompletedOrders() {
 
   ordersList.innerHTML = "";
