@@ -252,6 +252,31 @@
   font-weight: 700;
   border-radius: 12px;
 }
+.completed-action {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+.completed-action button {
+  min-height: 48px;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 12px;
+}
+.completed-top {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.completed-top button {
+  min-height:48px;
+  padding:12px 24px;
+  font-size:18px;
+  font-weight:700;
+  border-radius:12px;
+}
 .order-card {
 
   padding: 18px;
@@ -1189,27 +1214,89 @@ function showTodayOrders() {
 
 }
 
-
 function showCompletedOrders() {
 
-    ordersList.innerHTML = "";
+  ordersList.innerHTML = "";
 
-    completedOrders.forEach((order) => {
+  completedOrders.forEach((order) => {
 
-        ordersList.innerHTML += `
-        <article class="order-card">
+    ordersList.innerHTML += `
+ <article class="order-card">
 
-            <h3>${order.id}</h3>
+    <div class="completed-top">
+
+        <div>
+            <h3>주문번호 ${order.id}</h3>
 
             <p>
             완료시간<br>
             ${order.completedAt}
             </p>
+        </div>
 
-        </article>
-        `;
 
-    });
+        <button 
+        type="button"
+        onclick="toggleCompletedDetail(this)">
+        주문 확인
+        </button>
+
+    </div>
+
+
+    <div class="completed-detail" style="display:none;">
+
+<br>
+
+전화번호<br>
+${order.phone || "010-1234-5678"}
+
+<br><br>
+
+배송지역<br>
+${order.address || "효자성원아파트"}
+
+<br><br>
+
+상품<br>
+${order.items || "주문 상품 정보"}
+
+<br><br>
+
+금액<br>
+${order.price || "48,000원"}
+
+<br><br>
+
+사진전송 여부<br>
+완료
+
+<br><br>
+
+배송완료 여부<br>
+완료
+
+</div>
+
+</article>
+    `;
+
+  });
+
+}
+
+function toggleCompletedDetail(button) {
+
+  const detail = button.closest(".order-card")
+                       .querySelector(".completed-detail");
+
+  if(detail.style.display === "none"){
+    detail.style.display = "block";
+    button.innerText = "접기";
+  } else {
+    detail.style.display = "none";
+    button.innerText = "주문 확인";
+  }
 
 }
 function sendPhotoMessage(phone) {
