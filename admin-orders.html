@@ -772,6 +772,7 @@ button:focus {
   <button onclick="showTodayOrders()">오늘 배송</button>
   <button onclick="showCompletedOrders()">완료 목록</button>
 </div>
+
 <div
  id="todayOrdersList"
  class="orders-list"
@@ -1208,6 +1209,7 @@ console.log("오늘배송 불러온 주문:", orders);
     );
 
 }
+let completedOrdersData = [];
 async function showCompletedOrders() {
 
   todayOrdersList.innerHTML = "";
@@ -1227,7 +1229,7 @@ async function showCompletedOrders() {
     `;
     return;
   }
-
+completedOrdersData = data;
 
   if (!data || data.length === 0) {
     completedOrdersList.innerHTML = "";
@@ -1298,6 +1300,17 @@ onclick="restoreOrder('${order.id}')">
 
   });
 
+
+  completedOrdersList.innerHTML += `
+
+    <button
+    type="button"
+    onclick="saveDeliveryLog()">
+    오늘 마감하기
+    </button>
+
+  `;
+
 }
 function toggleCompletedDetail(button) {
 
@@ -1360,7 +1373,98 @@ function sendPhotoMessage(phone) {
   window.location.href = url;
 
 }
+async function saveDeliveryLog() {
 
+  if (!completedOrdersData || completedOrdersData.length === 0) {
+    alert("저장할 배송 완료 목록이 없습니다.");
+    return;
+  }
+
+
+  const logs = completedOrdersData.map(order => ({
+
+    id: crypto.randomUUID(),
+
+    created_at: new Date().toISOString(),
+
+    order_id: order.id,
+
+    customer_phone:
+      order.customer_phone || "",
+
+    delivery_address:
+      order.delivery_address_main || "",
+
+    total_amount:
+      order.total_amount || 0,
+
+    products:
+      JSON.stringify(order.order_items || []),
+
+    delivery_date:
+      new Date().toISOString().slice(0,10)
+
+  }));
+
+
+  const { error } = await supabaseClient
+    .from("delivery_logs")
+    .insert(logs);
+
+
+  if (error) {
+
+    console.error("저장 오류:", error);
+
+    alert(
+      "배송 기록 저장 실패\n\n" +
+      error.message
+    );
+
+    return;
+  }
+
+
+  await supabaseClient
+    .from("daily_closings")
+    .insert({
+      closing_date: new Date().toISOString().slice(0,10),
+      delivery_count: completedOrdersData.length,
+      total_sales: completedOrdersData.reduce(
+        (sum, order) => sum + (order.total_amount || 0),
+        0
+      ),
+      memo: "",
+      tomorrow_note: ""
+    });
+
+
+  const { data: closeData, error: closeError } = await supabaseClient
+.from("orders")
+.update({
+  order_status: "closed"
+})
+.in(
+  "id",
+  completedOrdersData.map(order => order.id)
+)
+.select();
+
+  console.log(
+  "마감 처리할 주문 ID:",
+  completedOrdersData.map(order => order.id)
+);
+
+console.log(closeData, closeError);
+
+console.log(JSON.stringify(closeError));
+
+alert("오늘 배송 기록 저장 완료");
+
+
+  completedOrdersList.innerHTML = "";
+
+}
   </script>
 
 </body>

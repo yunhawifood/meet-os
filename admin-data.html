@@ -2,10 +2,12 @@
 <html lang="ko">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>데이터 관리</title>
+
 
 <style>
 
@@ -16,12 +18,14 @@ body {
   padding:20px;
 }
 
+
 header {
   background:white;
   padding:20px;
   border-radius:16px;
   margin-bottom:20px;
 }
+
 
 .box {
   background:white;
@@ -30,21 +34,64 @@ header {
   margin-bottom:20px;
 }
 
+
+h2 {
+  margin-top:0;
+}
+
+
+h3 {
+  margin-top:0;
+}
+
+
+.card {
+  background:#fafafa;
+  border:1px solid #eee;
+  border-radius:12px;
+  padding:12px;
+  margin-top:10px;
+}
+
+
 button {
+
   width:100%;
   padding:16px;
   border-radius:12px;
   border:1px solid #ddd;
   background:white;
   font-size:16px;
+
 }
 
+
+.small {
+
+  color:#777;
+  font-size:14px;
+
+}
+
+
+.money {
+
+  font-size:22px;
+  font-weight:bold;
+
+}
+
+
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 
 </head>
 
 
 <body>
+
 
 
 <header>
@@ -59,21 +106,36 @@ button {
 
 
 
+
+<div class="box">
+
+<h3>📒 영업 마감 기록</h3>
+
+<div id="closingList">
+
+불러오는 중입니다...
+
+</div>
+
+</div>
+
+
+
+
+
 <div class="box">
 
 <h3>🚚 배송 기록</h3>
 
-<p>
-아직 저장된 배송 기록이 없습니다.
-</p>
+<div id="deliveryList">
 
-
-<button>
-배송 기록 보기
-</button>
-
+불러오는 중입니다...
 
 </div>
+
+</div>
+
+
 
 
 
@@ -89,6 +151,7 @@ button {
 
 
 
+
 <div class="box">
 
 <h3>📈 판매 분석</h3>
@@ -99,7 +162,216 @@ button {
 
 </div>
 
+<script>
+
+
+async function loadClosingData() {
+
+
+  const { data, error } = await supabaseClient
+    .from("daily_closings")
+    .select("*")
+    .order("closing_date", {
+      ascending:false
+    })
+    .limit(10);
+
+
+
+  const box = document.getElementById("closingList");
+
+
+
+  if(error){
+
+    console.error(error);
+
+    box.innerHTML =
+      "마감 기록을 불러오지 못했습니다.";
+
+    return;
+
+  }
+
+
+
+  if(!data || data.length === 0){
+
+    box.innerHTML =
+      "아직 저장된 마감 기록이 없습니다.";
+
+    return;
+
+  }
+
+
+
+
+  box.innerHTML = "";
+
+
+
+  data.forEach(item => {
+
+
+    box.innerHTML += `
+
+      <div class="card">
+
+        <b>${item.closing_date}</b>
+
+        <p>
+        배송 완료 :
+        ${item.delivery_count || 0}건
+        </p>
+
+
+        <p class="money">
+        ${Number(item.total_sales || 0).toLocaleString()}원
+        </p>
+
+
+        ${
+          item.memo
+          ?
+          `<p class="small">
+          메모 : ${item.memo}
+          </p>`
+          :
+          ""
+        }
+
+
+      </div>
+
+    `;
+
+
+  });
+
+
+}
+
+
+
+
+
+
+
+async function loadDeliveryData(){
+
+
+
+  const { data, error } = await supabaseClient
+    .from("delivery_logs")
+    .select("*")
+    .order("created_at", {
+      ascending:false
+    })
+    .limit(20);
+
+console.log("delivery data:", data);
+console.log("delivery error:", error);
+
+
+  const box =
+    document.getElementById("deliveryList");
+
+
+
+  if(error){
+
+    console.error(error);
+
+    box.innerHTML =
+      "배송 기록을 불러오지 못했습니다.";
+
+    return;
+
+  }
+
+
+
+
+  if(!data || data.length === 0){
+
+    box.innerHTML =
+      "아직 저장된 배송 기록이 없습니다.";
+
+    return;
+
+  }
+
+
+
+
+
+  box.innerHTML = "";
+
+
+
+  data.forEach(item => {
+
+
+
+    box.innerHTML += `
+
+
+      <div class="card">
+
+
+        <b>
+        ${item.created_at ? new Date(item.created_at).toLocaleString() : ""}
+        </b>
+
+
+
+        <p>
+        📍 ${item.delivery_address || ""}
+        </p>
+
+
+
+        <p>
+        ☎ ${item.customer_phone || ""}
+        </p>
+
+
+
+        <p>
+        금액 :
+        ${Number(item.total_amount || 0).toLocaleString()}원
+        </p>
+
+
+
+      </div>
+
+
+    `;
+
+
+
+  });
+
+
+}
+
+
+
+
+
+
+loadClosingData();
+
+loadDeliveryData();
+
+
+
+</script>
+
 
 </body>
 
 </html>
+
