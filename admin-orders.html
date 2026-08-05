@@ -773,13 +773,6 @@ button:focus {
   <button onclick="showCompletedOrders()">완료 목록</button>
 </div>
 <div
- id="empty-state"
- class="empty-state"
- hidden
->
-  완료된 배송이 없습니다.
-</div>
-<div
  id="todayOrdersList"
  class="orders-list"
 >
@@ -1113,11 +1106,6 @@ function renderOrders(orders, selectedStatus = "전체") {
     return;
 
   }
-console.log("emptyState 확인", emptyState);
-  emptyState.hidden = true;
-
-  console.log("받은 주문", filteredOrders[0]);
-console.log("카드 생성 결과", createOrderCard(filteredOrders[0]));
 
 todayOrdersList.innerHTML =
   filteredOrders
@@ -1208,11 +1196,12 @@ async function loadOrders() {
 
 async function showTodayOrders() {
 
+    todayOrdersList.innerHTML = "";
     completedOrdersList.innerHTML = "";
 
     const orders = await loadOrders();
-
-const selectedStatus = "전체";
+console.log("오늘배송 불러온 주문:", orders);
+    const selectedStatus = "전체";
     renderOrders(
         orders,
         selectedStatus
@@ -1241,13 +1230,9 @@ async function showCompletedOrders() {
 
 
   if (!data || data.length === 0) {
-    completedOrdersList.innerHTML = `
-      <div class="empty-box">
-        완료된 배송이 없습니다.
-      </div>
-    `;
+    completedOrdersList.innerHTML = "";
     return;
-  }
+}
 
 
   data.forEach((order) => {
@@ -1352,7 +1337,7 @@ async function restoreOrder(orderId) {
   }
 
   alert("배송 목록으로 되돌렸습니다.");
-
+console.log("되돌리기 후 실행");
   showTodayOrders();
 }
 function sendPhotoMessage(phone) {
@@ -1375,6 +1360,7 @@ function sendPhotoMessage(phone) {
   window.location.href = url;
 
 }
+
   </script>
 
 </body>
