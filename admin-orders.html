@@ -773,6 +773,13 @@ button:focus {
   <button onclick="showCompletedOrders()">완료 목록</button>
 </div>
 <div
+ id="empty-state"
+ class="empty-state"
+ hidden
+>
+  완료된 배송이 없습니다.
+</div>
+<div
  id="todayOrdersList"
  class="orders-list"
 >
@@ -962,9 +969,7 @@ button:focus {
   const todayOrdersList = document.getElementById("todayOrdersList");
 const completedOrdersList = document.getElementById("completedOrdersList");
 
-const emptyState =
-
-  document.getElementById("emptyState");
+  const emptyState = document.getElementById("empty-state");
 
 const previewNotice =
 
@@ -1095,7 +1100,7 @@ function renderOrders(orders, selectedStatus = "전체") {
 
       : orders.filter(
 
-          (order) => order.status === selectedStatus
+          (order) => order.order_status === selectedStatus
 
         );
 
@@ -1108,14 +1113,16 @@ function renderOrders(orders, selectedStatus = "전체") {
     return;
 
   }
-
+console.log("emptyState 확인", emptyState);
   emptyState.hidden = true;
 
-  todayOrdersList.innerHTML =
+  console.log("받은 주문", filteredOrders[0]);
+console.log("카드 생성 결과", createOrderCard(filteredOrders[0]));
+
+todayOrdersList.innerHTML =
   filteredOrders
   .map(createOrderCard)
   .join("");
-
 }
 showTodayOrders();
     
@@ -1135,8 +1142,10 @@ filterButtons.forEach((button) => {
 
     button.classList.add("active");
 
-   const selectedStatus =
-    button.textContent.trim();
+ const selectedStatus =
+    button.textContent.trim() === "오늘 배송"
+      ? "received"
+      : "completed";
 
 const orders = await loadOrders();
 
@@ -1199,7 +1208,10 @@ async function loadOrders() {
 
 async function showTodayOrders() {
 
+    completedOrdersList.innerHTML = "";
+
     const orders = await loadOrders();
+
 const selectedStatus = "전체";
     renderOrders(
         orders,
@@ -1209,6 +1221,7 @@ const selectedStatus = "전체";
 }
 async function showCompletedOrders() {
 
+  todayOrdersList.innerHTML = "";
   completedOrdersList.innerHTML = "";
 
   const { data, error } = await supabaseClient
@@ -1325,7 +1338,7 @@ async function restoreOrder(orderId) {
     return;
   }
 
-  const { error } = await supabase
+  const { error } = await supabaseClient
     .from("orders")
     .update({
       order_status: "received"
@@ -1340,7 +1353,6 @@ async function restoreOrder(orderId) {
 
   alert("배송 목록으로 되돌렸습니다.");
 
-  showCompletedOrders();
   showTodayOrders();
 }
 function sendPhotoMessage(phone) {
