@@ -308,53 +308,81 @@ console.log("delivery error:", error);
   }
 
   box.innerHTML = "";
+const grouped = {};
+
+data.forEach(item => {
+
+  const date = item.created_at
+    ? new Date(item.created_at).toLocaleDateString()
+    : "날짜 없음";
 
 
-
-  data.forEach(item => {
-
-
-
-    box.innerHTML += `
+  if(!grouped[date]){
+    grouped[date] = [];
+  }
 
 
-      <div class="card">
+  grouped[date].push(item);
+
+});
 
 
-        <b>
-        ${item.created_at ? new Date(item.created_at).toLocaleString() : ""}
-        </b>
+Object.keys(grouped).forEach(date => {
 
 
+  box.innerHTML += `
 
-        <p>
-        📍 ${item.delivery_address || ""}
-        </p>
+    <div class="card">
 
-
-
-        <p>
-        ☎ ${item.customer_phone || ""}
-        </p>
+      <h3>
+        📁 ${date} 배송 장부
+      </h3>
 
 
+      <p>
+        배송 건수 :
+        ${grouped[date].length}건
+      </p>
 
-        <p>
-        금액 :
-        ${Number(item.total_amount || 0).toLocaleString()}원
-        </p>
 
+      <button
+        onclick="
+        this.nextElementSibling.style.display =
+        this.nextElementSibling.style.display === 'block'
+        ? 'none'
+        : 'block'
+        "
+      >
+        상세 보기
+      </button>
+
+
+      <div style="display:none; margin-top:15px;">
+
+
+        ${
+          grouped[date].map(item => `
+
+            <p>
+              📍 ${item.delivery_address || ""}
+              <br>
+              ☎ ${item.customer_phone || ""}
+              <br>
+              ${Number(item.total_amount || 0).toLocaleString()}원
+            </p>
+
+          `).join("")
+        }
 
 
       </div>
 
+    </div>
 
-    `;
+  `;
 
 
-
-  });
-
+});
 
 }
 
