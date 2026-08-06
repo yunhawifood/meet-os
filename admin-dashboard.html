@@ -384,7 +384,7 @@ font-size:19px;
       <div>
 
   <h1>YUNHAWI Partners</h1>
-
+<span id="adminName" style="display:none;"></span>
   <div style="font-size:13px;color:#777;margin-top:4px;">
 
     Operating System
@@ -412,23 +412,6 @@ font-size:19px;
 
   <main>
 
-    <section class="welcome-box">
-
-      <h2>
-
-        안녕하세요,
-
-        <span id="adminName">대표님</span>.
-
-      </h2>
-
-      <p>
-
-        오늘도 함께 시작해봅시다.
-      </p>
-
-    </section>
-
     <div
 
       id="statusMessage"
@@ -455,8 +438,7 @@ font-size:19px;
       🚚 배송관리
 
       <span id="delivery-count">0건</span>
-
-    </a>
+      </a>
 
   </div>
 
@@ -529,6 +511,7 @@ async function updateDeliveryCount() {
 }
 
 updateDeliveryCount();
+
     const loadingScreen =
 
       document.getElementById("loadingScreen");

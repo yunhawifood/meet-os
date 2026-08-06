@@ -204,58 +204,63 @@ async function loadClosingData() {
 
   }
 
-
-
-
   box.innerHTML = "";
 
 
-
-  data.forEach(item => {
-
-
-    box.innerHTML += `
-
-      <div class="card">
-
-        <b>${item.closing_date}</b>
-
-        <p>
-        배송 완료 :
-        ${item.delivery_count || 0}건
-        </p>
+data.forEach(item => {
 
 
-        <p class="money">
-        ${Number(item.total_sales || 0).toLocaleString()}원
-        </p>
+  box.innerHTML += `
+<div class="card">
+
+  <h3>
+    📒 ${item.closing_date} 영업 마감
+  </h3>
 
 
-        ${
-          item.memo
-          ?
-          `<p class="small">
-          메모 : ${item.memo}
-          </p>`
-          :
-          ""
-        }
+  <p>
+    매출 : ${Number(item.total_sales || 0).toLocaleString()}원
+  </p>
 
 
-      </div>
+  <p>
+    아침배송 : ${item.delivery_count || 0}건
+  </p>
 
-    `;
 
+  <button
+    onclick="this.nextElementSibling.style.display =
+    this.nextElementSibling.style.display === 'block'
+    ? 'none'
+    : 'block'"
+  >
+    상세보기
+  </button>
+
+
+  <div style="display:none; margin-top:15px;">
+
+    <p>
+      특이사항 :
+      ${item.memo || "없음"}
+    </p>
+
+
+    <p>
+      내일 준비사항 :
+      ${item.tomorrow_note || "없음"}
+    </p>
+
+  </div>
+
+
+</div>
+
+`;
 
   });
 
-
 }
-
-
-
-
-
 
 
 async function loadDeliveryData(){
@@ -301,10 +306,6 @@ console.log("delivery error:", error);
     return;
 
   }
-
-
-
-
 
   box.innerHTML = "";
 
@@ -357,83 +358,6 @@ console.log("delivery error:", error);
 
 }
 
-
-async function loadClosingData(){
-
-  const { data, error } = await supabaseClient
-    .from("daily_closings")
-    .select("*")
-    .order("created_at", {
-      ascending:false
-    })
-    .limit(20);
-
-
-  console.log("closing data:", data);
-  console.log("closing error:", error);
-
-
-  const box =
-    document.getElementById("closingList");
-
-
-  if(error){
-
-    console.error(error);
-
-    box.innerHTML =
-      "마감 기록을 불러오지 못했습니다.";
-
-    return;
-
-  }
-
-
-  if(!data || data.length === 0){
-
-    box.innerHTML =
-      "아직 저장된 마감 기록이 없습니다.";
-
-    return;
-
-  }
-
-
-  box.innerHTML = "";
-
-
-  data.forEach(item => {
-
-
-    box.innerHTML += `
-
-      <div class="delivery-card">
-
-        <h4>
-          ${item.closing_date}
-        </h4>
-
-        <p>
-          배송 완료 : ${item.delivery_count}건
-        </p>
-
-        <p>
-          ${Number(item.total_sales).toLocaleString()}원
-        </p>
-
-        <p>
-          ${item.memo || ""}
-        </p>
-
-      </div>
-
-    `;
-
-
-  });
-
-
-}
 
 loadClosingData();
 
