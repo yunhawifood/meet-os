@@ -121,24 +121,6 @@ button {
 
 
 
-
-
-<div class="box">
-
-<h3>🚚 배송 기록</h3>
-
-<div id="deliveryList">
-
-불러오는 중입니다...
-
-</div>
-
-</div>
-
-
-
-
-
 <div class="box">
 
 <h3>👥 고객 데이터</h3>
@@ -151,14 +133,17 @@ button {
 
 
 
-
 <div class="box">
 
 <h3>📈 판매 분석</h3>
 
 <p>
-준비 중입니다.
+분석 기간을 선택해 상품·지역별 판매 데이터를 확인합니다.
 </p>
+
+<button>
+분석하기
+</button>
 
 </div>
 
@@ -167,19 +152,16 @@ button {
 
 async function loadClosingData() {
 
-
-  const { data, error } = await supabaseClient
+  const { data: closings, error } = await supabaseClient
     .from("daily_closings")
     .select("*")
     .order("closing_date", {
       ascending:false
     })
-    .limit(10);
-
+    .limit(30);
 
 
   const box = document.getElementById("closingList");
-
 
 
   if(error){
@@ -194,8 +176,7 @@ async function loadClosingData() {
   }
 
 
-
-  if(!data || data.length === 0){
+  if(!closings || closings.length === 0){
 
     box.innerHTML =
       "아직 저장된 마감 기록이 없습니다.";
@@ -204,212 +185,173 @@ async function loadClosingData() {
 
   }
 
-  box.innerHTML = "";
-
-
-data.forEach(item => {
-
-
-  box.innerHTML += `
-<div class="card">
-
-  <h3>
-    📒 ${item.closing_date} 영업 마감
-  </h3>
-
-
-  <p>
-    매출 : ${Number(item.total_sales || 0).toLocaleString()}원
-  </p>
-
-
-  <p>
-    아침배송 : ${item.delivery_count || 0}건
-  </p>
-
-
-  <button
-    onclick="this.nextElementSibling.style.display =
-    this.nextElementSibling.style.display === 'block'
-    ? 'none'
-    : 'block'"
-  >
-    상세보기
-  </button>
-
-
-  <div style="display:none; margin-top:15px;">
-
-    <p>
-      특이사항 :
-      ${item.memo || "없음"}
-    </p>
-
-
-    <p>
-      내일 준비사항 :
-      ${item.tomorrow_note || "없음"}
-    </p>
-
-  </div>
-
-
-</div>
-
-`;
-
-  });
-
-}
-
-
-async function loadDeliveryData(){
-
-
-
-  const { data, error } = await supabaseClient
-    .from("delivery_logs")
-    .select("*")
-    .order("created_at", {
-      ascending:false
-    })
-    .limit(20);
-
-console.log("delivery data:", data);
-console.log("delivery error:", error);
-
-
-  const box =
-    document.getElementById("deliveryList");
-
-
-
-  if(error){
-
-    console.error(error);
-
-    box.innerHTML =
-      "배송 기록을 불러오지 못했습니다.";
-
-    return;
-
-  }
-
-
-
-
-  if(!data || data.length === 0){
-
-    box.innerHTML =
-      "아직 저장된 배송 기록이 없습니다.";
-
-    return;
-
-  }
 
   box.innerHTML = "";
-const grouped = {};
-
-data.forEach(item => {
-
-  const date = item.created_at
-    ? new Date(item.created_at).toLocaleDateString()
-    : "날짜 없음";
 
 
-  if(!grouped[date]){
-    grouped[date] = [];
-  }
+  for (const closing of closings) {
 
 
-  grouped[date].push(item);
+    const { data: deliveries, error: deliveryError } =
+      await supabaseClient
+        .from("delivery_logs")
+        .select("*")
+        .eq(
+          "delivery_date",
+          closing.closing_date
+        )
+        .order("created_at", {
+          ascending:true
+        });
 
-});
-
-Object.keys(grouped).forEach(date => {
 
 
-  box.innerHTML += `
+    let deliveryHtml = "";
+
+
+    if(deliveries && deliveries.length > 0){
+
+
+      deliveryHtml = deliveries.map(item => {
+
+
+        let productText = "";
+
+
+        try {
+
+          const products =
+            JSON.parse(item.products || "[]");
+
+
+          productText =
+            products
+            .map(product =>
+              `${product.product_name || ""} ${product.quantity || 0}개`
+            )
+            .join("<br>");
+
+
+        } catch(e){
+
+          productText = "";
+
+        }
+
+
+
+        return `
+
+        <div class="card">
+
+          주문번호
+          ${item.order_id || "-"}
+
+          <br><br>
+
+          📍
+          ${item.delivery_address || "-"}
+
+          <br>
+
+          ☎
+          ${item.customer_phone || "-"}
+
+          <br><br>
+
+          🥩
+          ${productText || "-"}
+
+          <br><br>
+
+          💰
+          ${Number(item.total_amount || 0)
+          .toLocaleString()}원
+
+
+        </div>
+
+        `;
+
+
+      }).join("");
+
+
+    } else {
+
+
+      deliveryHtml =
+      "배송 상세 기록이 없습니다.";
+
+
+    }
+
+
+
+    box.innerHTML += `
+
 
     <div class="card">
 
-<h3>
-📁 ${date} 배송 장부
-</h3>
 
-<p>
-배송 건수 :
-${grouped[date].length}건
-</p>
+      <h3>
+      📁 ${closing.closing_date} 영업 마감
+      </h3>
 
 
-<button
-onclick="
-this.nextElementSibling.style.display =
-this.nextElementSibling.style.display === 'block'
-? 'none'
-: 'block'
-"
->
-상세 보기
-</button>
+      <p>
+      매출 :
+      ${Number(closing.total_sales || 0)
+      .toLocaleString()}원
+      </p>
 
 
-<div style="display:none; margin-top:15px;">
+      <p>
+      배송 :
+      ${closing.delivery_count || 0}건
+      </p>
 
 
-${
- grouped[date].map(item => {
-          
-            let productText = "";
 
-            try {
+      <button
+      onclick="
+      this.nextElementSibling.style.display =
+      this.nextElementSibling.style.display === 'block'
+      ? 'none'
+      : 'block'
+      "
+      >
 
-              const products = JSON.parse(item.products || "[]");
+      기록 보기
 
-              productText = products
-  .map(product =>
-    `${product.product_name || ""} ${product.quantity || 0}개`
-  )
-  .join(", ");
-            } catch(e){
-
-              productText = "";
-
-            }
+      </button>
 
 
-            return `
-        <p>
-  📍 ${item.delivery_address || ""}
-  <br>
-  ☎ ${item.customer_phone || ""}
-  <br>
-  ${Number(item.total_amount || 0).toLocaleString()}원
-  <br>
-  🥩 ${productText}
-</p>
 
-                     `;
-          }).join("")
-        }
+      <div style="display:none; margin-top:15px;">
+
+
+      ${deliveryHtml}
 
 
       </div>
 
+
+
     </div>
 
-  `;
+
+    `;
 
 
-});
+  }
+
 
 }
 
 
-loadClosingData();
 
-loadDeliveryData();
+loadClosingData();
 
 
 
