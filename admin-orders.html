@@ -963,44 +963,6 @@ button:focus {
   const todayOrdersList = document.getElementById("todayOrdersList");
 const completedOrdersList = document.getElementById("completedOrdersList");
 
-  const emptyState = document.getElementById("empty-state");
-
-const previewNotice =
-
-  document.getElementById("previewNotice");
-
-const previewOrders = [
-
-  {
-
-    id: "20260730-001",
-
-    phone: "010-1234-5678",
-
-    apartment: "효자성원아파트",
-doorPassword: "1234#",
-    deliveryMethod: "아침 직접배송",
-
-    products: [
-
-      "구워 먹는 삼겹살 500g × 2",
-
-      "국 끓이기 좋은 한우 국거리 300g × 1"
-
-    ],
-
-    totalAmount: 48000,
-
-    status: "접수",
-
-    statusClass: "received",
-
-    orderedAt: "2026. 7. 30. 오후 2:35"
-
-  }
-
-];
-let completedOrders = [];
 function formatPrice(amount) {
 
   return Number(amount).toLocaleString("ko-KR") + "원";
@@ -1124,37 +1086,6 @@ function renderOrders(orders, selectedStatus = "전체") {
 }
 showTodayOrders();
     
-const filterButtons =
-
-  document.querySelectorAll(".filter-button");
-
-filterButtons.forEach((button) => {
-
-  button.addEventListener("click", async () => {
-
-    filterButtons.forEach((item) => {
-
-      item.classList.remove("active");
-
-    });
-
-    button.classList.add("active");
-
- const selectedStatus =
-    button.textContent.trim() === "오늘 배송"
-      ? "received"
-      : "completed";
-
-const orders = await loadOrders();
-
-renderOrders(
-    orders,
-    selectedStatus
-);
-
-  });
-
- }); 
     protectAdminPage();
 async function completeDelivery(button) {
 
@@ -1190,9 +1121,10 @@ async function completeDelivery(button) {
   }
 
 
-  alert("배송 완료 처리되었습니다.");
+alert("배송 완료 처리되었습니다.");
 
-  card.remove();
+await showTodayOrders();
+await showCompletedOrders();
 
 }
 
@@ -1263,8 +1195,10 @@ console.log(
   "완료목록 조회 직후 order_items:",
   data.map(order => order.order_items)
 );
-completedOrdersData = uniqueOrders;
-console.log("저장 전 order_items:", completedOrdersData[0].order_items);
+console.log(
+  "저장 전 order_items:",
+  completedOrdersData.map(order => order.order_items)
+);
 if (!uniqueOrders || uniqueOrders.length === 0) {
   completedOrdersList.innerHTML = "";
   return;
@@ -1392,9 +1326,14 @@ async function restoreOrder(orderId) {
     return;
   }
 
-  alert("배송 목록으로 되돌렸습니다.");
+alert("배송 목록으로 되돌렸습니다.");
+
 console.log("되돌리기 후 실행");
-  showTodayOrders();
+
+await showTodayOrders();
+
+await showCompletedOrders();
+
 }
 function sendPhotoMessage(phone) {
 
@@ -1431,7 +1370,14 @@ alert("체크 함수 실행");
   }
 
 console.log("미완료 주문 검색 결과:", data);
-  if (data && data.length > 0) {
+  if (!data) {
+
+  alert("배송 상태를 확인할 수 없습니다.");
+
+  return;
+
+}
+if (data && data.length > 0) {
 
     alert(
       "아직 배송 완료되지 않은 주문이 있습니다.\n배송 완료 후 마감해주세요."
@@ -1441,7 +1387,7 @@ console.log("미완료 주문 검색 결과:", data);
   }
 
 
-  saveDeliveryLog();
+  await saveDeliveryLog();
 
 }
 async function saveDeliveryLog() {
@@ -1473,7 +1419,7 @@ console.log("저장 직전 상품 데이터:", completedOrdersData.map(order => 
     total_amount:
       order.total_amount || 0,
 
-products:
+products: 
 JSON.stringify(order.order_items || []),
 
     delivery_date:
