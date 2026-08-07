@@ -149,19 +149,18 @@ button {
 
 <script>
 
-
 async function loadClosingData() {
 
-  const { data: closings, error } = await supabaseClient
+  const { data, error } = await supabaseClient
     .from("daily_closings")
     .select("*")
     .order("closing_date", {
       ascending:false
-    })
-    .limit(30);
+    });
 
 
-  const box = document.getElementById("closingList");
+  const box =
+    document.getElementById("closingList");
 
 
   if(error){
@@ -176,7 +175,7 @@ async function loadClosingData() {
   }
 
 
-  if(!closings || closings.length === 0){
+  if(!data || data.length === 0){
 
     box.innerHTML =
       "아직 저장된 마감 기록이 없습니다.";
@@ -186,106 +185,47 @@ async function loadClosingData() {
   }
 
 
-  box.innerHTML = "";
+  const grouped = {};
 
 
-  for (const closing of closings) {
+  data.forEach(item => {
 
 
-    const { data: deliveries, error: deliveryError } =
-      await supabaseClient
-        .from("delivery_logs")
-        .select("*")
-        .eq(
-          "delivery_date",
-          closing.closing_date
-        )
-        .order("created_at", {
-          ascending:true
-        });
+    const month =
+      item.closing_date.substring(0,7);
 
 
+    if(!grouped[month]){
 
-    let deliveryHtml = "";
-
-
-    if(deliveries && deliveries.length > 0){
-
-
-      deliveryHtml = deliveries.map(item => {
-
-
-        let productText = "";
-
-
-        try {
-
-          const products =
-            JSON.parse(item.products || "[]");
-
-
-          productText =
-            products
-            .map(product =>
-              `${product.product_name || ""} ${product.quantity || 0}개`
-            )
-            .join("<br>");
-
-
-        } catch(e){
-
-          productText = "";
-
-        }
-
-
-
-        return `
-
-        <div class="card">
-
-          주문번호
-          ${item.order_id || "-"}
-
-          <br><br>
-
-          📍
-          ${item.delivery_address || "-"}
-
-          <br>
-
-          ☎
-          ${item.customer_phone || "-"}
-
-          <br><br>
-
-          🥩
-          ${productText || "-"}
-
-          <br><br>
-
-          💰
-          ${Number(item.total_amount || 0)
-          .toLocaleString()}원
-
-
-        </div>
-
-        `;
-
-
-      }).join("");
-
-
-    } else {
-
-
-      deliveryHtml =
-      "배송 상세 기록이 없습니다.";
-
+      grouped[month] = [];
 
     }
 
+
+    grouped[month].push(item);
+
+
+  });
+
+
+
+  box.innerHTML = "";
+
+
+
+  Object.keys(grouped).forEach(month => {
+
+
+    const monthCount =
+      grouped[month].length;
+
+
+    const monthSales =
+      grouped[month].reduce(
+        (sum,item)=>
+        sum + (item.total_sales || 0),
+        0
+      );
 
 
     box.innerHTML += `
@@ -295,47 +235,135 @@ async function loadClosingData() {
 
 
       <h3>
-      📁 ${closing.closing_date} 영업 마감
+      📁 ${month} 장부
       </h3>
 
 
       <p>
-      매출 :
-      ${Number(closing.total_sales || 0)
-      .toLocaleString()}원
+      마감 기록 ${monthCount}건
       </p>
 
 
       <p>
-      배송 :
-      ${closing.delivery_count || 0}건
+      총 매출
+      ${Number(monthSales)
+      .toLocaleString()}원
       </p>
 
 
-
-      <button
-      onclick="
-      this.nextElementSibling.style.display =
-      this.nextElementSibling.style.display === 'block'
-      ? 'none'
-      : 'block'
-      "
-      >
-
-      기록 보기
-
-      </button>
+ <button
+onclick="showMonthBook('${month}')"
+>
+장부 열기
+</button>
+    </div>
 
 
-
-      <div style="display:none; margin-top:15px;">
-
-
-      ${deliveryHtml}
+    `;
 
 
-      </div>
+  });
 
+
+}
+
+async function showMonthBook(month){
+
+  const startDate = `${month}-01`;
+
+const endDate = `${month}-31`;
+
+
+const { data, error } = await supabaseClient
+    .from("daily_closings")
+    .select("*")
+    .gte("closing_date", startDate)
+    .lte("closing_date", endDate)
+    .order("closing_date", {
+      ascending:false
+    });
+
+  const box =
+    document.getElementById("closingList");
+
+
+
+  if(error){
+
+    console.error(error);
+
+    box.innerHTML =
+    "장부를 불러오지 못했습니다.";
+
+    return;
+
+  }
+
+
+
+  if(!data || data.length === 0){
+
+    box.innerHTML =
+    "해당 월 기록이 없습니다.";
+
+    return;
+
+  }
+
+
+
+  box.innerHTML = `
+
+  <button onclick="loadClosingData()">
+  ← 처음으로
+  </button>
+
+  <br><br>
+
+
+  <h3>
+  📅 ${month} 날짜별 기록
+  </h3>
+
+
+  `;
+
+
+
+  data.forEach(item=>{
+
+
+    box.innerHTML += `
+
+
+    <div class="card">
+
+
+    <h3>
+    📄 ${item.closing_date} 영업 마감
+    </h3>
+
+
+    <p>
+    매출 :
+    ${Number(item.total_sales || 0)
+    .toLocaleString()}원
+    </p>
+
+
+    <p>
+    배송 :
+    ${item.delivery_count || 0}건
+    </p>
+
+
+    <button
+    onclick="showDayBook('${item.closing_date}')"
+    >
+
+    배송 기록 보기
+
+    </button>
 
 
     </div>
@@ -344,13 +372,147 @@ async function loadClosingData() {
     `;
 
 
-  }
+  });
 
+
+}
+async function showDayBook(date){
+
+console.log("찾는 날짜:", date);
+const { data, error } = await supabaseClient
+  .from("delivery_logs")
+  .select("*")
+  .eq("delivery_date", date)
+  .order("created_at", {
+    ascending:false
+  });
+
+
+
+const box =
+document.getElementById("closingList");
+
+
+
+if(error){
+
+ console.error(error);
+
+ box.innerHTML =
+ "배송 기록을 불러오지 못했습니다.";
+
+ return;
 
 }
 
 
 
+if(!data || data.length === 0){
+
+box.innerHTML = `
+
+<button onclick="showMonthBook('${date.substring(0,7)}')">
+← 날짜별 기록으로
+</button>
+
+<h3>
+🚚 ${date} 배송 기록
+</h3>
+
+`;
+ return;
+
+}
+
+
+
+box.innerHTML = `
+
+<button onclick="showMonthBook('${date.substring(0,7)}')">
+← 날짜별 기록으로
+</button>
+<h3>
+🚚 ${date} 배송 기록
+</h3>
+
+`;
+
+
+
+data.forEach(item=>{
+
+
+let products="";
+
+
+try{
+
+const list =
+JSON.parse(item.products || "[]");
+
+
+products =
+list.map(product =>
+`${product.product_name || ""} ${product.quantity || 0}개`
+).join("<br>");
+
+
+}catch(e){
+
+products="";
+
+}
+
+
+
+box.innerHTML += `
+
+<div class="card">
+
+
+<h3>
+📄 주문번호
+${item.order_id || ""}
+</h3>
+
+
+<p>
+📍 ${item.delivery_address || ""}
+</p>
+
+
+<p>
+☎ ${item.customer_phone || ""}
+</p>
+
+
+<p>
+🥩 ${products}
+</p>
+
+
+<p>
+💰 ${Number(item.total_amount || 0)
+.toLocaleString()}원
+</p>
+
+
+<p class="small">
+배송시간 :
+${new Date(item.created_at)
+.toLocaleString()}
+</p>
+
+
+</div>
+
+`;
+
+
+});
+
+
+}
 loadClosingData();
 
 
