@@ -1069,14 +1069,11 @@ function renderOrders(orders, selectedStatus = "전체") {
 
   if (filteredOrders.length === 0) {
 
-    todayOrdersList.innerHTML = "";
+  todayOrdersList.innerHTML = "";
 
-    emptyState.hidden = false;
+  return;
 
-    return;
-
-  }
-
+}
 
   todayOrdersList.innerHTML =
     filteredOrders
@@ -1187,6 +1184,7 @@ const uniqueOrders = data.filter(
   (order, index, self) =>
     index === self.findIndex((o) => o.id === order.id)
 );
+completedOrdersData = uniqueOrders;
 console.log(
   "uniqueOrders 확인:",
   uniqueOrders.map(order => order.order_items)
@@ -1413,9 +1411,8 @@ console.log("저장 직전 상품 데이터:", completedOrdersData.map(order => 
     customer_phone:
       order.customer_phone || "",
 
-    delivery_address:
-      order.delivery_address_main || "",
-
+  delivery_address:
+  `${order.delivery_address_main || ""} ${order.delivery_address_detail || ""}`,
     total_amount:
       order.total_amount || 0,
 
