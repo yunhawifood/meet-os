@@ -326,7 +326,6 @@ data.forEach(item => {
 
 });
 
-
 Object.keys(grouped).forEach(date => {
 
 
@@ -334,44 +333,65 @@ Object.keys(grouped).forEach(date => {
 
     <div class="card">
 
-      <h3>
-        📁 ${date} 배송 장부
-      </h3>
+<h3>
+📁 ${date} 배송 장부
+</h3>
+
+<p>
+배송 건수 :
+${grouped[date].length}건
+</p>
 
 
-      <p>
-        배송 건수 :
-        ${grouped[date].length}건
-      </p>
+<button
+onclick="
+this.nextElementSibling.style.display =
+this.nextElementSibling.style.display === 'block'
+? 'none'
+: 'block'
+"
+>
+상세 보기
+</button>
 
 
-      <button
-        onclick="
-        this.nextElementSibling.style.display =
-        this.nextElementSibling.style.display === 'block'
-        ? 'none'
-        : 'block'
-        "
-      >
-        상세 보기
-      </button>
+<div style="display:none; margin-top:15px;">
 
 
-      <div style="display:none; margin-top:15px;">
+${
+ grouped[date].map(item => {
+          
+            let productText = "";
+
+            try {
+
+              const products = JSON.parse(item.products || "[]");
+
+              productText = products
+  .map(product =>
+    `${product.product_name || ""} ${product.quantity || 0}개`
+  )
+  .join(", ");
+            } catch(e){
+
+              productText = "";
+
+            }
 
 
-        ${
-          grouped[date].map(item => `
+            return `
+        <p>
+  📍 ${item.delivery_address || ""}
+  <br>
+  ☎ ${item.customer_phone || ""}
+  <br>
+  ${Number(item.total_amount || 0).toLocaleString()}원
+  <br>
+  🥩 ${productText}
+</p>
 
-            <p>
-              📍 ${item.delivery_address || ""}
-              <br>
-              ☎ ${item.customer_phone || ""}
-              <br>
-              ${Number(item.total_amount || 0).toLocaleString()}원
-            </p>
-
-          `).join("")
+                     `;
+          }).join("")
         }
 
 

@@ -1007,7 +1007,7 @@ function formatPrice(amount) {
 
 }
 function createOrderCard(order) {
-
+console.log("카드 생성 데이터:", order);
   const productText = order.order_items
   ? order.order_items.map(item => item.product_name).join("<br />")
   : "";
@@ -1086,17 +1086,24 @@ ${order.door_password || "-"}
 
 function renderOrders(orders, selectedStatus = "전체") {
 
+  const uniqueOrders = orders.filter(
+    (order, index, self) =>
+      index === self.findIndex((o) => o.id === order.id)
+  );
+
+
   const filteredOrders =
 
     selectedStatus === "전체"
 
-      ? orders
+      ? uniqueOrders
 
-      : orders.filter(
+      : uniqueOrders.filter(
 
           (order) => order.order_status === selectedStatus
 
         );
+
 
   if (filteredOrders.length === 0) {
 
@@ -1108,10 +1115,12 @@ function renderOrders(orders, selectedStatus = "전체") {
 
   }
 
-todayOrdersList.innerHTML =
-  filteredOrders
-  .map(createOrderCard)
-  .join("");
+
+  todayOrdersList.innerHTML =
+    filteredOrders
+    .map(createOrderCard)
+    .join("");
+
 }
 showTodayOrders();
     
@@ -1149,6 +1158,11 @@ renderOrders(
     protectAdminPage();
 async function completeDelivery(button) {
 
+  if (button.disabled) return;
+
+  button.disabled = true;
+  button.textContent = "처리중...";
+
   const card = button.closest(".order-card");
 
   if (!card) return;
@@ -1164,8 +1178,14 @@ async function completeDelivery(button) {
 
 
   if (error) {
+
     console.error(error);
+
     alert("배송 완료 처리 실패");
+
+    button.disabled = false;
+    button.textContent = "✅ 배송 완료";
+
     return;
   }
 
@@ -1175,6 +1195,7 @@ async function completeDelivery(button) {
   card.remove();
 
 }
+
 async function loadOrders() {
 
     const { data, error } = await supabaseClient
@@ -1215,13 +1236,14 @@ async function showCompletedOrders() {
   todayOrdersList.innerHTML = "";
   completedOrdersList.innerHTML = "";
 
-  const { data, error } = await supabaseClient
+const { data, error } = await supabaseClient
     .from("orders")
-    .select("*")
+    .select(`
+      *,
+      order_items (*)
+    `)
     .eq("order_status", "completed")
     .order("created_at", { ascending: false });
-
-
   if (error) {
     console.error(error);
     completedOrdersList.innerHTML = `
@@ -1229,16 +1251,27 @@ async function showCompletedOrders() {
     `;
     return;
   }
-completedOrdersData = data;
-
-  if (!data || data.length === 0) {
-    completedOrdersList.innerHTML = "";
-    return;
+const uniqueOrders = data.filter(
+  (order, index, self) =>
+    index === self.findIndex((o) => o.id === order.id)
+);
+console.log(
+  "uniqueOrders 확인:",
+  uniqueOrders.map(order => order.order_items)
+);
+console.log(
+  "완료목록 조회 직후 order_items:",
+  data.map(order => order.order_items)
+);
+completedOrdersData = uniqueOrders;
+console.log("저장 전 order_items:", completedOrdersData[0].order_items);
+if (!uniqueOrders || uniqueOrders.length === 0) {
+  completedOrdersList.innerHTML = "";
+  return;
 }
 
 
-  data.forEach((order) => {
-
+uniqueOrders.forEach((order) => {
     completedOrdersList.innerHTML += `
 
       <article class="order-card" data-id="${order.id}">
@@ -1281,15 +1314,26 @@ onclick="restoreOrder('${order.id}')">
           전화번호<br>
           ${order.customer_phone || "-"}
 
-          <br><br>
+<br><br>
 
-          배송지역<br>
-          ${order.delivery_address_main || "-"}
+배송지역<br>
+${order.delivery_address_main || "-"}
 
-          <br><br>
+<br><br>
 
-          배송완료 여부<br>
-          완료
+주문 상품<br>
+${
+  order.order_items && order.order_items.length > 0
+  ? order.order_items.map(item => 
+      `${item.product_name} ${item.quantity}개`
+    ).join("<br>")
+  : "-"
+}
+
+<br><br>
+
+배송완료 여부<br>
+완료
 
         </div>
 
@@ -1303,12 +1347,11 @@ onclick="restoreOrder('${order.id}')">
 
   completedOrdersList.innerHTML += `
 
-    <button
-    type="button"
-    onclick="saveDeliveryLog()">
-    오늘 마감하기
-    </button>
-
+   <button
+type="button"
+onclick="checkBeforeClosing()">
+오늘 마감하기
+</button>
   `;
 
 }
@@ -1373,7 +1416,36 @@ function sendPhotoMessage(phone) {
   window.location.href = url;
 
 }
+async function checkBeforeClosing() {
+alert("체크 함수 실행");
+  const { data, error } = await supabaseClient
+    .from("orders")
+    .select("id")
+    .eq("order_status", "received");
+
+
+  if (error) {
+    console.error(error);
+    alert("배송 상태 확인 실패");
+    return;
+  }
+
+console.log("미완료 주문 검색 결과:", data);
+  if (data && data.length > 0) {
+
+    alert(
+      "아직 배송 완료되지 않은 주문이 있습니다.\n배송 완료 후 마감해주세요."
+    );
+
+    return;
+  }
+
+
+  saveDeliveryLog();
+
+}
 async function saveDeliveryLog() {
+
 
   if (!completedOrdersData || completedOrdersData.length === 0) {
     alert("저장할 배송 완료 목록이 없습니다.");
@@ -1381,6 +1453,9 @@ async function saveDeliveryLog() {
   }
 
 
+  console.log("완료 주문 데이터:", completedOrdersData);
+console.log("저장 직전 주문 데이터:", completedOrdersData);
+console.log("저장 직전 상품 데이터:", completedOrdersData.map(order => order.order_items));
   const logs = completedOrdersData.map(order => ({
 
     id: crypto.randomUUID(),
@@ -1398,8 +1473,8 @@ async function saveDeliveryLog() {
     total_amount:
       order.total_amount || 0,
 
-    products:
-      JSON.stringify(order.order_items || []),
+products:
+JSON.stringify(order.order_items || []),
 
     delivery_date:
       new Date().toISOString().slice(0,10)
