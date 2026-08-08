@@ -769,16 +769,33 @@ button:focus {
 
   <h2>오늘 배송 목록</h2>
 <div class="order-tabs">
-  <button onclick="showTodayOrders()">오늘 배송</button>
-  <button onclick="showCompletedOrders()">완료 목록</button>
+ <button onclick="showTodayOrders()">
+오늘 배송 <span id="todayCount">0건</span>
+</button>
+
+<button onclick="showCompletedOrders()">
+완료 목록 <span id="completedCount">0건</span>
+</button>
 </div>
 
-<div
- id="todayOrdersList"
- class="orders-list"
->
 </div>
 
+
+<div id="preparingStatus"
+class="preparing-status">
+
+<h3>📦 배송 준비 현황</h3>
+
+<div id="preparingList">
+준비 중입니다.
+</div>
+
+</div>
+
+
+<div id="todayOrdersList"
+class="orders-list">
+</div>
 <div
  id="completedOrdersList"
  class="orders-list"
@@ -1169,23 +1186,94 @@ async function loadOrders() {
     return data;
 
 }
-
 async function showTodayOrders() {
 
-    todayOrdersList.innerHTML = "";
-    completedOrdersList.innerHTML = "";
-
     const orders = await loadOrders();
-console.log("오늘배송 불러온 주문:", orders);
+
+    console.log("오늘배송 불러온 주문:", orders);
+
+    document.getElementById("todayCount").innerText =
+    orders.length + "건";
+
     const selectedStatus = "전체";
+
     renderOrders(
         orders,
         selectedStatus
     );
 
+    loadPreparingStatus(orders);
+
 }
 
+
+
+function loadPreparingStatus(orders) {
+
+    const preparingList =
+    document.getElementById("preparingList");
+
+
+    const productCount = {};
+
+
+    orders.forEach(order => {
+
+        if(!order.order_items) return;
+
+
+        order.order_items.forEach(item => {
+
+            const name = item.product_name;
+
+
+            const quantity =
+            Number(item.quantity || 1);
+
+
+            if(productCount[name]){
+                productCount[name] += quantity;
+            } else {
+                productCount[name] = quantity;
+            }
+
+        });
+
+    });
+
+
+    if(Object.keys(productCount).length === 0){
+
+        preparingList.innerHTML =
+        "준비할 상품이 없습니다.";
+
+        return;
+
+    }
+
+
+    let html = "";
+
+
+    Object.keys(productCount).forEach(name => {
+
+        html += `
+        <p>
+        ${name} : ${productCount[name]}개
+        </p>
+        `;
+
+    });
+
+
+    preparingList.innerHTML = html;
+
+}
+
+
+
 let completedOrdersData = [];
+
 async function showCompletedOrders() {
 
   todayOrdersList.innerHTML = "";
@@ -1193,13 +1281,19 @@ async function showCompletedOrders() {
 
 const { data, error } = await supabaseClient
     .from("orders")
-    .select(`
-      *,
-      order_items (*)
-    `)
+    .select(
+        "*",
+        "order_items (*)"
+    )
     .eq("order_status", "completed")
     .order("created_at", { ascending: false });
-  if (error) {
+
+
+document.getElementById("completedCount").innerText =
+data.length + "건";
+
+
+if (error) {
     console.error(error);
     completedOrdersList.innerHTML = `
       <p>완료 목록을 불러오지 못했습니다.</p>
