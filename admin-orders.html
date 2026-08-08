@@ -438,7 +438,12 @@ button {
   line-height: 1.6;
 
 }
-
+.order-request {
+  background: #fff8e1;
+  padding: 16px;
+  border-radius: 12px;
+  margin-top: 12px;
+}
 .order-card-bottom {
 
   display: flex;
@@ -699,6 +704,41 @@ button:focus {
   font-size:16px;
   font-weight:700;
 }
+.preparing-toggle {
+
+    width:100%;
+
+    padding:16px;
+
+    margin-bottom:10px;
+
+    border:1px solid #ddd;
+
+    border-radius:12px;
+
+    background:white;
+
+    font-size:18px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+}
+.preparing-status {
+    margin-top: 8px;
+}
+.preparing-toggle {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #333333;
+    border-radius: 12px;
+    background: white;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
   </style>
 
 </head>
@@ -780,19 +820,6 @@ button:focus {
 
 </div>
 
-
-<div id="preparingStatus"
-class="preparing-status">
-
-<h3>📦 배송 준비 현황</h3>
-
-<div id="preparingList">
-준비 중입니다.
-</div>
-
-</div>
-
-
 <div id="todayOrdersList"
 class="orders-list">
 </div>
@@ -800,6 +827,24 @@ class="orders-list">
  id="completedOrdersList"
  class="orders-list"
 >
+</div>
+<div id="preparingStatus"
+class="preparing-status">
+
+<button
+onclick="togglePreparingList()"
+class="preparing-toggle">
+
+📦 오늘 준비할 상품
+
+</button>
+
+<div id="preparingList"
+style="display:none;">
+
+준비 중입니다.
+
+</div>
 </div>
 
 </section>
@@ -1055,6 +1100,12 @@ ${order.door_password || "-"}
 
       </div>
 
+${order.delivery_request ? `
+<div class="order-request">
+고객 요청사항<br><br>
+${order.delivery_request}
+</div>
+` : ""}
 
       <div class="order-total">
 
@@ -1203,6 +1254,24 @@ async function showTodayOrders() {
     );
 
     loadPreparingStatus(orders);
+
+}
+function togglePreparingList(){
+
+const list =
+document.getElementById(
+"preparingList"
+);
+
+if(list.style.display === "none"){
+
+list.style.display = "block";
+
+}else{
+
+list.style.display = "none";
+
+}
 
 }
 
