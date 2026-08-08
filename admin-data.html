@@ -132,27 +132,65 @@ button {
 </div>
 
 
-
 <div class="box">
 
 <h3>📈 판매 분석</h3>
 
 <p>
-상품별·지역별 판매 데이터를 확인합니다.
+기간을 선택해 판매 데이터를 확인합니다.
 </p>
 
-<div id="salesAnalysis">
 
-아직 분석하지 않았습니다.
+<div>
+
+<label>
+시작일
+</label>
+
+<br>
+
+<input 
+type="date" 
+id="analysisStart"
+>
+
+
+<br><br>
+
+
+<label>
+종료일
+</label>
+
+<br>
+
+<input 
+type="date" 
+id="analysisEnd"
+>
+
 
 </div>
+
+
+<br>
 
 
 <button onclick="loadSalesAnalysis()">
 분석하기
 </button>
 
+
+<hr>
+
+
+<div id="salesAnalysis">
+
 </div>
+
+
+</div>
+
 <script>
 
 async function loadClosingData() {
@@ -524,11 +562,33 @@ async function loadSalesAnalysis(){
 const box =
 document.getElementById("salesAnalysis");
 
+const start =
+document.getElementById("analysisStart").value;
+
+
+const end =
+document.getElementById("analysisEnd").value;
+
 
 const { data, error } = await supabaseClient
 .from("orders")
-.select("*");
-
+.select(`
+  total_amount,
+  created_at,
+  delivery_address_main,
+  order_items (
+    product_name,
+    quantity
+  )
+`)
+.gte(
+  "created_at",
+  start + "T00:00:00"
+)
+.lte(
+  "created_at",
+  end + "T23:59:59"
+);
 
 if(error){
 
@@ -568,9 +628,22 @@ sum + Number(item.total_amount || 0),
 
 const areaCount = {};
 
+const timeCount = {
+  "09~12시":0,
+  "12~15시":0,
+  "15~18시":0,
+  "18~21시":0
+};
+
+
+const productCount = {};
+
+
 
 data.forEach(item=>{
 
+
+// 지역 분석
 
 const area =
 item.delivery_address_main || "매장 주문";
@@ -586,7 +659,70 @@ areaCount[area]=0;
 areaCount[area]++;
 
 
+
+// 주문 시간 분석
+
+const orderDate =
+new Date(item.created_at);
+
+
+const hour =
+orderDate.getHours();
+
+
+if(hour >= 9 && hour < 12){
+
+timeCount["09~12시"]++;
+
+}
+else if(hour >= 12 && hour < 15){
+
+timeCount["12~15시"]++;
+
+}
+else if(hour >= 15 && hour < 18){
+
+timeCount["15~18시"]++;
+
+}
+else if(hour >= 18 && hour < 21){
+
+timeCount["18~21시"]++;
+
+}
+
+
+
+// 상품 분석
+
+if(item.order_items){
+
+item.order_items.forEach(product=>{
+
+
+const name =
+product.product_name || "상품명 없음";
+
+
+if(!productCount[name]){
+
+productCount[name]=0;
+
+}
+
+
+productCount[name] +=
+Number(product.quantity || 0);
+
+
 });
+
+}
+
+
+});
+
+
 
 
 
@@ -607,8 +743,49 @@ areaHtml +=
 
 
 
+
+let timeHtml="";
+
+
+Object.keys(timeCount).forEach(time=>{
+
+timeHtml +=
+`
+<p>
+⏰ ${time}
+: ${timeCount[time]}건
+</p>
+`;
+
+});
+
+
+
+
+let productHtml="";
+
+
+Object.keys(productCount).forEach(product=>{
+
+productHtml +=
+`
+<p>
+🥩 ${product}
+: ${productCount[product]}개
+</p>
+`;
+
+});
+
+
+
+
 box.innerHTML = `
 
+<button onclick="location.reload()">
+← 처음으로
+</button>
+<br><br>
 
 <h4>
 전체 현황
@@ -631,7 +808,27 @@ ${totalSales.toLocaleString()}원
 
 
 <h4>
-지역별 주문
+⏰ 주문 시간 분석
+</h4>
+
+${timeHtml}
+
+
+<hr>
+
+
+<h4>
+🥩 상품별 판매
+</h4>
+
+${productHtml}
+
+
+<hr>
+
+
+<h4>
+📍 지역별 주문
 </h4>
 
 
@@ -642,6 +839,22 @@ ${areaHtml}
 `;
 
 }
+window.onload = function(){
+
+const today =
+new Date()
+.toISOString()
+.slice(0,10);
+
+
+document.getElementById("analysisEnd").value =
+today;
+
+
+document.getElementById("analysisStart").value =
+today;
+
+};
 loadClosingData();
 
 

@@ -1000,6 +1000,12 @@ console.log("카드 생성 데이터:", order);
       <div class="order-number">
         주문번호 ${order.id.slice(0,8)}
       </div>
+
+      <p>
+주문시간<br>
+${formatKoreanTime(order.created_at)}
+</p>
+
 <div class="order-info">
 
 <p>
