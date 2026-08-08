@@ -807,6 +807,25 @@ button:focus {
       SUPABASE_PUBLISHABLE_KEY
 
     );
+function formatKoreanTime(dateString) {
+
+  if (!dateString) {
+    return "-";
+  }
+
+  const date = new Date(dateString);
+
+  return date.toLocaleString("ko-KR", {
+    timeZone: "Asia/Seoul",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true
+  });
+
+}
 
     const loadingScreen =
 
@@ -1159,6 +1178,7 @@ console.log("오늘배송 불러온 주문:", orders);
     );
 
 }
+
 let completedOrdersData = [];
 async function showCompletedOrders() {
 
@@ -1217,7 +1237,7 @@ uniqueOrders.forEach((order) => {
 
     <p>
       완료시간<br>
-      ${order.updated_at || "-"}
+      ${formatKoreanTime(order.updated_at)}
     </p>
 
   </div>
