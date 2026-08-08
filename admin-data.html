@@ -62,6 +62,7 @@ button {
   border:1px solid #ddd;
   background:white;
   font-size:16px;
+  color:#222;
 
 }
 
@@ -143,32 +144,27 @@ button {
 
 <div>
 
-<label>
-시작일
-</label>
+<div style="
+display:flex;
+gap:10px;
+">
 
-<br>
-
-<input 
-type="date" 
+<div style="flex:1;">
+<label>시작일</label>
+<input
 id="analysisStart"
->
+type="date">
+</div>
 
 
-<br><br>
-
-
-<label>
-종료일
-</label>
-
-<br>
-
-<input 
-type="date" 
+<div style="flex:1;">
+<label>종료일</label>
+<input
 id="analysisEnd"
->
+type="date">
+</div>
 
+</div>
 
 </div>
 
