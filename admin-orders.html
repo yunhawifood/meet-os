@@ -249,14 +249,13 @@ button {
 
 .order-tabs button {
   flex: 1;
-  min-height: 48px;
-  padding: 12px;
+  height: 52px;
+  padding: 0;
   font-size: 18px;
   font-weight: 700;
   border-radius: 12px;
-  background: #ffffff;
-  color: #222222;
-  border: 1px solid #222222;
+  border: 1px solid #222;
+  background: white;
 }
 .completed-action {
   display: flex;
@@ -704,6 +703,7 @@ button:focus {
   font-size:16px;
   font-weight:700;
 }
+
 .preparing-toggle {
 
     width:100%;
@@ -712,11 +712,11 @@ button:focus {
 
     margin-bottom:10px;
 
-    border:1px solid #ddd;
+    background:#f7fbe9;
 
-    border-radius:12px;
+    border:1px solid #222;
 
-    background:white;
+    border-radius:14px;
 
     font-size:18px;
 
@@ -725,18 +725,89 @@ button:focus {
     cursor:pointer;
 
 }
-.preparing-status {
-    margin-top: 8px;
+.map-toggle {
+
+    width:100%;
+
+    height:52px;
+
+    background:white;
+
+    border:1px solid #222;
+
+    border-radius:12px;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
 }
-.preparing-toggle {
-    width: 100%;
-    padding: 14px;
-    border: 1px solid #333333;
-    border-radius: 12px;
-    background: white;
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
+.preparing-close {
+
+    width:100%;
+
+    height:40px;
+
+    margin-bottom:15px;
+
+    border:none;
+
+    background:#f5f5f5;
+
+    border-radius:10px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    position:relative;
+
+    z-index:3000;
+
+}
+#mapButton {
+    margin-bottom:20px;
+}
+
+#preparingList {
+
+    position: fixed;
+
+    left:20px;
+    right:20px;
+    bottom:80px;
+
+    min-height:220px;
+    max-height:60vh;
+
+    padding:20px;
+
+    background:white;
+
+    border:1px solid #222;
+
+    border-radius:14px;
+
+    overflow-y:auto;
+
+    box-shadow:0 4px 20px rgba(0,0,0,0.15);
+
+    transform:translateY(120%);
+
+    transition:transform 0.3s ease;
+
+    z-index:2000;
+}
+
+
+#preparingList.open {
+
+    transform:translateY(0);
+
 }
 
   </style>
@@ -818,8 +889,13 @@ button:focus {
 </button>
 </div>
 
-</div>
+<div id="mapButton">
 
+<button class="map-toggle">
+🗺️ 지도보기
+</button>
+
+</div>
 <div id="todayOrdersList"
 class="orders-list">
 </div>
@@ -839,14 +915,29 @@ class="preparing-toggle">
 
 </button>
 
-<div id="preparingList"
-style="display:none;">
+
+<div id="preparingList">
+
+<button
+type="button"
+onclick="togglePreparingList()"
+class="preparing-close">
+
+✕ 닫기
+
+</button>
+
+
+<div id="preparingContent">
 
 준비 중입니다.
 
 </div>
+
+
 </div>
 
+</div>
 </section>
   </main>
 
@@ -1263,24 +1354,14 @@ document.getElementById(
 "preparingList"
 );
 
-if(list.style.display === "none"){
-
-list.style.display = "block";
-
-}else{
-
-list.style.display = "none";
+list.classList.toggle("open");
 
 }
-
-}
-
-
 
 function loadPreparingStatus(orders) {
 
-    const preparingList =
-    document.getElementById("preparingList");
+  const preparingContent =
+document.getElementById("preparingContent");
 
 
     const productCount = {};
@@ -1313,7 +1394,7 @@ function loadPreparingStatus(orders) {
 
     if(Object.keys(productCount).length === 0){
 
-        preparingList.innerHTML =
+        preparingContent.innerHTML =
         "준비할 상품이 없습니다.";
 
         return;
@@ -1335,7 +1416,7 @@ function loadPreparingStatus(orders) {
     });
 
 
-    preparingList.innerHTML = html;
+    preparingContent.innerHTML = html;
 
 }
 
