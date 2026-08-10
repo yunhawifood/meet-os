@@ -517,7 +517,7 @@ function initDeliveryMap(orders) {
 
 
   let markerCount = 0;
-
+const markers = {};
 
   orders.forEach(
     order => {
@@ -633,7 +633,7 @@ const position =
 
   });
 
-
+markers[order.id] = marker;
 const infoWindow =
   new kakao.maps.InfoWindow({
 
