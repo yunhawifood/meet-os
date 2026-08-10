@@ -747,23 +747,23 @@ button:focus {
 .preparing-close {
 
     width:100%;
-
     height:40px;
 
-    margin-top:20px;
+    margin-top:auto;
 
     border:none;
-
     background:#f5f5f5;
-
     border-radius:10px;
 
     font-size:15px;
-
     font-weight:600;
 
     cursor:pointer;
 
+    order:2;
+}
+#preparingContent {
+    order:1;
 }
 #mapButton {
     margin-bottom:20px;
@@ -775,7 +775,7 @@ button:focus {
 
     left:20px;
     right:20px;
-    bottom:80px;
+    bottom:20px;
 
     min-height:220px;
     max-height:60vh;
@@ -797,9 +797,10 @@ button:focus {
     transition:transform 0.3s ease;
 
     z-index:2000;
+
+    display:flex;
+    flex-direction:column;
 }
-
-
 #preparingList.open {
 
     transform:translateY(0);
