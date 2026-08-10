@@ -657,14 +657,18 @@ const infoWindow =
 
     <br>
 
-    배송지 :
-    ${order.delivery_address_main || "-"}
+   배송지 :
+${order.delivery_address_main || "-"}
 
-    <br>
+<br>
 
-    전화번호 :
-    ${order.customer_phone || "-"}
+상세위치 :
+${order.delivery_address_detail || "-"}
 
+<br>
+
+전화번호 :
+${order.customer_phone || "-"}
     </div>
     `
 
