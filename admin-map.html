@@ -611,12 +611,18 @@ function initDeliveryMap(orders) {
     longitude
   ) {
 
-    const position =
-      new kakao.maps.LatLng(
-        latitude,
-        longitude
-      );
+const offset =
+  markerCount * 0.00003;
 
+
+const position =
+  new kakao.maps.LatLng(
+
+    Number(latitude) + offset,
+
+    Number(longitude) + offset
+
+  );
 
   const marker =
   new kakao.maps.Marker({
