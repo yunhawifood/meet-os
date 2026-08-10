@@ -621,14 +621,66 @@ function initDeliveryMap(orders) {
       );
 
 
-    new kakao.maps.Marker({
+  const marker =
+  new kakao.maps.Marker({
 
-      map: map,
+    map: map,
 
-      position: position
+    position: position
 
-    });
+  });
 
+
+const infoWindow =
+  new kakao.maps.InfoWindow({
+
+    content:
+
+    `
+    <div style="
+      padding:12px;
+      min-width:220px;
+      font-size:14px;
+      line-height:1.6;
+    ">
+
+    <strong>
+    🚚 배송 정보
+    </strong>
+
+    <br><br>
+
+    주문번호 :
+    ${order.id.slice(0,8)}
+
+    <br>
+
+    배송지 :
+    ${order.delivery_address_main || "-"}
+
+    <br>
+
+    전화번호 :
+    ${order.customer_phone || "-"}
+
+    </div>
+    `
+
+  });
+
+
+kakao.maps.event.addListener(
+  marker,
+  "click",
+  function(){
+
+    infoWindow.open(
+      map,
+      marker
+    );
+
+  }
+);
 
     bounds.extend(
       position
