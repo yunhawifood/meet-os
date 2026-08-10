@@ -144,26 +144,17 @@ margin-bottom:15px;
 
 #mapArea {
 
-height:350px;
+height:420px;
 
 border:1px solid #ccc;
 
 border-radius:12px;
 
+overflow:hidden;
+
 background:#eeeeee;
 
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-color:#777;
-
-font-size:18px;
-
 }
-
 
 
 .delivery-card {
@@ -270,7 +261,6 @@ class="logout-button">
 
 <section class="section-box">
 
-
 <div class="section-title">
 
 🗺️ 오늘 배송 지도
@@ -278,17 +268,10 @@ class="logout-button">
 </div>
 
 
-<div id="mapArea">
-
-지도 영역 준비 중
-
-</div>
+<div id="mapArea"></div>
 
 
 </section>
-
-
-
 
 <section class="section-box">
 
@@ -309,22 +292,21 @@ class="logout-button">
 
 </section>
 
-
-
 </main>
-
-
-
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script
+  src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=65ebf00207dd007162a893dad6f3f335">
+</script>
 
 
 <script>
 
 
 const SUPABASE_URL =
+
 "https://rbtwvemljpgnwhlzayqy.supabase.co";
 
 
@@ -434,6 +416,30 @@ return;
 
 loadingScreen.style.display="none";
 
+
+}
+
+function initMap() {
+
+  const mapContainer =
+    document.getElementById("mapArea");
+
+  const mapOption = {
+
+    center:
+      new kakao.maps.LatLng(
+        35.8242,
+        127.1480
+      ),
+
+    level: 7
+
+  };
+
+  new kakao.maps.Map(
+    mapContainer,
+    mapOption
+  );
 
 }
 
@@ -580,11 +586,11 @@ moveToLogin();
 );
 
 
-
 protectAdminPage();
 
-loadDeliveryOrders();
+initMap();
 
+loadDeliveryOrders();
 
 
 </script>
