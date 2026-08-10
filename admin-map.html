@@ -345,84 +345,135 @@ window.location.replace(
 }
 
 
+async function protectAdminPage() {
 
-async function protectAdminPage(){
-
-
-const {
-data:{session},
-error
-}
-=
-await supabaseClient.auth.getSession();
+  const {
+    data: { session },
+    error
+  } = await supabaseClient.auth.getSession();
 
 
+  if (error) {
 
-if(error){
+    console.error(error);
 
-console.error(error);
-
-}
-
+  }
 
 
-if(!session){
+  if (!session) {
 
-moveToLogin();
+    moveToLogin();
 
-return;
+    return;
 
-}
-
-
-
-const {
-data:admin
-}
-=
-await supabaseClient
-
-.from("admin_users")
-
-.select(
-"user_id,is_active"
-)
-
-.eq(
-"user_id",
-session.user.id
-)
-
-.eq(
-"is_active",
-true
-)
-
-.maybeSingle();
+  }
 
 
+  const {
+    data: admin
+  } = await supabaseClient
 
-if(!admin){
+    .from("admin_users")
 
-await supabaseClient.auth.signOut();
+    .select(
+      "user_id,is_active"
+    )
 
-moveToLogin();
+    .eq(
+      "user_id",
+      session.user.id
+    )
 
-return;
+    .eq(
+      "is_active",
+      true
+    )
+
+    .maybeSingle();
+
+
+  if (!admin) {
+
+    await supabaseClient.auth.signOut();
+
+    moveToLogin();
+
+    return;
+
+  }
+
+
+  loadingScreen.style.display = "none";
 
 }
 
 
 
-loadingScreen.style.display="none";
+async function loadDeliveryOrders() {
 
+  const {
+    data,
+    error
+  } = await supabaseClient
+
+    .from("orders")
+
+    .select(`
+      *,
+      order_items (*)
+    `)
+
+    .eq(
+      "order_status",
+      "received"
+    )
+
+    .order(
+      "created_at",
+      {
+        ascending: false
+      }
+    );
+
+
+  if (error) {
+
+    console.error(
+      "배송 조회 오류:",
+      error
+    );
+
+    deliveryList.innerHTML =
+    `
+      <p>
+        배송 목록 오류
+      </p>
+
+      <p>
+        ${error.message}
+      </p>
+    `;
+
+    return;
+
+  }
+
+
+  renderDeliveryList(data);
+
+  initDeliveryMap(data);
 
 }
 
-function initMap() {
+
+
+function initDeliveryMap(orders) {
 
   const mapContainer =
-    document.getElementById("mapArea");
+    document.getElementById(
+      "mapArea"
+    );
+
 
   const mapOption = {
 
@@ -436,165 +487,270 @@ function initMap() {
 
   };
 
-  new kakao.maps.Map(
-    mapContainer,
-    mapOption
+
+  const map =
+    new kakao.maps.Map(
+      mapContainer,
+      mapOption
+    );
+
+
+  if (
+    !orders ||
+    orders.length === 0
+  ) {
+
+    return;
+
+  }
+
+
+  const geocoder =
+    new kakao.maps.services.Geocoder();
+
+
+  const places =
+    new kakao.maps.services.Places();
+
+
+  const bounds =
+    new kakao.maps.LatLngBounds();
+
+
+  let markerCount = 0;
+
+
+  orders.forEach(
+    order => {
+
+      const address =
+        (
+          order.delivery_address_main ||
+          ""
+        ).trim();
+
+
+      if (!address) {
+
+        return;
+
+      }
+
+
+      geocoder.addressSearch(
+
+        address,
+
+        function(
+          result,
+          status
+        ) {
+
+
+          if (
+            status ===
+            kakao.maps.services.Status.OK
+          ) {
+
+            addMarker(
+              order,
+              result[0].y,
+              result[0].x
+            );
+
+            return;
+
+          }
+
+
+          places.keywordSearch(
+
+            "전주 " + address,
+
+            function(
+              result,
+              status
+            ) {
+
+
+              if (
+                status !==
+                  kakao.maps.services.Status.OK ||
+                !result ||
+                result.length === 0
+              ) {
+
+                console.warn(
+                  "배송지 검색 실패:",
+                  address
+                );
+
+                return;
+
+              }
+
+
+              addMarker(
+                order,
+                result[0].y,
+                result[0].x
+              );
+
+            }
+
+          );
+
+        }
+
+      );
+
+    }
+
   );
 
-}
+
+  function addMarker(
+    order,
+    latitude,
+    longitude
+  ) {
+
+    const position =
+      new kakao.maps.LatLng(
+        latitude,
+        longitude
+      );
 
 
+    new kakao.maps.Marker({
 
-async function loadDeliveryOrders(){
+      map: map,
 
+      position: position
 
-
-const {
-data,
-error
-}
-=
-await supabaseClient
-
-.from("orders")
-
-.select(`
-*,
-order_items (*)
-`)
-
-.eq(
-"order_status",
-"received"
-)
-
-.order(
-"created_at",
-{
-ascending:false
-}
-);
+    });
 
 
-
-if(error){
-
-console.error("배송 조회 오류:", error);
-
-deliveryList.innerHTML =
-`
-<p>
-배송 목록 오류
-</p>
-
-<p>
-${error.message}
-</p>
-`;
-
-return;
-
-}
-
-renderDeliveryList(data);
+    bounds.extend(
+      position
+    );
 
 
-
-}
-
+    markerCount += 1;
 
 
+    if (
+      markerCount === 1
+    ) {
 
-function renderDeliveryList(orders){
+      map.setCenter(
+        position
+      );
+
+      map.setLevel(
+        4
+      );
+
+    }
 
 
+    if (
+      markerCount >= 2
+    ) {
 
-if(!orders || orders.length===0){
+      map.setBounds(
+        bounds
+      );
 
-deliveryList.innerHTML=
-"오늘 배송 주문이 없습니다.";
+    }
 
-return;
+  }
 
 }
 
 
 
-deliveryList.innerHTML =
+function renderDeliveryList(orders) {
 
-orders.map(order=>{
+  if (
+    !orders ||
+    orders.length === 0
+  ) {
 
+    deliveryList.innerHTML =
+      "오늘 배송 주문이 없습니다.";
 
-return `
+    return;
 
-<div class="delivery-card">
-
-
-주문번호
-
-<strong>
-${order.id.slice(0,8)}
-</strong>
+  }
 
 
-배송지
+  deliveryList.innerHTML =
 
-<strong>
-${order.delivery_address_main || "-"}
-${order.delivery_address_detail || ""}
-</strong>
+    orders.map(
+      order => {
 
+        return `
 
+          <div class="delivery-card">
 
-전화번호
+            주문번호
 
-<strong>
-${order.customer_phone || "-"}
-</strong>
-
-
-</div>
+            <strong>
+              ${order.id.slice(0,8)}
+            </strong>
 
 
-`;
+            배송지
+
+            <strong>
+              ${order.delivery_address_main || "-"}
+              ${order.delivery_address_detail || ""}
+            </strong>
 
 
-}).join("");
+            전화번호
 
+            <strong>
+              ${order.customer_phone || "-"}
+            </strong>
 
+          </div>
+
+        `;
+
+      }
+
+    ).join("");
 
 }
-
-
 
 
 
 document
-.getElementById("logoutButton")
-.addEventListener(
-"click",
-async()=>{
+  .getElementById(
+    "logoutButton"
+  )
+  .addEventListener(
 
+    "click",
 
-await supabaseClient.auth.signOut();
+    async () => {
 
-moveToLogin();
+      await supabaseClient.auth.signOut();
 
+      moveToLogin();
 
-}
+    }
 
-);
+  );
 
 
 protectAdminPage();
 
-initMap();
-
 loadDeliveryOrders();
 
-
 </script>
-
 
 </body>
 
