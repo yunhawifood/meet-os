@@ -525,13 +525,31 @@ function initDeliveryMap(orders) {
 (
   order.delivery_address_main || ""
 ).trim();
+
+
+const customCoordinate =
+  getApartmentCoordinate(
+    order.delivery_address_main,
+    order.delivery_address_detail
+  );
+
       if (!address) {
 
         return;
 
       }
 
+if (customCoordinate) {
 
+  addMarker(
+    order,
+    customCoordinate.lat,
+    customCoordinate.lng
+  );
+
+  return;
+
+}
       geocoder.addressSearch(
 
         address,
