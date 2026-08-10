@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+/>
+
+<title>배송 지도 | 한농직판장 운영 OS</title>
+
+
+<style>
+
+* {
+box-sizing:border-box;
+}
+
+
+body {
+
+margin:0;
+
+background:#f4f4f4;
+
+color:#222;
+
+font-family:
+
+-apple-system,
+BlinkMacSystemFont,
+"Apple SD Gothic Neo",
+"Noto Sans KR",
+sans-serif;
+
+}
+
+
+header {
+
+background:white;
+
+border-bottom:1px solid #ddd;
+
+padding:16px;
+
+}
+
+
+.header-inner {
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+max-width:900px;
+
+margin:auto;
+
+}
+
+
+button {
+
+appearance:none;
+
+-webkit-appearance:none;
+
+cursor:pointer;
+
+}
+
+
+.back-button,
+.logout-button {
+
+min-height:42px;
+
+padding:9px 14px;
+
+border:1px solid #ccc;
+
+border-radius:8px;
+
+background:white;
+
+font-size:15px;
+
+}
+
+
+h1 {
+
+font-size:21px;
+
+margin:0;
+
+}
+
+
+main {
+
+width:calc(100% - 32px);
+
+max-width:900px;
+
+margin:22px auto 50px;
+
+}
+
+
+
+.section-box {
+
+background:white;
+
+border:1px solid #ddd;
+
+border-radius:12px;
+
+padding:20px;
+
+margin-bottom:16px;
+
+}
+
+
+.section-title {
+
+font-size:19px;
+
+font-weight:700;
+
+margin-bottom:15px;
+
+}
+
+
+
+#mapArea {
+
+height:350px;
+
+border:1px solid #ccc;
+
+border-radius:12px;
+
+background:#eeeeee;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+color:#777;
+
+font-size:18px;
+
+}
+
+
+
+.delivery-card {
+
+padding:15px;
+
+border:1px solid #ddd;
+
+border-radius:10px;
+
+margin-bottom:10px;
+
+background:white;
+
+}
+
+
+.delivery-card strong {
+
+display:block;
+
+margin-top:6px;
+
+}
+
+
+
+.loading-screen {
+
+position:fixed;
+
+inset:0;
+
+background:white;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+z-index:9999;
+
+}
+
+
+</style>
+
+</head>
+
+
+
+<body>
+
+
+<div
+id="loadingScreen"
+class="loading-screen">
+
+관리자 권한 확인 중...
+
+</div>
+
+
+
+<header>
+
+<div class="header-inner">
+
+
+<a
+class="back-button"
+href="./admin-orders.html">
+
+← 주문 관리
+
+</a>
+
+
+<h1>
+배송 지도
+</h1>
+
+
+
+<button
+id="logoutButton"
+class="logout-button">
+
+로그아웃
+
+</button>
+
+
+</div>
+
+</header>
+
+
+
+
+<main>
+
+
+<section class="section-box">
+
+
+<div class="section-title">
+
+🗺️ 오늘 배송 지도
+
+</div>
+
+
+<div id="mapArea">
+
+지도 영역 준비 중
+
+</div>
+
+
+</section>
+
+
+
+
+<section class="section-box">
+
+
+<div class="section-title">
+
+🚚 오늘 배송 목록
+
+</div>
+
+
+<div id="deliveryList">
+
+불러오는 중...
+
+</div>
+
+
+</section>
+
+
+
+</main>
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+
+<script>
+
+
+const SUPABASE_URL =
+"https://rbtwvemljpgnwhlzayqy.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_m-Uc3eR2-57P36HMP_eHsQ_F5h1tfzu";
+
+
+
+const supabaseClient =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_PUBLISHABLE_KEY
+);
+
+
+
+const loadingScreen =
+document.getElementById(
+"loadingScreen"
+);
+
+
+const deliveryList =
+document.getElementById(
+"deliveryList"
+);
+
+
+
+function moveToLogin(){
+
+window.location.replace(
+"./admin-login.html"
+);
+
+}
+
+
+
+async function protectAdminPage(){
+
+
+const {
+data:{session},
+error
+}
+=
+await supabaseClient.auth.getSession();
+
+
+
+if(error){
+
+console.error(error);
+
+}
+
+
+
+if(!session){
+
+moveToLogin();
+
+return;
+
+}
+
+
+
+const {
+data:admin
+}
+=
+await supabaseClient
+
+.from("admin_users")
+
+.select(
+"user_id,is_active"
+)
+
+.eq(
+"user_id",
+session.user.id
+)
+
+.eq(
+"is_active",
+true
+)
+
+.maybeSingle();
+
+
+
+if(!admin){
+
+await supabaseClient.auth.signOut();
+
+moveToLogin();
+
+return;
+
+}
+
+
+
+loadingScreen.style.display="none";
+
+
+}
+
+
+
+async function loadDeliveryOrders(){
+
+
+
+const {
+data,
+error
+}
+=
+await supabaseClient
+
+.from("orders")
+
+.select(`
+*,
+order_items (*)
+`)
+
+.eq(
+"order_status",
+"received"
+)
+
+.order(
+"created_at",
+{
+ascending:false
+}
+);
+
+
+
+if(error){
+
+console.error(error);
+
+deliveryList.innerHTML=
+"배송 목록을 불러오지 못했습니다.";
+
+return;
+
+}
+
+
+
+renderDeliveryList(data);
+
+
+
+}
+
+
+
+
+function renderDeliveryList(orders){
+
+
+
+if(!orders || orders.length===0){
+
+deliveryList.innerHTML=
+"오늘 배송 주문이 없습니다.";
+
+return;
+
+}
+
+
+
+deliveryList.innerHTML =
+
+orders.map(order=>{
+
+
+return `
+
+<div class="delivery-card">
+
+
+주문번호
+
+<strong>
+${order.id.slice(0,8)}
+</strong>
+
+
+배송지
+
+<strong>
+${order.delivery_address_main || "-"}
+${order.delivery_address_detail || ""}
+</strong>
+
+
+
+전화번호
+
+<strong>
+${order.customer_phone || "-"}
+</strong>
+
+
+</div>
+
+
+`;
+
+
+}).join("");
+
+
+
+}
+
+
+
+
+
+document
+.getElementById("logoutButton")
+.addEventListener(
+"click",
+async()=>{
+
+
+await supabaseClient.auth.signOut();
+
+moveToLogin();
+
+
+}
+
+);
+
+
+
+protectAdminPage();
+
+loadDeliveryOrders();
+
+
+
+</script>
+
+
+</body>
+
+</html>
