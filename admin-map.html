@@ -522,11 +522,12 @@ function initDeliveryMap(orders) {
   orders.forEach(
     order => {
 
-      const address =
-        (
-          order.delivery_address_main ||
-          ""
-        ).trim();
+     const address =
+(
+  (order.delivery_address_main || "") +
+  " " +
+  (order.delivery_address_detail || "")
+).trim();
 
 
       if (!address) {
