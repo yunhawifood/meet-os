@@ -899,11 +899,16 @@ button:focus {
 
 <div id="mapButton">
 
-<button class="map-toggle">
+<button
+class="map-toggle"
+type="button"
+onclick="openDeliveryMap()"
+>
 🗺️ 지도보기
 </button>
 
 </div>
+
 <div id="todayOrdersList"
 class="orders-list">
 </div>
@@ -1617,6 +1622,12 @@ await showTodayOrders();
 await showCompletedOrders();
 
 }
+function openDeliveryMap(){
+
+  window.location.href="./admin-map.html";
+
+}
+
 function sendPhotoMessage(phone) {
 
   const message =

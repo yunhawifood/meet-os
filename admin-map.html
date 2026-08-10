@@ -473,16 +473,22 @@ ascending:false
 
 if(error){
 
-console.error(error);
+console.error("배송 조회 오류:", error);
 
-deliveryList.innerHTML=
-"배송 목록을 불러오지 못했습니다.";
+deliveryList.innerHTML =
+`
+<p>
+배송 목록 오류
+</p>
+
+<p>
+${error.message}
+</p>
+`;
 
 return;
 
 }
-
-
 
 renderDeliveryList(data);
 
