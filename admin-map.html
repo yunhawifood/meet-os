@@ -757,67 +757,6 @@ color:white;
 
 `;
 
-    return `
-
-  <div style="
-    padding:12px;
-    min-width:260px;
-    max-height:400px;
-    overflow-y:auto;
-    font-size:14px;
-    line-height:1.6;
-    position:relative;
-">
-
-
-<button
-style="
-position:absolute;
-right:8px;
-top:4px;
-border:none;
-background:none;
-font-size:20px;
-cursor:pointer;
-"
-onclick="
-infoWindow.close();
-">
-×
-</button>
-
-
-<strong>
-🏢 ${apartmentName}
-</strong>
-    <br>
-
-    오늘 배송
-    ${apartmentOrders.length}건
-
-    ${orderList}
-
-
-    <button
-    id="closeButton"
-    style="
-    width:100%;
-    padding:8px;
-    border:none;
-    border-radius:8px;
-    background:#777;
-    color:white;
-    ">
-    닫기
-    </button>
-
-    </div>
-
-    `;
-
-}
-
-
 
 const infoWindow =
     new kakao.maps.InfoWindow({
