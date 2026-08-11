@@ -16,25 +16,6 @@ function getApartmentCoordinate(
   detailAddress
 ) {
 
-  const detail =
-    detailAddress || "";
-
-
-  const dongMatch =
-    detail.match(/\d+동/);
-
-
-  if (!dongMatch) {
-
-    return null;
-
-  }
-
-
-  const key =
-    apartmentName + "_" + dongMatch[0];
-
-
-  return apartmentCoordinates[key] || null;
+  return apartmentCoordinates[apartmentName] || null;
 
 }
