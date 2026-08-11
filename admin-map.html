@@ -602,10 +602,11 @@ if (
 ) {
 
   addMarker(
-    order,
+    order.delivery_address_main,
+    [order],
     customCoordinate.lat,
     customCoordinate.lng
-  );
+);
 
   return;
 
@@ -681,86 +682,76 @@ if (
 
   );
 
-
-  function addMarker(
-    order,
-    latitude,
-    longitude
-  ) {
-
-const offset =
-  markerCount * 0.00003;
-
-
-const position =
-  new kakao.maps.LatLng(
-
-    Number(latitude) + offset,
-
-    Number(longitude) + offset
-
-  );
-console.log(
-  "마커좌표",
+function addMarker(
+  apartmentName,
+  apartmentOrders,
   latitude,
   longitude
-);
+){
+
+  const position =
+    new kakao.maps.LatLng(
+      Number(latitude),
+      Number(longitude)
+    );
+
+
+  console.log(
+    "마커좌표",
+    latitude,
+    longitude
+  );
+
+
   const marker =
-  new kakao.maps.Marker({
+    new kakao.maps.Marker({
 
-    map: map,
+      map: map,
 
-    position: position
+      position: position
 
-  });
+    });
 
-deliveryMarkers[order.id] = marker;
-const infoWindow =
-  new kakao.maps.InfoWindow({
 
-    content:
+  deliveryMarkers[apartmentName] = marker;
 
-    `
-    <div style="
-      padding:12px;
-      min-width:260px;
-      font-size:14px;
-      line-height:1.6;
-    ">
 
-    <strong>
-    🏢 ${order.delivery_address_main || "배송지"}
-    </strong>
+  const orderList =
+    apartmentOrders.map(order => {
 
-    <br>
+      return `
 
-    배송 정보
+      <hr>
 
-    <br><br>
+      <div style="
+        margin-bottom:12px;
+      ">
 
-    주문번호 :
-    ${order.id.slice(0,8)}
+      <strong>
+      주문번호 :
+      ${order.id.slice(0,8)}
+      </strong>
 
-    <br>
+      <br>
 
-    상세위치 :
-    ${order.delivery_address_detail || "-"}
+      상세위치 :
+      ${order.delivery_address_detail || "-"}
 
-    <br>
+      <br>
 
-    상품 :
-    ${order.items || "-"}
+      상품 :
+      ${order.items || "-"}
 
-    <br>
+      <br>
 
-    전화번호 :
-    ${order.customer_phone || "-"}
+      전화번호 :
+      ${order.customer_phone || "-"}
 
-    <br><br>
+      <br><br>
 
-    <button
+      <button
       onclick="
-      location.href='admin-orders.html'
+      location.href='admin-orders.html#${order.id}'
       "
       style="
       width:100%;
@@ -770,66 +761,94 @@ const infoWindow =
       background:#1f6f43;
       color:white;
       ">
-      
       주문 보기
+      </button>
 
-    </button>
+      </div>
 
-    </div>
-    `
+      `;
 
-  });
+    }).join("");
 
-kakao.maps.event.addListener(
-  marker,
-  "click",
-  function(){
 
-    infoWindow.open(
-      map,
-      marker
-    );
+  const infoWindow =
+    new kakao.maps.InfoWindow({
 
-  }
-);
+      content:
 
-    bounds.extend(
+      `
+      <div style="
+        padding:12px;
+        min-width:260px;
+        font-size:14px;
+        line-height:1.6;
+      ">
+
+      <strong>
+      🏢 ${apartmentName}
+      </strong>
+
+      <br>
+
+      오늘 배송
+      ${apartmentOrders.length}건
+
+      ${orderList}
+
+      </div>
+      `
+
+    });
+
+
+  kakao.maps.event.addListener(
+    marker,
+    "click",
+    function(){
+
+      infoWindow.open(
+        map,
+        marker
+      );
+
+    }
+  );
+
+
+  bounds.extend(
+    position
+  );
+
+
+  markerCount += 1;
+
+
+  if (
+    markerCount === 1
+  ){
+
+    map.setCenter(
       position
     );
 
+    map.setLevel(
+      4
+    );
 
-    markerCount += 1;
-
-
-    if (
-      markerCount === 1
-    ) {
-
-      map.setCenter(
-        position
-      );
-
-      map.setLevel(
-        4
-      );
-
-    }
+  }
 
 
-    if (
-      markerCount >= 2
-    ) {
+  if (
+    markerCount >= 2
+  ){
 
-      map.setBounds(
-        bounds
-      );
-
-    }
+    map.setBounds(
+      bounds
+    );
 
   }
 
 }
-
 
 
 function renderDeliveryList(orders) {
