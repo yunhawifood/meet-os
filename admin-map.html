@@ -723,14 +723,18 @@ const infoWindow =
     `
     <div style="
       padding:12px;
-      min-width:220px;
+      min-width:260px;
       font-size:14px;
       line-height:1.6;
     ">
 
     <strong>
-    🚚 배송 정보
+    🏢 ${order.delivery_address_main || "배송지"}
     </strong>
+
+    <br>
+
+    배송 정보
 
     <br><br>
 
@@ -739,23 +743,42 @@ const infoWindow =
 
     <br>
 
-   배송지 :
-${order.delivery_address_main || "-"}
+    상세위치 :
+    ${order.delivery_address_detail || "-"}
 
-<br>
+    <br>
 
-상세위치 :
-${order.delivery_address_detail || "-"}
+    상품 :
+    ${order.items || "-"}
 
-<br>
+    <br>
 
-전화번호 :
-${order.customer_phone || "-"}
+    전화번호 :
+    ${order.customer_phone || "-"}
+
+    <br><br>
+
+    <button
+      onclick="
+      location.href='admin-orders.html'
+      "
+      style="
+      width:100%;
+      padding:8px;
+      border:none;
+      border-radius:8px;
+      background:#1f6f43;
+      color:white;
+      ">
+      
+      주문 보기
+
+    </button>
+
     </div>
     `
 
   });
-
 
 kakao.maps.event.addListener(
   marker,
