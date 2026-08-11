@@ -664,14 +664,11 @@ if (
               }
 
 
-              addMarker(
-                order,
-                result[0].y,
-                result[0].x
-              );
-
-            }
-
+             addMarker(
+            order.delivery_address_main,
+            [order],
+            result[0].y,
+            result[0].x
           );
 
         }
@@ -680,7 +677,8 @@ if (
 
     }
 
-  );
+  }
+);
 
 function addMarker(
   apartmentName,
