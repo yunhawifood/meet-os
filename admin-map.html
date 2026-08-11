@@ -502,17 +502,16 @@ kakao.maps.event.addListener(
       mouseEvent.latLng;
 
 
-    console.log(
-      "위도:",
-      latlng.getLat()
-    );
+  console.log(latlng);
 
+console.log(
+  latlng.getLat(),
+  latlng.getLng()
+);
 
-    console.log(
-      "경도:",
-      latlng.getLng()
-    );
-
+console.log(
+  mouseEvent.latLng.toString()
+);
 
     alert(
       "위도 : " +
