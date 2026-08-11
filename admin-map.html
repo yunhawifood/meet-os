@@ -298,8 +298,12 @@ class="logout-button">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script 
-src="//dapi.kakao.com/v2/maps/sdk.js?appkey=65ebf00207dd007162a893dad6f3f335&libraries=services">
+src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=65ebf00207dd007162a893dad6f3f335&libraries=services">
 </script>
+<script>
+console.log("카카오SDK 체크", typeof kakao);
+</script>
+
 <script src="apartment-coordinates.js"></script>
 <script>
 
@@ -850,11 +854,13 @@ document
 
   );
 
-
 protectAdminPage();
 
-loadDeliveryOrders();
+window.onload = function(){
 
+  loadDeliveryOrders();
+
+};
 </script>
 
 </body>
