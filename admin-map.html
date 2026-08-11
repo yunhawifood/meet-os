@@ -550,16 +550,38 @@ console.log(
     new kakao.maps.LatLngBounds();
 
 const apartmentGroups = {};
-  let markerCount = 0;
 
-  orders.forEach(
-    order => {
+let markerCount = 0;
 
- const address =
-(
-  order.delivery_address_main || ""
-).trim();
 
+orders.forEach(
+  order => {
+
+    const apartmentName =
+    (
+      order.delivery_address_main || ""
+    ).trim();
+
+
+    if (!apartmentGroups[apartmentName]) {
+
+      apartmentGroups[apartmentName] = [];
+
+    }
+
+
+    apartmentGroups[apartmentName].push(order);
+
+  }
+);
+
+orders.forEach(
+  order => {
+
+    const address =
+    (
+      order.delivery_address_main || ""
+    ).trim();
 
 const customCoordinate =
   getApartmentCoordinate(
