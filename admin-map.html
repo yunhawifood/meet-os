@@ -573,11 +573,11 @@ const customCoordinate =
 
       }
 
-if (customCoordinate) {
-  console.log(
-    "아파트 좌표 확인",
-    customCoordinate
-  );
+if (
+  customCoordinate &&
+  customCoordinate.lat !== null &&
+  customCoordinate.lng !== null
+) {
 
   addMarker(
     order,
