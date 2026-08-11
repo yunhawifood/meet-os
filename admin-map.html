@@ -333,7 +333,7 @@
 
 
         async function protectAdminPage() {
-console.log("getSession 시작");
+
             const {
                 data: { session },
                 error
@@ -389,7 +389,6 @@ console.log("getSession 시작");
 
             }
 
-console.log("권한 확인 완료");
             loadingScreen.style.display = "none";
 
         }
@@ -482,39 +481,6 @@ console.log("권한 확인 완료");
 
             map.relayout();
 
-            kakao.maps.event.addListener(
-                map,
-                "click",
-                function (mouseEvent) {
-
-                    const latlng =
-                        mouseEvent.latLng;
-                    console.log(mouseEvent.latLng.constructor.name);
-
-                    console.log(mouseEvent);
-
-                    console.log(latlng);
-
-                    console.log(
-                        latlng.getLat(),
-                        latlng.getLng()
-                    );
-
-                    console.log(
-                        mouseEvent.latLng.toString()
-                    );
-
-                    alert(
-                        "위도 : " +
-                        latlng.getLat()
-                        +
-                        "\n\n경도 : "
-                        +
-                        latlng.getLng()
-                    );
-
-                }
-            );
             if (
                 !orders ||
                 orders.length === 0
@@ -914,8 +880,6 @@ console.log("권한 확인 완료");
 
             }
 
-
-console.log("protect 호출");
 protectAdminPage();
 
 window.onload = function () {
