@@ -529,113 +529,109 @@ color: #333;
                 }
             );
 
-            orders.forEach(
-                order => {
+ Object.keys(apartmentGroups).forEach(
+    apartmentName => {
 
-                    const address =
-                        (
-                            order.delivery_address_main || ""
-                        ).trim();
-
-                    const customCoordinate =
-                        getApartmentCoordinate(
-                            order.delivery_address_main,
-                            order.delivery_address_detail
-                        );
-
-                    if (!address) {
-
-                        return;
-
-                    }
-
-                    if (
-                        customCoordinate &&
-                        customCoordinate.lat !== null &&
-                        customCoordinate.lng !== null
-                    ) {
-
-                        addMarker(
-                            order.delivery_address_main,
-                            [order],
-                            customCoordinate.lat,
-                            customCoordinate.lng
-                        );
-
-                        return;
-
-                    }
-                    geocoder.addressSearch(
-
-                        address,
-
-                        function (
-                            result,
-                            status
-                        ) {
+        const apartmentOrders =
+            apartmentGroups[apartmentName];
 
 
-                            if (
-    status ===
-    kakao.maps.services.Status.OK
-) {
-
-    addMarker(
-        order.delivery_address_main,
-        [order],
-        result[0].y,
-        result[0].x
-    );
-
-    return;
-
-}
-
-                            places.keywordSearch(
-
-                                "전주 " + address,
-
-                                function (
-                                    result,
-                                    status
-                                ) {
+        const customCoordinate =
+            getApartmentCoordinate(
+                apartmentOrders[0].delivery_address_main,
+                apartmentOrders[0].delivery_address_detail
+            );
 
 
-                                    if (
-                                        status !==
-                                        kakao.maps.services.Status.OK ||
-                                        !result ||
-                                        result.length === 0
-                                    ) {
+        if (
+            customCoordinate &&
+            customCoordinate.lat !== null &&
+            customCoordinate.lng !== null
+        ) {
 
-                                        console.warn(
-                                            "배송지 검색 실패:",
-                                            address
-                                        );
+            addMarker(
+                apartmentName,
+                apartmentOrders,
+                customCoordinate.lat,
+                customCoordinate.lng
+            );
 
-                                        return;
+            return;
 
-                                    }
+        }
 
-                                    addMarker(
-                                        order.delivery_address_main,
-                                        [order],
-                                        result[0].y,
-                                        result[0].x
-                                    );
 
-                                }
+        geocoder.addressSearch(
 
-                            );
+            apartmentName,
 
-                        }
+            function (
+                result,
+                status
+            ) {
 
+                if (
+                    status ===
+                    kakao.maps.services.Status.OK
+                ) {
+
+                    addMarker(
+                        apartmentName,
+                        apartmentOrders,
+                        result[0].y,
+                        result[0].x
                     );
+
+                    return;
 
                 }
 
-            );
 
+                places.keywordSearch(
+
+                    "전주 " + apartmentName,
+
+                    function (
+                        result,
+                        status
+                    ) {
+
+
+                        if (
+                            status !==
+                            kakao.maps.services.Status.OK ||
+                            !result ||
+                            result.length === 0
+                        ) {
+
+                            console.warn(
+                                "배송지 검색 실패:",
+                                apartmentName
+                            );
+
+                            return;
+
+                        }
+
+
+                        addMarker(
+                            apartmentName,
+                            apartmentOrders,
+                            result[0].y,
+                            result[0].x
+                        );
+
+                    }
+
+                );
+
+            }
+
+        );
+
+    }
+
+);
 
             function addMarker(
 
