@@ -663,24 +663,28 @@ if (
 
               }
 
-
-             addMarker(
-            order.delivery_address_main,
-            [order],
-            result[0].y,
-            result[0].x
-          );
-
-        }
-
-      );
-
-    }
-
-  }
+addMarker(
+  order.delivery_address_main,
+  [order],
+  result[0].y,
+  result[0].x
 );
 
+          }
+
+        );
+
+      }
+
+    );
+
+  }
+
+);
+
+
 function addMarker(
+             
   apartmentName,
   apartmentOrders,
   latitude,
