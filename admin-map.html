@@ -771,12 +771,7 @@ const infoWindow =
     "click",
     function () {
 
-        if(infoWindow.getMap()){
-
-            expanded = !expanded;
-
-        }
-
+      expanded = !expanded;
 
         infoWindow.setContent(
             createInfoContent()
