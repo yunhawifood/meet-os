@@ -641,7 +641,6 @@ color: #333;
 
       let expanded = false;
 
-
 const orderList =
     apartmentOrders.map(order => {
 
@@ -703,60 +702,6 @@ const orderList =
 
     }).join("");
 
-return `
-
-<div style="
-    padding:12px;
-    min-width:220px;
-    font-size:14px;
-    position:relative;
-">
-
-<button
-id="closeSmallButton"
-style="
-position:absolute;
-right:8px;
-top:4px;
-border:none;
-background:none;
-font-size:20px;
-cursor:pointer;
-">
-×
-</button>
-
-
-<strong>
-🏢 ${apartmentName}
-</strong>
-
-<br>
-
-오늘 배송
-${apartmentOrders.length}건
-
-<br><br>
-
-
-<button
-id="expandButton"
-style="
-width:100%;
-padding:8px;
-border:none;
-border-radius:8px;
-background:#1f6f43;
-color:white;
-">
-상세 보기
-</button>
-
-
-</div>
-
-`;
-
 
 const infoWindow =
     new kakao.maps.InfoWindow({
@@ -773,7 +718,7 @@ const infoWindow =
 
         <button
         onclick="
-        infoWindow.close();
+        this.parentElement.parentElement.style.display='none';
         "
         style="
         position:absolute;
@@ -800,7 +745,9 @@ const infoWindow =
         <br><br>
 
         <button
-        id="expandButton"
+        onclick="
+        location.href='admin-orders.html'
+        "
         style="
         width:100%;
         padding:8px;
@@ -814,10 +761,13 @@ const infoWindow =
 
 
         </div>
+
         `
 
     });
-            kakao.maps.event.addListener(
+
+
+kakao.maps.event.addListener(
     marker,
     "click",
     function () {
@@ -826,44 +776,10 @@ const infoWindow =
             map,
             marker
         );
-       
+
     }
 );
 
-                bounds.extend(
-                    position
-                );
-
-
-                markerCount += 1;
-
-
-                if (
-                    markerCount === 1
-                ) {
-
-                    map.setCenter(
-                        position
-                    );
-
-                    map.setLevel(
-                        4
-                    );
-
-                }
-
-
-                if (
-                    markerCount >= 2
-                ) {
-
-                    map.setBounds(
-                        bounds
-                    );
-
-                }
-
-            }
 
             document
                 .getElementById(
