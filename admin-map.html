@@ -839,8 +839,27 @@ console.log("권한 확인 완료");
 
             }
 
+            document
+                .getElementById(
+                    "logoutButton"
+                )
+                .addEventListener(
 
-            function renderDeliveryList(orders) {
+                    "click",
+
+                    async () => {
+
+                        await supabaseClient.auth.signOut();
+
+                        moveToLogin();
+
+                    }
+
+                );
+
+}
+
+        function renderDeliveryList(orders) {
 
                 if (
                     !orders ||
@@ -895,27 +914,6 @@ console.log("권한 확인 완료");
 
             }
 
-
-
-            document
-                .getElementById(
-                    "logoutButton"
-                )
-                .addEventListener(
-
-                    "click",
-
-                    async () => {
-
-                        await supabaseClient.auth.signOut();
-
-                        moveToLogin();
-
-                    }
-
-                );
-
-}
 
 console.log("protect 호출");
 protectAdminPage();
