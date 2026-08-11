@@ -762,21 +762,65 @@ const infoWindow =
     new kakao.maps.InfoWindow({
 
         content:
-        createInfoContent()
+
+        `
+        <div style="
+            padding:12px;
+            min-width:220px;
+            font-size:14px;
+            position:relative;
+        ">
+
+        <button
+        onclick="
+        infoWindow.close();
+        "
+        style="
+        position:absolute;
+        right:8px;
+        top:4px;
+        border:none;
+        background:none;
+        font-size:20px;
+        cursor:pointer;
+        ">
+        ×
+        </button>
+
+
+        <strong>
+        🏢 ${apartmentName}
+        </strong>
+
+        <br>
+
+        오늘 배송
+        ${apartmentOrders.length}건
+
+        <br><br>
+
+        <button
+        id="expandButton"
+        style="
+        width:100%;
+        padding:8px;
+        border:none;
+        border-radius:8px;
+        background:#1f6f43;
+        color:white;
+        ">
+        상세 보기
+        </button>
+
+
+        </div>
+        `
 
     });
-
             kakao.maps.event.addListener(
     marker,
     "click",
     function () {
-
-      expanded = !expanded;
-
-        infoWindow.setContent(
-            createInfoContent()
-        );
-
 
         infoWindow.open(
             map,
