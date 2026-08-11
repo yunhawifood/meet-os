@@ -1121,108 +1121,281 @@ function initDeliveryMap(orders) {
 
         }
 
+function showDetailInfo() {
+
+    const content =
+        document.createElement(
+            "div"
+        );
 
 
-        function showDetailInfo() {
+    content.style.cssText = `
+        padding:12px;
+        width:280px;
+        font-size:14px;
+        line-height:1.6;
+        position:relative;
+        overflow:hidden;
+    `;
 
-            const content =
+
+
+    const title =
+        document.createElement(
+            "strong"
+        );
+
+
+    title.textContent =
+        `🏢 ${apartmentName}`;
+
+
+    title.style.display =
+        "block";
+
+
+    title.style.paddingRight =
+        "28px";
+
+
+
+    const count =
+        document.createElement(
+            "div"
+        );
+
+
+    count.textContent =
+        `오늘 배송 ${sortedOrders.length}건`;
+
+
+    count.style.marginTop =
+        "5px";
+
+
+    count.style.marginBottom =
+        "8px";
+
+
+
+    const closeButton =
+        document.createElement(
+            "button"
+        );
+
+
+    closeButton.type =
+        "button";
+
+
+    closeButton.textContent =
+        "×";
+
+
+    closeButton.setAttribute(
+        "aria-label",
+        "배송 상세 닫기"
+    );
+
+
+    closeButton.style.cssText = `
+        position:absolute;
+        right:6px;
+        top:2px;
+        border:none;
+        background:transparent;
+        font-size:22px;
+        line-height:1;
+        padding:4px 7px;
+        cursor:pointer;
+        z-index:10;
+    `;
+
+
+    closeButton.addEventListener(
+
+        "click",
+
+        event => {
+
+            event.stopPropagation();
+
+            closeInfoWindow();
+
+        }
+
+    );
+
+
+
+    const orderList =
+        document.createElement(
+            "div"
+        );
+
+
+    orderList.style.cssText = `
+        max-height:250px;
+        overflow-y:auto;
+        overflow-x:hidden;
+        padding-right:4px;
+        overscroll-behavior:contain;
+    `;
+
+
+
+    content.appendChild(
+        closeButton
+    );
+
+
+    content.appendChild(
+        title
+    );
+
+
+    content.appendChild(
+        count
+    );
+
+
+
+    sortedOrders.forEach(
+        order => {
+
+            const orderBox =
                 document.createElement(
                     "div"
                 );
 
 
-            content.style.cssText = `
-                padding:12px;
-                width:280px;
-                max-height:380px;
-                overflow-y:auto;
-                font-size:14px;
-                line-height:1.6;
-                position:relative;
+            orderBox.style.cssText = `
+                padding:10px 0 12px;
+                border-top:1px solid #ddd;
             `;
 
 
 
-            const title =
-                document.createElement(
-                    "strong"
-                );
-
-
-            title.textContent =
-                `🏢 ${apartmentName}`;
-
-
-            title.style.display =
-                "block";
-
-
-            title.style.paddingRight =
-                "28px";
-
-
-
-            const count =
-                document.createElement(
-                    "div"
-                );
-
-
-            count.textContent =
-                `오늘 배송 ${sortedOrders.length}건`;
-
-
-            count.style.marginTop =
-                "5px";
-
-
-            count.style.marginBottom =
-                "8px";
-
-
-
-            const closeButton =
+            const orderNumber =
                 document.createElement(
                     "button"
                 );
 
 
-            closeButton.type =
+            orderNumber.type =
                 "button";
 
 
-            closeButton.textContent =
-                "×";
+            orderNumber.textContent =
+                `주문번호 : ${String(order.id).slice(0, 8)}`;
 
 
-            closeButton.setAttribute(
-                "aria-label",
-                "배송 상세 닫기"
+            orderNumber.style.cssText = `
+                border:none;
+                background:transparent;
+                padding:0;
+                font-weight:700;
+                font-size:14px;
+                text-decoration:underline;
+                cursor:pointer;
+                text-align:left;
+            `;
+
+
+            orderNumber.addEventListener(
+
+                "click",
+
+                () => {
+
+                    location.href =
+                        `admin-orders.html#${order.id}`;
+
+                }
+
             );
 
 
-            closeButton.style.cssText = `
-                position:absolute;
-                right:6px;
-                top:2px;
+
+            const location =
+                document.createElement(
+                    "div"
+                );
+
+
+            location.style.marginTop =
+                "6px";
+
+
+            location.textContent =
+                `상세위치 : ${order.delivery_address_detail || "-"}`;
+
+
+
+            const products =
+                document.createElement(
+                    "div"
+                );
+
+
+            products.style.marginTop =
+                "4px";
+
+
+            products.innerHTML =
+                `상품 : ${getOrderItemsHtml(order)}`;
+
+
+
+            const phone =
+                document.createElement(
+                    "div"
+                );
+
+
+            phone.style.marginTop =
+                "4px";
+
+
+            phone.textContent =
+                `전화번호 : ${order.customer_phone || "-"}`;
+
+
+
+            const orderViewButton =
+                document.createElement(
+                    "button"
+                );
+
+
+            orderViewButton.type =
+                "button";
+
+
+            orderViewButton.textContent =
+                "주문 보기";
+
+
+            orderViewButton.style.cssText = `
+                width:100%;
+                margin-top:9px;
+                padding:8px;
                 border:none;
-                background:transparent;
-                font-size:22px;
-                line-height:1;
-                padding:4px 7px;
+                border-radius:8px;
+                background:#1f6f43;
+                color:white;
                 cursor:pointer;
             `;
 
 
-            closeButton.addEventListener(
+            orderViewButton.addEventListener(
 
                 "click",
 
-                event => {
+                () => {
 
-                    event.stopPropagation();
-
-                    closeInfoWindow();
+                    location.href =
+                        `admin-orders.html#${order.id}`;
 
                 }
 
@@ -1230,217 +1403,65 @@ function initDeliveryMap(orders) {
 
 
 
-            content.appendChild(
-                closeButton
+            orderBox.appendChild(
+                orderNumber
             );
 
 
-            content.appendChild(
-                title
+            orderBox.appendChild(
+                location
             );
 
 
-            content.appendChild(
-                count
+            orderBox.appendChild(
+                products
             );
 
 
-
-            sortedOrders.forEach(
-                order => {
-
-                    const orderBox =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    orderBox.style.cssText = `
-                        padding:10px 0 12px;
-                        border-top:1px solid #ddd;
-                    `;
-
-
-
-                    const orderNumber =
-                        document.createElement(
-                            "button"
-                        );
-
-
-                    orderNumber.type =
-                        "button";
-
-
-                    orderNumber.textContent =
-                        `주문번호 : ${String(order.id).slice(0, 8)}`;
-
-
-                    orderNumber.style.cssText = `
-                        border:none;
-                        background:transparent;
-                        padding:0;
-                        font-weight:700;
-                        font-size:14px;
-                        text-decoration:underline;
-                        cursor:pointer;
-                        text-align:left;
-                    `;
-
-
-                    orderNumber.addEventListener(
-
-                        "click",
-
-                        () => {
-
-                            location.href =
-                                `admin-orders.html#${order.id}`;
-
-                        }
-
-                    );
-
-
-
-                    const location =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    location.style.marginTop =
-                        "6px";
-
-
-                    location.textContent =
-                        `상세위치 : ${order.delivery_address_detail || "-"}`;
-
-
-
-                    const products =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    products.style.marginTop =
-                        "4px";
-
-
-                    products.innerHTML =
-                        `상품 : ${getOrderItemsHtml(order)}`;
-
-
-
-                    const phone =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    phone.style.marginTop =
-                        "4px";
-
-
-                    phone.textContent =
-                        `전화번호 : ${order.customer_phone || "-"}`;
-
-
-
-                    const orderViewButton =
-                        document.createElement(
-                            "button"
-                        );
-
-
-                    orderViewButton.type =
-                        "button";
-
-
-                    orderViewButton.textContent =
-                        "주문 보기";
-
-
-                    orderViewButton.style.cssText = `
-                        width:100%;
-                        margin-top:9px;
-                        padding:8px;
-                        border:none;
-                        border-radius:8px;
-                        background:#1f6f43;
-                        color:white;
-                        cursor:pointer;
-                    `;
-
-
-                    orderViewButton.addEventListener(
-
-                        "click",
-
-                        () => {
-
-                            location.href =
-                                `admin-orders.html#${order.id}`;
-
-                        }
-
-                    );
-
-
-
-                    orderBox.appendChild(
-                        orderNumber
-                    );
-
-
-                    orderBox.appendChild(
-                        location
-                    );
-
-
-                    orderBox.appendChild(
-                        products
-                    );
-
-
-                    orderBox.appendChild(
-                        phone
-                    );
-
-
-                    orderBox.appendChild(
-                        orderViewButton
-                    );
-
-
-                    content.appendChild(
-                        orderBox
-                    );
-
-                }
-
+            orderBox.appendChild(
+                phone
             );
 
 
-
-            infoWindow.setContent(
-                content
+            orderBox.appendChild(
+                orderViewButton
             );
 
 
-            infoWindow.open(
-                map,
-                marker
+            orderList.appendChild(
+                orderBox
             );
-
-
-            activeInfoWindow =
-                infoWindow;
 
         }
 
+    );
 
+
+
+    content.appendChild(
+        orderList
+    );
+
+
+    orderList.scrollTop = 0;
+
+
+
+    infoWindow.setContent(
+        content
+    );
+
+
+    infoWindow.open(
+        map,
+        marker
+    );
+
+
+    activeInfoWindow =
+        infoWindow;
+
+}
 
         kakao.maps.event.addListener(
 
