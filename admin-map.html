@@ -492,7 +492,7 @@ function initDeliveryMap(orders) {
       mapContainer,
       mapOption
     );
-
+kakao.maps.event.trigger(map, "resize");
 
 kakao.maps.event.addListener(
   map,
