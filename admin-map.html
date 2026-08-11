@@ -639,111 +639,249 @@ color: #333;
                 deliveryMarkers[apartmentName] = marker;
 
 
-                const orderList =
-                    apartmentOrders.map(order => {
+      let expanded = false;
 
-                        return `
 
-      <hr>
+const orderList =
+    apartmentOrders.map(order => {
 
-      <div style="
-        margin-bottom:12px;
-      ">
+        return `
 
-      <strong>
-      주문번호 :
-      ${order.id.slice(0, 8)}
-      </strong>
+        <hr>
 
-      <br>
+        <div style="
+            margin-bottom:12px;
+        ">
 
-      상세위치 :
-      ${order.delivery_address_detail || "-"}
+        <strong>
+        주문번호 :
+        ${order.id.slice(0,8)}
+        </strong>
 
-      <br>
+        <br>
 
-      상품 :
-${
-    order.order_items
-        ?.map(
-            item =>
+        상세위치 :
+        ${order.delivery_address_detail || "-"}
+
+        <br>
+
+        상품 :
+        ${
+            order.order_items
+            ?.map(
+                item =>
                 `${item.product_name || "-"} ${item.quantity || ""}`
-        )
-        .join("<br>") || "-"
+            )
+            .join("<br>") || "-"
+        }
+
+        <br>
+
+        전화번호 :
+        ${order.customer_phone || "-"}
+
+        <br><br>
+
+        <button
+        onclick="
+        location.href='admin-orders.html#${order.id}'
+        "
+        style="
+        width:100%;
+        padding:8px;
+        border:none;
+        border-radius:8px;
+        background:#1f6f43;
+        color:white;
+        ">
+        주문 보기
+        </button>
+
+        </div>
+
+        `;
+
+    }).join("");
+
+
+
+function createInfoContent(){
+
+    if(!expanded){
+
+        return `
+
+        <div style="
+            padding:12px;
+            min-width:220px;
+            font-size:14px;
+        ">
+
+        <strong>
+        🏢 ${apartmentName}
+        </strong>
+
+        <br>
+
+        오늘 배송
+        ${apartmentOrders.length}건
+
+        <br><br>
+
+        <button
+        id="expandButton"
+        style="
+        width:100%;
+        padding:8px;
+        border:none;
+        border-radius:8px;
+        background:#1f6f43;
+        color:white;
+        ">
+        상세 보기
+        </button>
+
+        </div>
+
+        `;
+
+    }
+
+
+    return `
+
+    <div style="
+        padding:12px;
+        min-width:260px;
+        max-height:400px;
+        overflow-y:auto;
+        font-size:14px;
+        line-height:1.6;
+    ">
+
+    <strong>
+    🏢 ${apartmentName}
+    </strong>
+
+    <br>
+
+    오늘 배송
+    ${apartmentOrders.length}건
+
+    ${orderList}
+
+
+    <button
+    id="closeButton"
+    style="
+    width:100%;
+    padding:8px;
+    border:none;
+    border-radius:8px;
+    background:#777;
+    color:white;
+    ">
+    닫기
+    </button>
+
+    </div>
+
+    `;
+
 }
-      <br>
-
-      전화번호 :
-      ${order.customer_phone || "-"}
-
-      <br><br>
-
-      <button
-      onclick="
-      location.href='admin-orders.html#${order.id}'
-      "
-      style="
-      width:100%;
-      padding:8px;
-      border:none;
-      border-radius:8px;
-      background:#1f6f43;
-      color:white;
-      ">
-      주문 보기
-      </button>
-
-      </div>
-
-      `;
-
-                    }).join("");
 
 
-                const infoWindow =
-                    new kakao.maps.InfoWindow({
 
-                        content:
+const infoWindow =
+    new kakao.maps.InfoWindow({
 
-                            `
-     <div style="
- padding:12px;
- min-width:260px;
- max-height:400px;
- overflow-y:auto;
- font-size:14px;
- line-height:1.6;
-">
-      <strong>
-      🏢 ${apartmentName}
-      </strong>
+        content:
+        createInfoContent()
 
-      <br>
+    });
 
-      오늘 배송
-      ${apartmentOrders.length}건
+            kakao.maps.event.addListener(
+    marker,
+    "click",
+    function () {
 
-      ${orderList}
+        if(infoWindow.getMap()){
 
-      </div>
-      `
+            expanded = !expanded;
 
-                    });
+        }
 
 
-                kakao.maps.event.addListener(
-                    marker,
-                    "click",
-                    function () {
+        infoWindow.setContent(
+            createInfoContent()
+        );
 
-                        infoWindow.open(
-                            map,
-                            marker
-                        );
 
-                    }
+        infoWindow.open(
+            map,
+            marker
+        );
+
+
+        setTimeout(()=>{
+
+            const expandButton =
+                document.getElementById(
+                    "expandButton"
                 );
 
+
+            const closeButton =
+                document.getElementById(
+                    "closeButton"
+                );
+
+
+            if(expandButton){
+
+                expandButton.onclick = function(){
+
+                    expanded = true;
+
+                    infoWindow.setContent(
+                        createInfoContent()
+                    );
+
+                    infoWindow.open(
+                        map,
+                        marker
+                    );
+
+                };
+
+            }
+
+
+            if(closeButton){
+
+                closeButton.onclick = function(){
+
+                    expanded = false;
+
+                    infoWindow.setContent(
+                        createInfoContent()
+                    );
+
+                    infoWindow.open(
+                        map,
+                        marker
+                    );
+
+                };
+
+            }
+
+
+        },100);
+
+
+    }
+);
 
                 bounds.extend(
                     position
