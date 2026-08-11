@@ -826,65 +826,7 @@ const infoWindow =
             map,
             marker
         );
-
-
-        setTimeout(()=>{
-
-            const expandButton =
-                document.getElementById(
-                    "expandButton"
-                );
-
-
-            const closeButton =
-                document.getElementById(
-                    "closeButton"
-                );
-
-
-            if(expandButton){
-
-                expandButton.onclick = function(){
-
-                    expanded = true;
-
-                    infoWindow.setContent(
-                        createInfoContent()
-                    );
-
-                    infoWindow.open(
-                        map,
-                        marker
-                    );
-
-                };
-
-            }
-
-
-            if(closeButton){
-
-                closeButton.onclick = function(){
-
-                    expanded = false;
-
-                    infoWindow.setContent(
-                        createInfoContent()
-                    );
-
-                    infoWindow.open(
-                        map,
-                        marker
-                    );
-
-                };
-
-            }
-
-
-        },100);
-
-
+       
     }
 );
 
