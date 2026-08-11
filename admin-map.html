@@ -305,262 +305,317 @@ color: #333;
             );
 
         }
+async function protectAdminPage() {
+
+    const {
+        data: { session },
+        error
+    } = await supabaseClient.auth.getSession();
 
 
-        async function protectAdminPage() {
+    if (error) {
 
-            const {
-                data: { session },
-                error
-            } = await supabaseClient.auth.getSession();
+        console.error(error);
+
+        return false;
+
+    }
 
 
-            if (error) {
+    if (!session) {
 
-                console.error(error);
+        moveToLogin();
 
+        return false;
+
+    }
+
+
+    const {
+        data: admin,
+        error: adminError
+    } = await supabaseClient
+
+        .from("admin_users")
+
+        .select(
+            "user_id,is_active"
+        )
+
+        .eq(
+            "user_id",
+            session.user.id
+        )
+
+        .eq(
+            "is_active",
+            true
+        )
+
+        .maybeSingle();
+
+
+    if (adminError) {
+
+        console.error(adminError);
+
+        return false;
+
+    }
+
+
+    if (!admin) {
+
+        await supabaseClient.auth.signOut();
+
+        moveToLogin();
+
+        return false;
+
+    }
+
+
+    loadingScreen.style.display = "none";
+
+
+    return true;
+
+}
+
+
+
+async function loadDeliveryOrders() {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+
+        .from("orders")
+
+        .select(`
+            *,
+            order_items (*)
+        `)
+
+        .eq(
+            "order_status",
+            "received"
+        )
+
+        .order(
+            "created_at",
+            {
+                ascending: false
             }
+        );
 
 
-            if (!session) {
+    if (error) {
 
-                moveToLogin();
-
-                return;
-
-            }
-
-
-            const {
-                data: admin
-            } = await supabaseClient
-
-                .from("admin_users")
-
-                .select(
-                    "user_id,is_active"
-                )
-
-                .eq(
-                    "user_id",
-                    session.user.id
-                )
-
-                .eq(
-                    "is_active",
-                    true
-                )
-
-                .maybeSingle();
+        console.error(
+            "배송 조회 오류:",
+            error
+        );
 
 
-            if (!admin) {
+        const mapArea =
+            document.getElementById(
+                "mapArea"
+            );
 
-                await supabaseClient.auth.signOut();
 
-                moveToLogin();
+        if (mapArea) {
 
-                return;
-
-            }
-
-            loadingScreen.style.display = "none";
+            mapArea.innerHTML =
+                `
+                <div style="
+                    height:100%;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    padding:20px;
+                    text-align:center;
+                    color:#666;
+                ">
+                    배송 주문을 불러오지 못했습니다.
+                </div>
+                `;
 
         }
 
 
+        return;
 
-        async function loadDeliveryOrders() {
-
-            const {
-                data,
-                error
-            } = await supabaseClient
-
-                .from("orders")
-
-                .select(`
-      *,
-      order_items (*)
-    `)
-
-                .eq(
-                    "order_status",
-                    "received"
-                )
-
-                .order(
-                    "created_at",
-                    {
-                        ascending: false
-                    }
-                );
+    }
 
 
-            if (error) {
+    initDeliveryMap(
+        data || []
+    );
 
-                console.error(
-                    "배송 조회 오류:",
-                    error
-                );
+}
 
-                deliveryList.innerHTML =
-                    `
-      <p>
-        배송 목록 오류
-      </p>
 
-      <p>
-        ${error.message}
-      </p>
-    `;
+
+let deliveryMarkers = {};
+
+
+
+function initDeliveryMap(orders) {
+
+    const mapContainer =
+        document.getElementById(
+            "mapArea"
+        );
+
+
+    const mapOption = {
+
+        center:
+            new kakao.maps.LatLng(
+                35.8242,
+                127.1480
+            ),
+
+        level: 7
+
+    };
+
+
+    const map =
+        new kakao.maps.Map(
+            mapContainer,
+            mapOption
+        );
+
+
+    map.relayout();
+
+
+    deliveryMarkers = {};
+
+
+    if (
+        !orders ||
+        orders.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    const geocoder =
+        new kakao.maps.services.Geocoder();
+
+
+    const places =
+        new kakao.maps.services.Places();
+
+
+    const bounds =
+        new kakao.maps.LatLngBounds();
+
+
+    const apartmentGroups = {};
+
+
+    let markerCount = 0;
+
+
+    let activeInfoWindow = null;
+
+
+
+    orders.forEach(
+        order => {
+
+            const apartmentName =
+                (
+                    order.delivery_address_main || ""
+                ).trim();
+
+
+            if (!apartmentName) {
 
                 return;
 
             }
 
-            initDeliveryMap(data);
-
-        }
-
-        let deliveryMarkers = {};
-
-        function initDeliveryMap(orders) {
-
-            const mapContainer =
-                document.getElementById(
-                    "mapArea"
-                );
-
-
-            const mapOption = {
-
-                center:
-                    new kakao.maps.LatLng(
-                        35.8242,
-                        127.1480
-                    ),
-
-                level: 7
-
-            };
-
-            const map =
-                new kakao.maps.Map(
-                    mapContainer,
-                    mapOption
-                );
-
-            map.relayout();
 
             if (
-                !orders ||
-                orders.length === 0
+                !apartmentGroups[
+                    apartmentName
+                ]
             ) {
 
-                return;
+                apartmentGroups[
+                    apartmentName
+                ] = [];
 
             }
 
 
-            const geocoder =
-                new kakao.maps.services.Geocoder();
-
-
-            const places =
-                new kakao.maps.services.Places();
-
-
-            const bounds =
-                new kakao.maps.LatLngBounds();
-
-            const apartmentGroups = {};
-
-            let markerCount = 0;
-
-
-            orders.forEach(
-                order => {
-
-                    const apartmentName =
-                        (
-                            order.delivery_address_main || ""
-                        ).trim();
-
-
-                    if (!apartmentGroups[apartmentName]) {
-
-                        apartmentGroups[apartmentName] = [];
-
-                    }
-
-
-                    apartmentGroups[apartmentName].push(order);
-
-                }
+            apartmentGroups[
+                apartmentName
+            ].push(
+                order
             );
-
- Object.keys(apartmentGroups).forEach(
-    apartmentName => {
-
-        const apartmentOrders =
-            apartmentGroups[apartmentName];
-
-
-        const customCoordinate =
-            getApartmentCoordinate(
-                apartmentOrders[0].delivery_address_main,
-                apartmentOrders[0].delivery_address_detail
-            );
-
-
-        if (
-            customCoordinate &&
-            customCoordinate.lat !== null &&
-            customCoordinate.lng !== null
-        ) {
-
-            addMarker(
-                apartmentName,
-                apartmentOrders,
-                customCoordinate.lat,
-                customCoordinate.lng
-            );
-
-            return;
 
         }
+    );
 
 
-        geocoder.addressSearch(
 
-            apartmentName,
+    Object
+        .keys(
+            apartmentGroups
+        )
+        .forEach(
 
-            function (
-                result,
-                status
-            ) {
+            apartmentName => {
+
+                const apartmentOrders =
+                    apartmentGroups[
+                        apartmentName
+                    ];
+
+
+                const firstOrder =
+                    apartmentOrders[0];
+
+
+                const customCoordinate =
+                    getApartmentCoordinate(
+                        firstOrder.delivery_address_main,
+                        firstOrder.delivery_address_detail
+                    );
+
 
                 if (
-                    status ===
-                    kakao.maps.services.Status.OK
+                    customCoordinate &&
+                    customCoordinate.lat !== null &&
+                    customCoordinate.lng !== null
                 ) {
 
                     addMarker(
                         apartmentName,
                         apartmentOrders,
-                        result[0].y,
-                        result[0].x
+                        customCoordinate.lat,
+                        customCoordinate.lng
                     );
+
 
                     return;
 
                 }
 
 
-                places.keywordSearch(
 
-                    "전주 " + apartmentName,
+                geocoder.addressSearch(
+
+                    apartmentName,
 
                     function (
                         result,
@@ -569,27 +624,62 @@ color: #333;
 
 
                         if (
-                            status !==
-                            kakao.maps.services.Status.OK ||
-                            !result ||
-                            result.length === 0
+                            status ===
+                            kakao.maps.services.Status.OK
                         ) {
 
-                            console.warn(
-                                "배송지 검색 실패:",
-                                apartmentName
+                            addMarker(
+                                apartmentName,
+                                apartmentOrders,
+                                result[0].y,
+                                result[0].x
                             );
+
 
                             return;
 
                         }
 
 
-                        addMarker(
+
+                        places.keywordSearch(
+
+                            "전주 " +
                             apartmentName,
-                            apartmentOrders,
-                            result[0].y,
-                            result[0].x
+
+                            function (
+                                keywordResult,
+                                keywordStatus
+                            ) {
+
+
+                                if (
+                                    keywordStatus !==
+                                        kakao.maps.services.Status.OK ||
+                                    !keywordResult ||
+                                    keywordResult.length === 0
+                                ) {
+
+                                    console.warn(
+                                        "배송지 검색 실패:",
+                                        apartmentName
+                                    );
+
+
+                                    return;
+
+                                }
+
+
+                                addMarker(
+                                    apartmentName,
+                                    apartmentOrders,
+                                    keywordResult[0].y,
+                                    keywordResult[0].x
+                                );
+
+                            }
+
                         );
 
                     }
@@ -600,216 +690,864 @@ color: #333;
 
         );
 
+
+
+    function escapeHtml(value) {
+
+        return String(
+            value ?? ""
+        )
+
+            .replaceAll(
+                "&",
+                "&amp;"
+            )
+
+            .replaceAll(
+                "<",
+                "&lt;"
+            )
+
+            .replaceAll(
+                ">",
+                "&gt;"
+            )
+
+            .replaceAll(
+                '"',
+                "&quot;"
+            )
+
+            .replaceAll(
+                "'",
+                "&#039;"
+            );
+
     }
 
-);
 
-            function addMarker(
 
-                apartmentName,
-                apartmentOrders,
-                latitude,
-                longitude
-            ) {
+    function getLocationNumbers(
+        detailAddress
+    ) {
 
-                const position =
-                    new kakao.maps.LatLng(
-                        Number(latitude),
-                        Number(longitude)
+        const detail =
+            String(
+                detailAddress || ""
+            );
+
+
+        const dongMatch =
+            detail.match(
+                /(\d+)\s*동/
+            );
+
+
+        const hoMatch =
+            detail.match(
+                /(\d+)\s*호/
+            );
+
+
+        return {
+
+            dong:
+                dongMatch
+                    ? Number(
+                        dongMatch[1]
+                    )
+                    : Number.MAX_SAFE_INTEGER,
+
+            ho:
+                hoMatch
+                    ? Number(
+                        hoMatch[1]
+                    )
+                    : Number.MAX_SAFE_INTEGER
+
+        };
+
+    }
+
+
+
+    function sortApartmentOrders(
+        apartmentOrders
+    ) {
+
+        return [
+            ...apartmentOrders
+        ].sort(
+
+            (
+                a,
+                b
+            ) => {
+
+                const aLocation =
+                    getLocationNumbers(
+                        a.delivery_address_detail
                     );
 
 
-                console.log(
-                    "마커좌표",
-                    latitude,
-                    longitude
-                );
+                const bLocation =
+                    getLocationNumbers(
+                        b.delivery_address_detail
+                    );
 
 
-                const marker =
-                    new kakao.maps.Marker({
+                if (
+                    aLocation.dong !==
+                    bLocation.dong
+                ) {
 
-                        map: map,
+                    return (
+                        aLocation.dong -
+                        bLocation.dong
+                    );
 
-                        position: position
-
-                    });
-
-
-                deliveryMarkers[apartmentName] = marker;
-
-
-      let expanded = false;
-
-const orderList =
-    apartmentOrders.map(order => {
-
-        return `
-
-        <hr>
-
-        <div style="
-            margin-bottom:12px;
-        ">
-
-        <strong>
-        주문번호 :
-        ${order.id.slice(0,8)}
-        </strong>
-
-        <br>
-
-        상세위치 :
-        ${order.delivery_address_detail || "-"}
-
-        <br>
-
-        상품 :
-        ${
-            order.order_items
-            ?.map(
-                item =>
-                `${item.product_name || "-"} ${item.quantity || ""}`
-            )
-            .join("<br>") || "-"
-        }
-
-        <br>
-
-        전화번호 :
-        ${order.customer_phone || "-"}
-
-        <br><br>
-
-        <button
-        onclick="
-        location.href='admin-orders.html#${order.id}'
-        "
-        style="
-        width:100%;
-        padding:8px;
-        border:none;
-        border-radius:8px;
-        background:#1f6f43;
-        color:white;
-        ">
-        주문 보기
-        </button>
-
-        </div>
-
-        `;
-
-    }).join("");
+                }
 
 
-const infoWindow =
-    new kakao.maps.InfoWindow({
+                if (
+                    aLocation.ho !==
+                    bLocation.ho
+                ) {
 
-        content:
+                    return (
+                        aLocation.ho -
+                        bLocation.ho
+                    );
 
-        `
-        <div style="
-            padding:12px;
-            min-width:220px;
-            font-size:14px;
-            position:relative;
-        ">
-
-        <button
-        onclick="
-        this.parentElement.parentElement.style.display='none';
-        "
-        style="
-        position:absolute;
-        right:8px;
-        top:4px;
-        border:none;
-        background:none;
-        font-size:20px;
-        cursor:pointer;
-        ">
-        ×
-        </button>
+                }
 
 
-        <strong>
-        🏢 ${apartmentName}
-        </strong>
+                return 0;
 
-        <br>
+            }
 
-        오늘 배송
-        ${apartmentOrders.length}건
-
-        <br><br>
-
-        <button
-        onclick="
-        location.href='admin-orders.html'
-        "
-        style="
-        width:100%;
-        padding:8px;
-        border:none;
-        border-radius:8px;
-        background:#1f6f43;
-        color:white;
-        ">
-        상세 보기
-        </button>
-
-
-        </div>
-
-        `
-
-    });
-
-
-kakao.maps.event.addListener(
-    marker,
-    "click",
-    function () {
-
-        infoWindow.open(
-            map,
-            marker
         );
 
     }
-);
 
 
-            document
-                .getElementById(
-                    "logoutButton"
-                )
-                .addEventListener(
 
-                    "click",
+    function getOrderItemsHtml(
+        order
+    ) {
 
-                    async () => {
+        if (
+            !order.order_items ||
+            order.order_items.length === 0
+        ) {
 
-                        await supabaseClient.auth.signOut();
+            return "-";
 
-                        moveToLogin();
+        }
 
-                    }
 
+        return order.order_items
+
+            .map(
+                item => {
+
+                    const productName =
+                        escapeHtml(
+                            item.product_name ||
+                            "-"
+                        );
+
+
+                    const quantity =
+                        item.quantity ?? "";
+
+
+                    return `
+                        <div>
+                            ${productName}
+                            ${escapeHtml(quantity)}
+                        </div>
+                    `;
+
+                }
+            )
+
+            .join("");
+
+    }
+
+
+
+    function addMarker(
+
+        apartmentName,
+        apartmentOrders,
+        latitude,
+        longitude
+
+    ) {
+
+        const position =
+            new kakao.maps.LatLng(
+                Number(latitude),
+                Number(longitude)
+            );
+
+
+        const marker =
+            new kakao.maps.Marker({
+
+                map: map,
+
+                position: position
+
+            });
+
+
+        deliveryMarkers[
+            apartmentName
+        ] = marker;
+
+
+        const sortedOrders =
+            sortApartmentOrders(
+                apartmentOrders
+            );
+
+
+        const infoWindow =
+            new kakao.maps.InfoWindow({
+
+                content: ""
+
+            });
+
+
+
+        function closeInfoWindow() {
+
+            infoWindow.close();
+
+
+            if (
+                activeInfoWindow ===
+                infoWindow
+            ) {
+
+                activeInfoWindow = null;
+
+            }
+
+        }
+
+
+
+        function showCompactInfo() {
+
+            const content =
+                document.createElement(
+                    "div"
                 );
+
+
+            content.style.cssText = `
+                padding:12px;
+                min-width:220px;
+                font-size:14px;
+                line-height:1.5;
+                position:relative;
+            `;
+
+
+
+            const title =
+                document.createElement(
+                    "strong"
+                );
+
+
+            title.textContent =
+                `🏢 ${apartmentName}`;
+
+
+            title.style.display =
+                "block";
+
+
+            title.style.paddingRight =
+                "28px";
+
+
+
+            const count =
+                document.createElement(
+                    "div"
+                );
+
+
+            count.textContent =
+                `오늘 배송 ${sortedOrders.length}건`;
+
+
+            count.style.marginTop =
+                "5px";
+
+
+
+            const closeButton =
+                document.createElement(
+                    "button"
+                );
+
+
+            closeButton.type =
+                "button";
+
+
+            closeButton.textContent =
+                "×";
+
+
+            closeButton.setAttribute(
+                "aria-label",
+                "배송 정보 닫기"
+            );
+
+
+            closeButton.style.cssText = `
+                position:absolute;
+                right:6px;
+                top:2px;
+                border:none;
+                background:transparent;
+                font-size:22px;
+                line-height:1;
+                padding:4px 7px;
+                cursor:pointer;
+            `;
+
+
+            closeButton.addEventListener(
+
+                "click",
+
+                event => {
+
+                    event.stopPropagation();
+
+                    closeInfoWindow();
+
+                }
+
+            );
+
+
+
+            const detailButton =
+                document.createElement(
+                    "button"
+                );
+
+
+            detailButton.type =
+                "button";
+
+
+            detailButton.textContent =
+                "상세 보기";
+
+
+            detailButton.style.cssText = `
+                width:100%;
+                margin-top:12px;
+                padding:8px;
+                border:none;
+                border-radius:8px;
+                background:#1f6f43;
+                color:white;
+                cursor:pointer;
+            `;
+
+
+            detailButton.addEventListener(
+
+                "click",
+
+                event => {
+
+                    event.stopPropagation();
+
+                    showDetailInfo();
+
+                }
+
+            );
+
+
+
+            content.appendChild(
+                closeButton
+            );
+
+
+            content.appendChild(
+                title
+            );
+
+
+            content.appendChild(
+                count
+            );
+
+
+            content.appendChild(
+                detailButton
+            );
+
+
+            infoWindow.setContent(
+                content
+            );
+
+
+            infoWindow.open(
+                map,
+                marker
+            );
+
+
+            activeInfoWindow =
+                infoWindow;
+
+        }
+
+
+
+        function showDetailInfo() {
+
+            const content =
+                document.createElement(
+                    "div"
+                );
+
+
+            content.style.cssText = `
+                padding:12px;
+                width:280px;
+                max-height:380px;
+                overflow-y:auto;
+                font-size:14px;
+                line-height:1.6;
+                position:relative;
+            `;
+
+
+
+            const title =
+                document.createElement(
+                    "strong"
+                );
+
+
+            title.textContent =
+                `🏢 ${apartmentName}`;
+
+
+            title.style.display =
+                "block";
+
+
+            title.style.paddingRight =
+                "28px";
+
+
+
+            const count =
+                document.createElement(
+                    "div"
+                );
+
+
+            count.textContent =
+                `오늘 배송 ${sortedOrders.length}건`;
+
+
+            count.style.marginTop =
+                "5px";
+
+
+            count.style.marginBottom =
+                "8px";
+
+
+
+            const closeButton =
+                document.createElement(
+                    "button"
+                );
+
+
+            closeButton.type =
+                "button";
+
+
+            closeButton.textContent =
+                "×";
+
+
+            closeButton.setAttribute(
+                "aria-label",
+                "배송 상세 닫기"
+            );
+
+
+            closeButton.style.cssText = `
+                position:absolute;
+                right:6px;
+                top:2px;
+                border:none;
+                background:transparent;
+                font-size:22px;
+                line-height:1;
+                padding:4px 7px;
+                cursor:pointer;
+            `;
+
+
+            closeButton.addEventListener(
+
+                "click",
+
+                event => {
+
+                    event.stopPropagation();
+
+                    closeInfoWindow();
+
+                }
+
+            );
+
+
+
+            content.appendChild(
+                closeButton
+            );
+
+
+            content.appendChild(
+                title
+            );
+
+
+            content.appendChild(
+                count
+            );
+
+
+
+            sortedOrders.forEach(
+                order => {
+
+                    const orderBox =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    orderBox.style.cssText = `
+                        padding:10px 0 12px;
+                        border-top:1px solid #ddd;
+                    `;
+
+
+
+                    const orderNumber =
+                        document.createElement(
+                            "button"
+                        );
+
+
+                    orderNumber.type =
+                        "button";
+
+
+                    orderNumber.textContent =
+                        `주문번호 : ${String(order.id).slice(0, 8)}`;
+
+
+                    orderNumber.style.cssText = `
+                        border:none;
+                        background:transparent;
+                        padding:0;
+                        font-weight:700;
+                        font-size:14px;
+                        text-decoration:underline;
+                        cursor:pointer;
+                        text-align:left;
+                    `;
+
+
+                    orderNumber.addEventListener(
+
+                        "click",
+
+                        () => {
+
+                            location.href =
+                                `admin-orders.html#${order.id}`;
+
+                        }
+
+                    );
+
+
+
+                    const location =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    location.style.marginTop =
+                        "6px";
+
+
+                    location.textContent =
+                        `상세위치 : ${order.delivery_address_detail || "-"}`;
+
+
+
+                    const products =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    products.style.marginTop =
+                        "4px";
+
+
+                    products.innerHTML =
+                        `상품 : ${getOrderItemsHtml(order)}`;
+
+
+
+                    const phone =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    phone.style.marginTop =
+                        "4px";
+
+
+                    phone.textContent =
+                        `전화번호 : ${order.customer_phone || "-"}`;
+
+
+
+                    const orderViewButton =
+                        document.createElement(
+                            "button"
+                        );
+
+
+                    orderViewButton.type =
+                        "button";
+
+
+                    orderViewButton.textContent =
+                        "주문 보기";
+
+
+                    orderViewButton.style.cssText = `
+                        width:100%;
+                        margin-top:9px;
+                        padding:8px;
+                        border:none;
+                        border-radius:8px;
+                        background:#1f6f43;
+                        color:white;
+                        cursor:pointer;
+                    `;
+
+
+                    orderViewButton.addEventListener(
+
+                        "click",
+
+                        () => {
+
+                            location.href =
+                                `admin-orders.html#${order.id}`;
+
+                        }
+
+                    );
+
+
+
+                    orderBox.appendChild(
+                        orderNumber
+                    );
+
+
+                    orderBox.appendChild(
+                        location
+                    );
+
+
+                    orderBox.appendChild(
+                        products
+                    );
+
+
+                    orderBox.appendChild(
+                        phone
+                    );
+
+
+                    orderBox.appendChild(
+                        orderViewButton
+                    );
+
+
+                    content.appendChild(
+                        orderBox
+                    );
+
+                }
+
+            );
+
+
+
+            infoWindow.setContent(
+                content
+            );
+
+
+            infoWindow.open(
+                map,
+                marker
+            );
+
+
+            activeInfoWindow =
+                infoWindow;
+
+        }
+
+
+
+        kakao.maps.event.addListener(
+
+            marker,
+
+            "click",
+
+            function () {
+
+                if (
+                    activeInfoWindow &&
+                    activeInfoWindow !==
+                    infoWindow
+                ) {
+
+                    activeInfoWindow.close();
+
+                }
+
+
+                showCompactInfo();
+
+            }
+
+        );
+
+
+
+        bounds.extend(
+            position
+        );
+
+
+        markerCount += 1;
+
+
+        if (
+            markerCount === 1
+        ) {
+
+            map.setCenter(
+                position
+            );
+
+
+            map.setLevel(
+                4
+            );
+
+        }
+
+
+        if (
+            markerCount >= 2
+        ) {
+
+            map.setBounds(
+                bounds
+            );
+
+        }
+
+    }
 
 }
 
-protectAdminPage();
 
-window.onload = function () {
 
-    loadDeliveryOrders();
+document
+    .getElementById(
+        "logoutButton"
+    )
+    .addEventListener(
 
-};
+        "click",
+
+        async () => {
+
+            await supabaseClient.auth.signOut();
+
+            moveToLogin();
+
         }
-    </script>
+
+    );
+
+
+
+window.onload =
+    async function () {
+
+        const isAdmin =
+            await protectAdminPage();
+
+
+        if (!isAdmin) {
+
+            return;
+
+        }
+
+
+        await loadDeliveryOrders();
+
+    };
+
+</script>
 
 </body>
 
