@@ -7,10 +7,9 @@ const apartmentCoordinates = {
 
 
   "효자성원아파트_102동": {
-    lat: null,
-    lng: null
-  }
-
+  lat: 35.808284413223156,
+  lng: 127.11381983969042
+}
 };
 function getApartmentCoordinate(
   apartmentName,
