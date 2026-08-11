@@ -692,8 +692,14 @@ color: #333;
       <br>
 
       상품 :
-      ${order.items || "-"}
-
+${
+    order.order_items
+        ?.map(
+            item =>
+                `${item.product_name || "-"} ${item.quantity || ""}`
+        )
+        .join("<br>") || "-"
+}
       <br>
 
       전화번호 :
