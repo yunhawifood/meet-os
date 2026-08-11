@@ -485,6 +485,14 @@ function initDeliveryMap(orders) {
     level: 7
 
   };
+
+  const map =
+    new kakao.maps.Map(
+      mapContainer,
+      mapOption
+    );
+
+
 kakao.maps.event.addListener(
   map,
   "click",
@@ -517,14 +525,6 @@ kakao.maps.event.addListener(
 
   }
 );
-
-  const map =
-    new kakao.maps.Map(
-      mapContainer,
-      mapOption
-    );
-
-
   if (
     !orders ||
     orders.length === 0
