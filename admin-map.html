@@ -703,66 +703,93 @@ const orderList =
 
     }).join("");
 
+return `
+
+<div style="
+    padding:12px;
+    min-width:220px;
+    font-size:14px;
+    position:relative;
+">
+
+<button
+id="closeSmallButton"
+style="
+position:absolute;
+right:8px;
+top:4px;
+border:none;
+background:none;
+font-size:20px;
+cursor:pointer;
+">
+×
+</button>
 
 
-function createInfoContent(){
+<strong>
+🏢 ${apartmentName}
+</strong>
 
-    if(!expanded){
+<br>
 
-        return `
+오늘 배송
+${apartmentOrders.length}건
 
-        <div style="
-            padding:12px;
-            min-width:220px;
-            font-size:14px;
-        ">
+<br><br>
 
-        <strong>
-        🏢 ${apartmentName}
-        </strong>
 
-        <br>
+<button
+id="expandButton"
+style="
+width:100%;
+padding:8px;
+border:none;
+border-radius:8px;
+background:#1f6f43;
+color:white;
+">
+상세 보기
+</button>
 
-        오늘 배송
-        ${apartmentOrders.length}건
 
-        <br><br>
+</div>
 
-        <button
-        id="expandButton"
-        style="
-        width:100%;
-        padding:8px;
-        border:none;
-        border-radius:8px;
-        background:#1f6f43;
-        color:white;
-        ">
-        상세 보기
-        </button>
-
-        </div>
-
-        `;
-
-    }
-
+`;
 
     return `
 
-    <div style="
-        padding:12px;
-        min-width:260px;
-        max-height:400px;
-        overflow-y:auto;
-        font-size:14px;
-        line-height:1.6;
-    ">
+  <div style="
+    padding:12px;
+    min-width:260px;
+    max-height:400px;
+    overflow-y:auto;
+    font-size:14px;
+    line-height:1.6;
+    position:relative;
+">
 
-    <strong>
-    🏢 ${apartmentName}
-    </strong>
 
+<button
+style="
+position:absolute;
+right:8px;
+top:4px;
+border:none;
+background:none;
+font-size:20px;
+cursor:pointer;
+"
+onclick="
+infoWindow.close();
+">
+×
+</button>
+
+
+<strong>
+🏢 ${apartmentName}
+</strong>
     <br>
 
     오늘 배송
