@@ -485,7 +485,38 @@ function initDeliveryMap(orders) {
     level: 7
 
   };
+kakao.maps.event.addListener(
+  map,
+  "click",
+  function(mouseEvent){
 
+    const latlng =
+      mouseEvent.latLng;
+
+
+    console.log(
+      "위도:",
+      latlng.getLat()
+    );
+
+
+    console.log(
+      "경도:",
+      latlng.getLng()
+    );
+
+
+    alert(
+      "위도 : " +
+      latlng.getLat()
+      +
+      "\n\n경도 : "
+      +
+      latlng.getLng()
+    );
+
+  }
+);
 
   const map =
     new kakao.maps.Map(
