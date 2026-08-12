@@ -1592,15 +1592,23 @@ async function showTodayOrders() {
         "전체";
 
 
-    renderOrders(
-        orders,
-        selectedStatus
-    );
+   renderOrders(
+    orders,
+    selectedStatus
+);
 
 
-    loadPreparingStatus(
-        orders
-    );
+const preparingStatus =
+    document.getElementById("preparingStatus");
+
+if (preparingStatus) {
+    preparingStatus.style.display = "";
+}
+
+
+loadPreparingStatus(
+    orders
+);
 
 }
 function togglePreparingList(){
@@ -1684,6 +1692,13 @@ async function showCompletedOrders() {
 
   todayOrdersList.innerHTML = "";
   completedOrdersList.innerHTML = "";
+
+  const preparingStatus =
+    document.getElementById("preparingStatus");
+
+  if (preparingStatus) {
+    preparingStatus.style.display = "none";
+  }
 
 const { data, error } = await supabaseClient
     .from("orders")
