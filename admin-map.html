@@ -1359,20 +1359,18 @@ orderList.addEventListener(
             `;
 
 
-            orderNumber.addEventListener(
+           orderNumber.addEventListener(
 
-                "click",
+    "click",
 
-                () => {
+    () => {
 
-                    location.href =
-                        `admin-orders.html#${order.id}`;
+        window.location.href =
+            `admin-orders.html#${order.id}`;
 
-                }
+    }
 
-            );
-
-
+);
 
             const location =
                 document.createElement(
@@ -1444,20 +1442,18 @@ orderList.addEventListener(
                 cursor:pointer;
             `;
 
+orderViewButton.addEventListener(
 
-            orderViewButton.addEventListener(
+    "click",
 
-                "click",
+    () => {
 
-                () => {
+        window.location.href =
+            `admin-orders.html#${order.id}`;
 
-                    location.href =
-                        `admin-orders.html#${order.id}`;
+    }
 
-                }
-
-            );
-
+);
 
 
             orderBox.appendChild(
