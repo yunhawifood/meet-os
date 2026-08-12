@@ -525,6 +525,7 @@ function initDeliveryMap(orders) {
 
 
     let activeInfoWindow = null;
+let activeDetailOverlay = null;
 
 
 
@@ -1123,6 +1124,33 @@ function initDeliveryMap(orders) {
 
 function showDetailInfo() {
 
+    infoWindow.close();
+
+
+    if (
+        activeInfoWindow ===
+        infoWindow
+    ) {
+
+        activeInfoWindow = null;
+
+    }
+
+
+    if (
+        activeDetailOverlay
+    ) {
+
+        activeDetailOverlay.setMap(
+            null
+        );
+
+        activeDetailOverlay = null;
+
+    }
+
+
+
     const content =
         document.createElement(
             "div"
@@ -1130,12 +1158,17 @@ function showDetailInfo() {
 
 
     content.style.cssText = `
-        padding:12px;
         width:280px;
+        padding:12px;
+        background:#ffffff;
+        border:1px solid #dddddd;
+        border-radius:10px;
+        box-shadow:0 3px 10px rgba(0,0,0,0.22);
         font-size:14px;
         line-height:1.6;
         position:relative;
-        overflow:hidden;
+        box-sizing:border-box;
+        transform:translateY(18px);
     `;
 
 
@@ -1155,7 +1188,7 @@ function showDetailInfo() {
 
 
     title.style.paddingRight =
-        "28px";
+        "30px";
 
 
 
@@ -1170,7 +1203,7 @@ function showDetailInfo() {
 
 
     count.style.marginTop =
-        "5px";
+        "4px";
 
 
     count.style.marginBottom =
@@ -1200,8 +1233,8 @@ function showDetailInfo() {
 
     closeButton.style.cssText = `
         position:absolute;
-        right:6px;
-        top:2px;
+        right:5px;
+        top:3px;
         border:none;
         background:transparent;
         font-size:22px;
@@ -1212,21 +1245,6 @@ function showDetailInfo() {
     `;
 
 
-    closeButton.addEventListener(
-
-        "click",
-
-        event => {
-
-            event.stopPropagation();
-
-            closeInfoWindow();
-
-        }
-
-    );
-
-
 
     const orderList =
         document.createElement(
@@ -1235,7 +1253,7 @@ function showDetailInfo() {
 
 
     orderList.style.cssText = `
-        max-height:250px;
+        max-height:230px;
         overflow-y:auto;
         overflow-x:hidden;
         padding-right:4px;
@@ -1271,7 +1289,7 @@ function showDetailInfo() {
 
             orderBox.style.cssText = `
                 padding:10px 0 12px;
-                border-top:1px solid #ddd;
+                border-top:1px solid #dddddd;
             `;
 
 
@@ -1447,48 +1465,111 @@ function showDetailInfo() {
 
 
 
-    infoWindow.setContent(
-        content
-    );
+    const detailOverlay =
+        new kakao.maps.CustomOverlay({
+
+            position: position,
+
+            content: content,
+
+            xAnchor: 0.5,
+
+            yAnchor: 0,
+
+            clickable: true,
+
+            zIndex: 10
+
+        });
 
 
-    infoWindow.open(
-        map,
-        marker
-    );
+
+    closeButton.addEventListener(
+
+        "click",
+
+        event => {
+
+            event.stopPropagation();
 
 
-    activeInfoWindow =
-        infoWindow;
-
-}
-
-        kakao.maps.event.addListener(
-
-            marker,
-
-            "click",
-
-            function () {
-
-                if (
-                    activeInfoWindow &&
-                    activeInfoWindow !==
-                    infoWindow
-                ) {
-
-                    activeInfoWindow.close();
-
-                }
+            detailOverlay.setMap(
+                null
+            );
 
 
-                showCompactInfo();
+            if (
+                activeDetailOverlay ===
+                detailOverlay
+            ) {
+
+                activeDetailOverlay = null;
 
             }
 
-        );
+        }
+
+    );
 
 
+
+    activeDetailOverlay =
+        detailOverlay;
+
+
+    detailOverlay.setMap(
+        map
+    );
+
+
+    map.setCenter(
+        position
+    );
+
+
+    map.panBy(
+        0,
+        110
+    );
+
+}
+    kakao.maps.event.addListener(
+
+    marker,
+
+    "click",
+
+    function () {
+
+        if (
+            activeDetailOverlay
+        ) {
+
+            activeDetailOverlay.setMap(
+                null
+            );
+
+            activeDetailOverlay = null;
+
+        }
+
+
+        if (
+            activeInfoWindow &&
+            activeInfoWindow !==
+            infoWindow
+        ) {
+
+            activeInfoWindow.close();
+
+        }
+
+
+        showCompactInfo();
+
+    }
+
+);
 
         bounds.extend(
             position
