@@ -1163,7 +1163,13 @@ function focusOrderFromHash() {
 
     if (!orderId) {
 
-        return;
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "auto"
+        });
+
+        return false;
 
     }
 
@@ -1185,7 +1191,21 @@ function focusOrderFromHash() {
 
     if (!targetCard) {
 
-        return;
+        history.replaceState(
+            null,
+            "",
+            window.location.pathname
+        );
+
+
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "auto"
+        });
+
+
+        return false;
 
     }
 
@@ -1201,7 +1221,6 @@ function focusOrderFromHash() {
                 block: "center"
 
             });
-
 
 
             targetCard.animate(
@@ -1242,10 +1261,10 @@ function focusOrderFromHash() {
 
     );
 
+
+    return true;
+
 }
-
-
-
 function createOrderCard(order) {
 console.log("카드 생성 데이터:", order);
   const productText = order.order_items
@@ -1372,9 +1391,55 @@ function renderOrders(orders, selectedStatus = "전체") {
 
 focusOrderFromHash();
 }
-showTodayOrders();
-    
-    protectAdminPage();
+if (
+    "scrollRestoration" in history
+) {
+
+    history.scrollRestoration =
+        "manual";
+
+}
+
+
+async function initializeOrdersPage() {
+
+    await protectAdminPage();
+
+    await showTodayOrders();
+
+}
+
+
+initializeOrdersPage();
+window.addEventListener(
+
+    "pageshow",
+
+    async event => {
+
+        if (!event.persisted) {
+
+            return;
+
+        }
+
+
+        await showTodayOrders();
+
+
+        if (!window.location.hash) {
+
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: "auto"
+            });
+
+        }
+
+    }
+
+);
 
     async function completeDelivery(button) {
 
@@ -1462,23 +1527,80 @@ async function loadOrders() {
     return data;
 
 }
+async function updateCompletedCount() {
+
+    const { count, error } =
+        await supabaseClient
+            .from("orders")
+            .select(
+                "id",
+                {
+                    count: "exact",
+                    head: true
+                }
+            )
+            .eq(
+                "order_status",
+                "completed"
+            );
+
+
+    if (error) {
+
+        console.error(
+            "완료 건수 조회 오류:",
+            error
+        );
+
+        return;
+
+    }
+
+
+    document
+        .getElementById(
+            "completedCount"
+        )
+        .innerText =
+            `${count || 0}건`;
+
+}
 async function showTodayOrders() {
 
-    const orders = await loadOrders();
+    const orders =
+        await loadOrders();
 
-    console.log("오늘배송 불러온 주문:", orders);
 
-    document.getElementById("todayCount").innerText =
-    orders.length + "건";
+    console.log(
+        "오늘배송 불러온 주문:",
+        orders
+    );
 
-    const selectedStatus = "전체";
+
+    document
+        .getElementById(
+            "todayCount"
+        )
+        .innerText =
+            orders.length + "건";
+
+
+    await updateCompletedCount();
+
+
+    const selectedStatus =
+        "전체";
+
 
     renderOrders(
         orders,
         selectedStatus
     );
 
-    loadPreparingStatus(orders);
+
+    loadPreparingStatus(
+        orders
+    );
 
 }
 function togglePreparingList(){
