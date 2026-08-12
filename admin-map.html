@@ -1252,15 +1252,54 @@ function showDetailInfo() {
         );
 
 
-    orderList.style.cssText = `
-        max-height:230px;
-        overflow-y:auto;
-        overflow-x:hidden;
-        padding-right:4px;
-        overscroll-behavior:contain;
-    `;
+ orderList.style.cssText = `
+    height:230px;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    padding-right:6px;
+    box-sizing:border-box;
+    overscroll-behavior:contain;
+    scrollbar-gutter:stable;
+    -webkit-overflow-scrolling:touch;
+    pointer-events:auto;
+`;
+
+orderList.addEventListener(
+
+    "wheel",
+
+    event => {
+
+        event.stopPropagation();
+
+        kakao.maps.event.preventMap();
+
+    },
+
+    {
+        passive: true
+    }
+
+);
 
 
+orderList.addEventListener(
+
+    "touchmove",
+
+    event => {
+
+        event.stopPropagation();
+
+        kakao.maps.event.preventMap();
+
+    },
+
+    {
+        passive: true
+    }
+
+);
 
     content.appendChild(
         closeButton
