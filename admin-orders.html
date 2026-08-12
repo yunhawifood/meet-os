@@ -1375,7 +1375,8 @@ focusOrderFromHash();
 showTodayOrders();
     
     protectAdminPage();
-async function completeDelivery(button) {
+
+    async function completeDelivery(button) {
 
   if (button.disabled) return;
 
@@ -1384,17 +1385,33 @@ async function completeDelivery(button) {
 
   const card = button.closest(".order-card");
 
-  if (!card) return;
+  if (!card) {
+    button.disabled = false;
+    button.textContent = "✅ 배송 완료";
+    return;
+  }
 
   const orderId = card.dataset.id;
 
- const { error } = await supabaseClient
-  .from("orders")
-  .update({
-    order_status: "completed"
-  })
-  .eq("id", orderId)
-  .eq("order_status", "received");
+
+  const hashOrderId =
+    decodeURIComponent(
+      window.location.hash.slice(1)
+    );
+
+
+  const openedFromMap =
+    hashOrderId === orderId;
+
+
+  const { error } = await supabaseClient
+    .from("orders")
+    .update({
+      order_status: "completed"
+    })
+    .eq("id", orderId)
+    .eq("order_status", "received");
+
 
   if (error) {
 
@@ -1409,10 +1426,20 @@ async function completeDelivery(button) {
   }
 
 
-alert("배송 완료 처리되었습니다.");
+  alert("배송 완료 처리되었습니다.");
 
-await showTodayOrders();
-await showCompletedOrders();
+
+  if (openedFromMap) {
+
+    window.location.href =
+      "./admin-map.html";
+
+    return;
+  }
+
+
+  await showTodayOrders();
+  await showCompletedOrders();
 
 }
 
