@@ -1,117 +1,101 @@
 <!DOCTYPE html>
-
 <html lang="ko">
 
 <head>
-
   <meta charset="UTF-8" />
 
   <meta
-
     name="viewport"
-
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-
   />
 
-  <meta name="theme-color" content="#edf6ff" />
+  <meta name="theme-color" content="#f5f2ec" />
 
-  <title>한농직판장 | 내 손안의 정육점</title>
+  <title>한농직판장 | 전주 돼지고기 새벽배송</title>
+
 
   <!-- Google tag (gtag.js) -->
 
   <script
-
     async
-
     src="https://www.googletagmanager.com/gtag/js?id=G-VNJRM6MZ30"
-
   ></script>
 
   <script>
-
     window.dataLayer = window.dataLayer || [];
 
     function gtag() {
-
       dataLayer.push(arguments);
-
     }
 
     gtag("js", new Date());
 
     gtag("config", "G-VNJRM6MZ30");
-
   </script>
 
-  <link rel="apple-touch-icon" href="apple-touch-icon.PNG" />
+
+  <link
+    rel="apple-touch-icon"
+    href="apple-touch-icon.PNG"
+  />
+
+
+  <!-- 첫 번째 메인 이미지만 우선 로딩 -->
+
+  <link
+    rel="preload"
+    as="image"
+    href="hero-1.jpg"
+  />
+
 
   <style>
 
     * {
-
       box-sizing: border-box;
-
     }
+
 
     html,
-
     body {
-
       min-height: 100%;
-
     }
 
-    body {
 
+    body {
       margin: 0;
 
       background:
-
         linear-gradient(
-
           180deg,
-
-          #eaf4ff 0%,
-
-          #f5f9fd 58%,
-
+          #f3f0e9 0%,
+          #faf9f6 48%,
           #ffffff 100%
-
         );
 
-      color: #17263b;
+      color: #181818;
 
       font-family:
-
         -apple-system,
-
         BlinkMacSystemFont,
-
         "Apple SD Gothic Neo",
-
         "Noto Sans KR",
-
         sans-serif;
 
       text-align: center;
 
       -webkit-font-smoothing: antialiased;
-
     }
+
 
     button {
-
       font-family: inherit;
-
       -webkit-tap-highlight-color: transparent;
-
     }
 
+
     .wrap {
-
       width: 100%;
-
       max-width: 520px;
 
       min-height: 100dvh;
@@ -119,401 +103,576 @@
       margin: 0 auto;
 
       padding:
-
-        calc(18px + env(safe-area-inset-top))
-
-        18px
-
-        calc(26px + env(safe-area-inset-bottom));
-
+        calc(17px + env(safe-area-inset-top))
+        16px
+        calc(28px + env(safe-area-inset-bottom));
     }
+
+
+
+    /* ========================================
+       상단 브랜드
+    ======================================== */
 
     .brand-header {
+      display: flex;
 
-      margin: 0 0 14px;
+      align-items: center;
+      justify-content: space-between;
 
-      text-align: center;
-
+      margin: 0 1px 14px;
     }
+
 
     .brand-name {
-
       margin: 0;
 
-      color: #174b78;
+      color: #171717;
 
-      font-size: 30px;
+      font-size: 25px;
+      line-height: 1;
 
-      line-height: 1.2;
+      font-weight: 950;
 
-      font-weight: 900;
-
-      letter-spacing: -1.7px;
-
+      letter-spacing: -1.5px;
     }
 
-    .hero {
+
+    .delivery-badge {
+      display: inline-flex;
+
+      align-items: center;
+
+      min-height: 30px;
+
+      padding: 0 11px;
+
+      border-radius: 999px;
+
+      background: #171717;
+
+      color: #ffffff;
+
+      font-size: 12px;
+      font-weight: 850;
+
+      letter-spacing: -0.35px;
+    }
+
+
+
+    /* ========================================
+       메인 슬라이드
+    ======================================== */
+
+    .hero-slider {
+      position: relative;
 
       width: 100%;
 
-      margin: 0 auto 18px;
+      aspect-ratio: 4 / 3;
 
       overflow: hidden;
 
-      border: 1px solid rgba(180, 208, 238, 0.72);
+      border-radius: 27px;
 
-      border-radius: 26px;
-
-      background: #ffffff;
+      background: #111111;
 
       box-shadow:
-
-        0 13px 30px rgba(43, 91, 140, 0.12);
-
+        0 15px 36px rgba(0, 0, 0, 0.18);
     }
 
-    .store-photo {
+
+    .hero-slide {
+      position: absolute;
+
+      inset: 0;
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      transition:
+        opacity 0.65s ease;
+    }
+
+
+    .hero-slide.active {
+      opacity: 1;
+
+      pointer-events: auto;
+    }
+
+
+    .slide-media {
+      position: absolute;
+
+      inset: 0;
+
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          145deg,
+          #292929,
+          #111111
+        );
+    }
+
+
+    .slide-media img {
+      position: absolute;
+
+      inset: 0;
 
       display: block;
 
       width: 100%;
-
-      height: 155px;
+      height: 100%;
 
       object-fit: cover;
 
-      object-position: center 38%;
+      object-position: center;
 
+      z-index: 1;
     }
 
-    .title-block {
 
-      margin: 0 0 21px;
-
-      text-align: center;
-
+    .hero-slide:first-child .slide-media img {
+      object-position: center 42%;
     }
 
-    .title-block h1 {
 
-      margin: 0;
 
-      color: #10243f;
+    /* 사진 없을 때 보여줄 임시 화면 */
 
-      font-size: clamp(34px, 9vw, 42px);
+    .slide-placeholder {
+      position: absolute;
 
-      line-height: 1.08;
+      inset: 0;
 
-      font-weight: 900;
-
-      letter-spacing: -2.5px;
-
-    }
-
-    .title-block .tagline {
-
-      margin: 9px 0 0;
-
-      color: #6b7d92;
-
-      font-size: 16px;
-
-      line-height: 1.45;
-
-      font-weight: 700;
-
-      letter-spacing: -0.45px;
-
-    }
-
-    .main-buttons {
-
-      display: grid;
-
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-
-      gap: 12px;
-
-      width: 100%;
-
-    }
-
-    .main-button {
-
-      min-width: 0;
-
-      min-height: 285px;
-
-      padding: 22px 12px 16px;
-
-      border: 1px solid #bed8f3;
-
-      border-radius: 26px;
-
-      background: rgba(249, 252, 255, 0.96);
-
-      color: #164e89;
-
-      box-shadow:
-
-        0 11px 25px rgba(62, 111, 162, 0.13);
-
-      cursor: pointer;
+      z-index: 0;
 
       display: flex;
 
       flex-direction: column;
 
       align-items: center;
+      justify-content: center;
 
-      justify-content: flex-start;
+      padding: 35px;
+
+      color: #ffffff;
+
+      background:
+        radial-gradient(
+          circle at 50% 25%,
+          rgba(174, 111, 49, 0.32),
+          transparent 43%
+        ),
+        linear-gradient(
+          150deg,
+          #28231e,
+          #111111
+        );
+    }
+
+
+    .placeholder-number {
+      margin-bottom: 12px;
+
+      color: #d9aa6a;
+
+      font-size: 12px;
+
+      font-weight: 900;
+
+      letter-spacing: 2px;
+    }
+
+
+    .placeholder-title {
+      margin: 0;
+
+      font-size: 27px;
+      line-height: 1.25;
+
+      font-weight: 950;
+
+      letter-spacing: -1.5px;
+    }
+
+
+    .placeholder-text {
+      margin: 9px 0 0;
+
+      color: rgba(255, 255, 255, 0.72);
+
+      font-size: 14px;
+      line-height: 1.55;
+
+      font-weight: 700;
+
+      letter-spacing: -0.4px;
+    }
+
+
+
+    /* 사진 위 어두운 그라데이션 */
+
+    .hero-overlay {
+      position: absolute;
+
+      inset: 0;
+
+      z-index: 2;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.04) 28%,
+          rgba(0, 0, 0, 0.78) 100%
+        );
+    }
+
+
+
+    /* 사진 문구 */
+
+    .hero-copy {
+      position: absolute;
+
+      left: 20px;
+      right: 20px;
+      bottom: 24px;
+
+      z-index: 3;
+
+      color: #ffffff;
+
+      text-align: left;
+    }
+
+
+    .hero-kicker {
+      display: block;
+
+      margin-bottom: 7px;
+
+      color: #efbd76;
+
+      font-size: 12px;
+
+      line-height: 1.2;
+
+      font-weight: 900;
+
+      letter-spacing: 0.4px;
+    }
+
+
+    .hero-copy strong {
+      display: block;
+
+      font-size: 27px;
+      line-height: 1.19;
+
+      font-weight: 950;
+
+      letter-spacing: -1.6px;
+
+      word-break: keep-all;
+    }
+
+
+    .hero-copy p {
+      margin: 7px 0 0;
+
+      color: rgba(255, 255, 255, 0.82);
+
+      font-size: 13px;
+      line-height: 1.5;
+
+      font-weight: 700;
+
+      letter-spacing: -0.35px;
+
+      word-break: keep-all;
+    }
+
+
+
+    /* 슬라이드 점 */
+
+    .slider-dots {
+      position: absolute;
+
+      top: 17px;
+      right: 17px;
+
+      z-index: 5;
+
+      display: flex;
+
+      gap: 6px;
+    }
+
+
+    .slider-dot {
+      width: 7px;
+      height: 7px;
+
+      padding: 0;
+
+      border: 0;
+      border-radius: 999px;
+
+      background:
+        rgba(255, 255, 255, 0.48);
+
+      cursor: pointer;
 
       transition:
-
-        transform 0.15s ease,
-
-        box-shadow 0.15s ease;
-
+        width 0.25s ease,
+        background 0.25s ease;
     }
 
-    .main-button:active {
 
-      transform: scale(0.98);
+    .slider-dot.active {
+      width: 23px;
+
+      background: #ffffff;
+    }
+
+
+
+    /* ========================================
+       주문 박스 - 고객 선택은 이것 하나
+    ======================================== */
+
+    .order-card {
+      margin-top: 17px;
+
+      padding: 24px 19px 19px;
+
+      border: 1px solid #e5ded2;
+      border-radius: 25px;
+
+      background: rgba(255, 255, 255, 0.96);
 
       box-shadow:
+        0 11px 27px rgba(58, 46, 30, 0.09);
 
-        0 6px 15px rgba(62, 111, 162, 0.11);
-
+      text-align: left;
     }
 
-    .store-order {
 
-      background: #f9fcff;
+    .order-eyebrow {
+      margin: 0 0 7px;
 
+      color: #9b612f;
+
+      font-size: 13px;
+      line-height: 1.3;
+
+      font-weight: 950;
+
+      letter-spacing: -0.35px;
     }
 
-    .morning-delivery {
 
-      background: #eaf4ff;
+    .order-title {
+      margin: 0;
 
-      border-color: #9fc8ee;
+      color: #171717;
 
+      font-size: 27px;
+      line-height: 1.22;
+
+      font-weight: 950;
+
+      letter-spacing: -1.7px;
+
+      word-break: keep-all;
     }
 
-    .icon-wrap {
 
-      width: 68px;
+    .order-description {
+      margin: 10px 0 0;
 
-      height: 68px;
+      color: #6a6259;
 
-      margin-bottom: 15px;
+      font-size: 14px;
+      line-height: 1.55;
 
-      border-radius: 50%;
+      font-weight: 700;
 
-      background: #dcecff;
+      letter-spacing: -0.4px;
 
-      box-shadow:
+      word-break: keep-all;
+    }
 
-        inset 0 0 0 1px rgba(123, 171, 220, 0.13);
 
+    .delivery-line {
       display: flex;
 
       align-items: center;
 
-      justify-content: center;
+      gap: 10px;
 
-    }
-
-    .icon {
-
-      font-size: 32px;
-
-      line-height: 1;
-
-    }
-
-    .main-button strong {
-
-      display: block;
-
-      margin-bottom: 12px;
-
-      color: #15519a;
-
-      font-size: 24px;
-
-      line-height: 1.25;
-
-      font-weight: 900;
-
-      letter-spacing: -1.1px;
-
-    }
-
-    .main-button small {
-
-      display: block;
-
-      width: 100%;
-
-      min-height: 52px;
-
-      padding-top: 12px;
-
-      border-top: 1px solid #d7e6f5;
-
-      color: #536b84;
-
-      font-size: 14px;
-
-      line-height: 1.48;
-
-      font-weight: 700;
-
-      letter-spacing: -0.3px;
-
-    }
-
-    .arrow {
-
-      width: 41px;
-
-      height: 41px;
-
-      margin-top: auto;
-
-      border-radius: 50%;
-
-      background: #2582e8;
-
-      color: #ffffff;
-
-      font-size: 24px;
-
-      line-height: 38px;
-
-      font-weight: 700;
-
-      text-align: center;
-
-      box-shadow:
-
-        0 6px 13px rgba(37, 130, 232, 0.24);
-
-    }
-
-    .origin {
-
-      margin: 18px 0 0;
+      margin-top: 18px;
 
       padding: 13px 14px;
 
-      border: 1px solid #d7e7f7;
+      border-radius: 15px;
 
-      border-radius: 22px;
-
-      background: rgba(255, 255, 255, 0.68);
-
-      color: #3f5872;
-
-      font-size: 14px;
-
-      line-height: 1.4;
-
-      font-weight: 800;
-
-      letter-spacing: -0.4px;
-
+      background: #f4f1eb;
     }
 
-    .origin-main {
 
-      margin: 0;
+    .delivery-icon {
+      flex: 0 0 auto;
 
+      font-size: 22px;
+      line-height: 1;
     }
 
-    .origin-address {
 
-      margin: 5px 0 0;
+    .delivery-line-text {
+      min-width: 0;
 
-      color: #5f7389;
+      color: #332e29;
 
       font-size: 13px;
+      line-height: 1.45;
+
+      font-weight: 850;
+
+      letter-spacing: -0.35px;
+    }
+
+
+    .order-button {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      width: 100%;
+
+      min-height: 66px;
+
+      margin-top: 15px;
+
+      border: 0;
+      border-radius: 18px;
+
+      background: #181818;
+
+      color: #ffffff;
+
+      font-size: 20px;
+      line-height: 1;
+
+      font-weight: 950;
+
+      letter-spacing: -0.9px;
+
+      box-shadow:
+        0 9px 19px rgba(0, 0, 0, 0.17);
+
+      cursor: pointer;
+
+      transition:
+        transform 0.14s ease,
+        background 0.14s ease;
+    }
+
+
+    .order-button:active {
+      transform: scale(0.985);
+
+      background: #363636;
+    }
+
+
+    .order-note {
+      margin: 11px 0 0;
+
+      color: #777069;
+
+      font-size: 12px;
+      line-height: 1.4;
 
       font-weight: 750;
 
+      text-align: center;
     }
 
-    .home-tip {
 
-      margin: 18px 0 20px;
+
+    /* ========================================
+       홈 화면 추가
+    ======================================== */
+
+    .home-tip {
+      margin: 19px 0 20px;
 
       padding: 18px 16px;
 
       border: 1px solid #ead8cd;
-
       border-radius: 18px;
 
       background: #fff9f5;
 
       text-align: center;
 
-      box-sizing: border-box;
-
       cursor: pointer;
 
       transition:
-
         transform 0.15s ease,
-
         box-shadow 0.15s ease;
-
     }
+
 
     .home-tip:active {
-
       transform: scale(0.985);
-
     }
+
 
     .home-tip:focus-visible {
-
-      outline: 3px solid rgba(139, 46, 31, 0.25);
+      outline:
+        3px solid rgba(139, 46, 31, 0.25);
 
       outline-offset: 3px;
-
     }
 
+
     .home-tip-title {
-
       margin: 0 0 8px;
-
-      font-size: 16px;
-
-      font-weight: 800;
 
       color: #8b2e1f;
 
-      word-break: keep-all;
+      font-size: 16px;
+      font-weight: 850;
 
+      word-break: keep-all;
     }
 
+
     .home-tip-text {
-
       margin: 0;
-
-      font-size: 13px;
-
-      line-height: 1.65;
 
       color: #555555;
 
-      word-break: keep-all;
+      font-size: 13px;
+      line-height: 1.65;
 
+      word-break: keep-all;
     }
 
-    .home-tip-action {
 
+    .home-tip-action {
       display: block;
 
       margin: 14px 0 0;
@@ -521,35 +680,28 @@
       padding: 13px 12px;
 
       border: 1px solid #eeeeee;
-
       border-radius: 14px;
 
       background: #ffffff;
 
       box-shadow:
-
         0 4px 12px rgba(0, 0, 0, 0.04);
-
-      font-size: 14px;
-
-      font-weight: 800;
 
       color: #8b2e1f;
 
+      font-size: 14px;
+      font-weight: 850;
+
       text-align: center;
-
     }
 
-    .home-tip:active .home-tip-action {
 
-      transform: scale(0.985);
 
-      background: #fffdfb;
-
-    }
+    /* ========================================
+       홈 화면 추가 팝업
+    ======================================== */
 
     .home-guide-modal {
-
       position: fixed;
 
       inset: 0;
@@ -559,31 +711,24 @@
       display: none;
 
       align-items: center;
-
       justify-content: center;
 
       padding: 20px;
 
       background: rgba(0, 0, 0, 0.55);
-
-      box-sizing: border-box;
-
     }
+
 
     .home-guide-modal.show {
-
       display: flex;
-
     }
 
-    .home-guide-content {
 
+    .home-guide-content {
       position: relative;
 
       width: 100%;
-
       max-width: 420px;
-
       max-height: 88vh;
 
       overflow-y: auto;
@@ -595,141 +740,126 @@
       background: #ffffff;
 
       box-shadow:
-
         0 20px 50px rgba(0, 0, 0, 0.22);
-
-      box-sizing: border-box;
-
     }
 
+
     .home-guide-content h2 {
-
       margin: 0 36px 20px 0;
-
-      font-size: 21px;
-
-      line-height: 1.4;
 
       color: #222222;
 
-      word-break: keep-all;
+      font-size: 21px;
+      line-height: 1.4;
 
+      word-break: keep-all;
     }
 
-    .home-guide-close {
 
+    .home-guide-close {
       position: absolute;
 
       top: 14px;
-
       right: 14px;
 
       width: 38px;
-
       height: 38px;
 
       border: 0;
-
       border-radius: 50%;
 
       background: #f3f3f3;
 
-      font-size: 27px;
-
-      line-height: 1;
-
       color: #555555;
 
-      cursor: pointer;
+      font-size: 27px;
+      line-height: 1;
 
+      cursor: pointer;
     }
 
-    .home-guide-device {
 
+    .home-guide-device {
       margin-bottom: 12px;
 
       padding: 16px;
 
       border: 1px solid #eeeeee;
-
       border-radius: 16px;
 
       background: #fafafa;
 
+      text-align: left;
     }
 
+
     .home-guide-device h3 {
-
       margin: 0 0 10px;
-
-      font-size: 16px;
 
       color: #8b2e1f;
 
+      font-size: 16px;
     }
 
-    .home-guide-device ol {
 
+    .home-guide-device ol {
       margin: 0;
 
       padding-left: 21px;
-
     }
 
+
     .home-guide-device li {
-
       margin: 7px 0;
-
-      font-size: 14px;
-
-      line-height: 1.6;
 
       color: #444444;
 
-      word-break: keep-all;
+      font-size: 14px;
+      line-height: 1.6;
 
+      word-break: keep-all;
     }
 
-    .home-guide-note {
 
+    .home-guide-note {
       margin: 16px 2px;
 
-      font-size: 13px;
+      color: #666666;
 
+      font-size: 13px;
       line-height: 1.6;
 
       text-align: center;
 
-      color: #666666;
-
       word-break: keep-all;
-
     }
 
-    .home-guide-confirm {
 
+    .home-guide-confirm {
       width: 100%;
 
       min-height: 50px;
 
       border: 0;
-
       border-radius: 14px;
 
       background: #8b2e1f;
 
-      font-size: 16px;
-
-      font-weight: 800;
-
       color: #ffffff;
 
-      cursor: pointer;
+      font-size: 16px;
+      font-weight: 850;
 
+      cursor: pointer;
     }
 
-    .business-footer {
 
+
+    /* ========================================
+       사업자 정보
+    ======================================== */
+
+    .business-footer {
       margin-top: 28px;
 
       padding: 24px 20px;
@@ -741,15 +871,13 @@
       color: #d5d5d5;
 
       font-size: 13px;
-
       line-height: 1.8;
 
       text-align: left;
-
     }
 
-    .business-name {
 
+    .business-name {
       display: block;
 
       margin-bottom: 10px;
@@ -757,41 +885,35 @@
       color: #ffffff;
 
       font-size: 18px;
-
       font-weight: 900;
-
     }
 
-    .business-info {
 
+    .business-info {
       color: #d5d5d5;
 
       word-break: keep-all;
-
     }
 
-    .business-info a {
 
+    .business-info a {
       color: #ffffff;
 
       text-decoration: none;
 
       font-weight: 750;
-
     }
+
 
     .business-info span {
-
       color: #eeeeee;
-
     }
 
-    .policy-links {
 
+    .policy-links {
       display: flex;
 
       justify-content: center;
-
       align-items: center;
 
       flex-wrap: wrap;
@@ -802,164 +924,99 @@
 
       padding-top: 15px;
 
-      border-top: 1px solid rgba(255, 255, 255, 0.14);
+      border-top:
+        1px solid rgba(255, 255, 255, 0.14);
 
       text-align: center;
-
     }
 
-    .policy-links a {
 
+    .policy-links a {
       color: #ffffff;
 
       font-size: 13px;
-
       font-weight: 800;
 
       text-decoration: underline;
 
       text-underline-offset: 3px;
-
     }
+
 
     .policy-links span {
-
       color: #777777;
-
     }
 
-    .business-origin {
 
+    .business-origin {
       margin: 16px 0 0;
 
       padding-top: 14px;
 
-      border-top: 1px solid rgba(255, 255, 255, 0.14);
+      border-top:
+        1px solid rgba(255, 255, 255, 0.14);
 
       color: #ffffff;
 
       font-size: 13px;
-
       font-weight: 800;
 
       text-align: center;
-
     }
+
+
+
+    /* ========================================
+       작은 휴대폰
+    ======================================== */
 
     @media (max-width: 390px) {
 
       .wrap {
-
         padding:
-
           calc(13px + env(safe-area-inset-top))
-
           12px
-
           calc(22px + env(safe-area-inset-bottom));
-
       }
 
-      .brand-header {
-
-        margin-bottom: 11px;
-
-      }
 
       .brand-name {
-
-        font-size: 27px;
-
+        font-size: 23px;
       }
 
-      .hero {
 
-        margin-bottom: 15px;
-
+      .hero-slider {
         border-radius: 23px;
-
       }
 
-      .store-photo {
 
-        height: 135px;
-
+      .hero-copy {
+        left: 17px;
+        right: 17px;
+        bottom: 20px;
       }
 
-      .title-block {
 
-        margin-bottom: 17px;
-
+      .hero-copy strong {
+        font-size: 24px;
       }
 
-      .title-block h1 {
 
-        font-size: 33px;
-
-        letter-spacing: -2.1px;
-
+      .order-card {
+        padding:
+          21px 16px 17px;
       }
 
-      .title-block .tagline {
 
-        margin-top: 7px;
-
-        font-size: 15px;
-
+      .order-title {
+        font-size: 25px;
       }
 
-      .main-buttons {
 
-        gap: 9px;
+      .order-button {
+        min-height: 62px;
 
-      }
-
-      .main-button {
-
-        min-height: 265px;
-
-        padding: 19px 9px 14px;
-
-        border-radius: 23px;
-
-      }
-
-      .icon-wrap {
-
-        width: 62px;
-
-        height: 62px;
-
-        margin-bottom: 13px;
-
-      }
-
-      .icon {
-
-        font-size: 29px;
-
-      }
-
-      .main-button strong {
-
-        font-size: 21px;
-
-      }
-
-      .main-button small {
-
-        min-height: 50px;
-
-        font-size: 12.5px;
-
-      }
-
-      .origin {
-
-        margin-top: 15px;
-
-        font-size: 13px;
-
+        font-size: 19px;
       }
 
     }
@@ -968,405 +1025,737 @@
 
 </head>
 
+
+
 <body>
 
   <main class="wrap">
 
+
+    <!-- =====================================
+         브랜드
+    ====================================== -->
+
     <header class="brand-header">
 
-      <p class="brand-name">한농직판장</p>
+      <p class="brand-name">
+        한농직판장
+      </p>
+
+      <span class="delivery-badge">
+        전주 새벽배송
+      </span>
 
     </header>
 
-    <section class="hero">
 
-      <img
 
-        class="store-photo"
+    <!-- =====================================
+         3장 슬라이드
+    ====================================== -->
 
-        src="IMG_1920.jpeg"
+    <section
+      class="hero-slider"
+      aria-label="한농직판장 돼지고기 준비 과정"
+    >
 
-        alt="한농직판장 매장 사진"
 
-      />
+      <!-- 1번 : 김제 육가공장 -->
+
+      <article class="hero-slide active">
+
+        <div class="slide-media">
+
+          <img
+            src="hero-1.jpg"
+            alt="김제 육가공 작업장"
+          />
+
+        </div>
+
+        <div class="hero-overlay"></div>
+
+        <div class="hero-copy">
+
+          <span class="hero-kicker">
+            01 · 김제 육가공
+          </span>
+
+          <strong>
+            돼지고기의<br />
+            시작부터 봅니다.
+          </strong>
+
+          <p>
+            원육이 준비되는 김제 육가공 작업장
+          </p>
+
+        </div>
+
+      </article>
+
+
+
+      <!-- 2번 : 전주 직접 손질 -->
+
+      <article class="hero-slide">
+
+        <div class="slide-media">
+
+          <div class="slide-placeholder">
+
+            <span class="placeholder-number">
+              NEXT PHOTO
+            </span>
+
+            <p class="placeholder-title">
+              전주에서<br />
+              직접 손질합니다.
+            </p>
+
+            <p class="placeholder-text">
+              화요일 실제 작업 사진으로 교체됩니다.
+            </p>
+
+          </div>
+
+          <img
+            data-src="hero-2.jpg"
+            alt="전주 한농직판장에서 돼지고기를 직접 손질하는 모습"
+            onerror="this.remove()"
+          />
+
+        </div>
+
+        <div class="hero-overlay"></div>
+
+        <div class="hero-copy">
+
+          <span class="hero-kicker">
+            02 · 전주 직접 작업
+          </span>
+
+          <strong>
+            직접 손질하고<br />
+            상품으로 만듭니다.
+          </strong>
+
+          <p>
+            한농직판장에서 직접 손질 · 상품화
+          </p>
+
+        </div>
+
+      </article>
+
+
+
+      <!-- 3번 : 새벽배송 -->
+
+      <article class="hero-slide">
+
+        <div class="slide-media">
+
+          <div class="slide-placeholder">
+
+            <span class="placeholder-number">
+              NEXT PHOTO
+            </span>
+
+            <p class="placeholder-title">
+              준비가 끝나면<br />
+              문 앞으로 갑니다.
+            </p>
+
+            <p class="placeholder-text">
+              실제 포장 · 배송 준비 사진으로 교체됩니다.
+            </p>
+
+          </div>
+
+          <img
+            data-src="hero-3.jpg"
+            alt="새벽배송을 위해 포장된 돼지고기"
+            onerror="this.remove()"
+          />
+
+        </div>
+
+        <div class="hero-overlay"></div>
+
+        <div class="hero-copy">
+
+          <span class="hero-kicker">
+            03 · 전주 새벽배송
+          </span>
+
+          <strong>
+            다음 날 아침<br />
+            문 앞까지.
+          </strong>
+
+          <p>
+            고객이 움직이기 전에 배송을 마칩니다.
+          </p>
+
+        </div>
+
+      </article>
+
+
+
+      <!-- 슬라이드 표시 -->
+
+      <div
+        class="slider-dots"
+        aria-label="슬라이드 선택"
+      >
+
+        <button
+          class="slider-dot active"
+          type="button"
+          aria-label="첫 번째 화면"
+          onclick="showSlide(0)"
+        ></button>
+
+        <button
+          class="slider-dot"
+          type="button"
+          aria-label="두 번째 화면"
+          onclick="showSlide(1)"
+        ></button>
+
+        <button
+          class="slider-dot"
+          type="button"
+          aria-label="세 번째 화면"
+          onclick="showSlide(2)"
+        ></button>
+
+      </div>
 
     </section>
 
-    <section class="title-block">
 
-      <h1>내 손안의 정육점</h1>
 
-      <p class="tagline">
+    <!-- =====================================
+         주문 선택지는 단 하나
+    ====================================== -->
 
-        언제 어디서나 간편하게!
+    <section class="order-card">
 
+      <p class="order-eyebrow">
+        전주 돼지고기 새벽배송
+      </p>
+
+      <h1 class="order-title">
+        오늘 주문하면,<br />
+        내일 아침 문 앞에.
+      </h1>
+
+      <p class="order-description">
+        필요한 고기를 편하게 주문하세요.<br />
+        저녁 장 보러 나가지 않아도 됩니다.
+      </p>
+
+
+      <div class="delivery-line">
+
+        <span
+          class="delivery-icon"
+          aria-hidden="true"
+        >
+          🌙
+        </span>
+
+        <div class="delivery-line-text">
+          오늘 밤 9시 주문 마감 · 다음 날 오전 8시 이전 배송
+        </div>
+
+      </div>
+
+
+      <button
+        class="order-button"
+        type="button"
+        onclick="location.href='morning-delivery.html'"
+      >
+        돼지고기 주문하기 →
+      </button>
+
+
+      <p class="order-note">
+        한 팩도 편하게 주문하세요.
       </p>
 
     </section>
 
-    <section class="main-buttons" aria-label="주문 방법 선택">
 
-      <button
 
-        class="main-button store-order"
-
-        type="button"
-
-        onclick="location.href='Store-order.html'"
-
-      >
-
-        <span class="icon-wrap">
-
-          <span class="icon">🛍️</span>
-
-        </span>
-
-        <strong>매장 주문</strong>
-
-        <small>
-
-          상품을 미리 골라<br />
-
-          편하게 찾아가세요
-
-        </small>
-
-        <span class="arrow">→</span>
-
-      </button>
-
-      <button
-
-        class="main-button morning-delivery"
-
-        type="button"
-
-        onclick="location.href='morning-delivery.html'"
-
-      >
-
-        <span class="icon-wrap">
-
-          <span class="icon">🚚</span>
-
-        </span>
-
-        <strong>아침 배송</strong>
-
-        <small>
-
-          오늘 저녁 9시까지 주문<br />
-
-          다음 날 아침 배송
-
-        </small>
-
-        <span class="arrow">→</span>
-
-      </button>
-
-    </section>
+    <!-- =====================================
+         홈 화면 추가
+    ====================================== -->
 
     <section
-
       class="home-tip"
-
       aria-label="홈 화면 추가 안내"
-
       role="button"
-
       tabindex="0"
-
       onclick="openHomeGuide()"
-
-      onkeydown="if(event.key === 'Enter' || event.key === ' ') openHomeGuide()"
-
+      onkeydown="
+        if(
+          event.key === 'Enter' ||
+          event.key === ' '
+        ) {
+          openHomeGuide();
+        }
+      "
     >
 
       <p class="home-tip-title">
-
         홈 화면에 추가하고 편하게 이용하세요
-
       </p>
 
       <p class="home-tip-text">
-
         자주 주문하신다면 홈 화면에 추가해두세요.<br />
-
         다음부터는 QR코드를 다시 찍지 않아도 바로 접속할 수 있습니다.
-
       </p>
 
       <p class="home-tip-action">
-
         추가 방법 자세히 보기 →
-
       </p>
 
     </section>
+
+
+
+    <!-- =====================================
+         사업자 정보
+    ====================================== -->
 
     <footer class="business-footer">
 
       <strong class="business-name">
-
         한농직판장
-
       </strong>
+
 
       <div class="business-info">
 
-        대표자: 김가혜<br />
+        대표자:
+        김가혜<br />
 
         사업자등록번호:
-
-        <span>734-17-02491</span><br />
+        <span>
+          734-17-02491
+        </span><br />
 
         통신판매업 신고번호:
-
-        <span>제 2026-전주완산-0555 호</span><br />
+        <span>
+          제 2026-전주완산-0555 호
+        </span><br />
 
         주소:
-
         전북특별자치도 전주시 완산구 거마평로 177<br />
 
         고객센터:
 
         <a href="tel:01085052654">
-
           010-8505-2654
-
         </a><br />
 
         이메일:
 
         <a href="mailto:yunhawifood@gmail.com">
-
           yunhawifood@gmail.com
-
         </a><br />
 
         카카오톡:
 
         <a href="https://pf.kakao.com/_rjhxen/chat">
-
           한농직판장 채널
-
         </a><br />
 
       </div>
 
+
       <div class="policy-links">
 
         <a href="terms.html">
-
           이용약관
-
         </a>
 
         <span>|</span>
 
         <a href="privacy.html">
-
           개인정보처리방침
-
         </a>
 
       </div>
 
+
       <p class="business-origin">
-
         국내산 한우 · 한돈만 취급합니다.
-
       </p>
 
     </footer>
 
   </main>
 
-  <!-- 홈 화면 추가 안내 팝업 시작 -->
+
+
+  <!-- =====================================
+       홈 화면 추가 팝업
+  ====================================== -->
 
   <div
-
     id="homeGuideModal"
-
     class="home-guide-modal"
-
     aria-hidden="true"
-
     onclick="closeHomeGuideOutside(event)"
-
   >
 
     <div
-
       class="home-guide-content"
-
       role="dialog"
-
       aria-modal="true"
-
       aria-labelledby="homeGuideTitle"
-
     >
 
       <button
-
         class="home-guide-close"
-
         type="button"
-
         aria-label="닫기"
-
         onclick="closeHomeGuide()"
-
       >
-
         ×
-
       </button>
 
+
       <h2 id="homeGuideTitle">
-
         홈 화면에 추가하는 방법
-
       </h2>
 
+
       <div class="home-guide-device">
 
-        <h3>iPhone · iPad</h3>
+        <h3>
+          iPhone · iPad
+        </h3>
 
         <ol>
 
           <li>
-
             Safari 아래쪽 또는 위쪽의
-
             <strong>공유 버튼</strong>을 누릅니다.
-
           </li>
 
           <li>
-
             메뉴에서
-
             <strong>홈 화면에 추가</strong>를 누릅니다.
-
           </li>
 
           <li>
-
             오른쪽 위의
-
             <strong>추가</strong>를 누릅니다.
-
           </li>
 
         </ol>
 
       </div>
 
+
       <div class="home-guide-device">
 
-        <h3>Android</h3>
+        <h3>
+          Android
+        </h3>
 
         <ol>
 
           <li>
-
             브라우저 오른쪽 위의
-
             <strong>메뉴(⋮)</strong>를 누릅니다.
-
           </li>
 
           <li>
-
             <strong>홈 화면에 추가</strong>
-
             또는
-
             <strong>앱 설치</strong>를 누릅니다.
-
           </li>
 
           <li>
-
             화면 안내에 따라 추가합니다.
-
           </li>
 
         </ol>
 
       </div>
+
 
       <p class="home-guide-note">
-
         한 번 추가해두면 다음부터는 QR코드 없이 바로 접속할 수 있습니다.
-
       </p>
 
+
       <button
-
         class="home-guide-confirm"
-
         type="button"
-
         onclick="closeHomeGuide()"
-
       >
-
         확인
-
       </button>
 
     </div>
 
   </div>
 
-  <!-- 홈 화면 추가 안내 팝업 끝 -->
+
 
   <script>
 
-    function openHomeGuide() {
+    /* =====================================
+       메인 슬라이드
+    ====================================== */
 
-      const modal = document.getElementById("homeGuideModal");
+    const slides =
+      document.querySelectorAll(
+        ".hero-slide"
+      );
 
-      if (!modal) {
 
+    const dots =
+      document.querySelectorAll(
+        ".slider-dot"
+      );
+
+
+    let currentSlide = 0;
+
+    let slideTimer = null;
+
+
+
+    function loadSlideImage(index) {
+
+      const slide =
+        slides[index];
+
+
+      if (!slide) {
         return;
-
       }
 
-      modal.classList.add("show");
 
-      modal.setAttribute("aria-hidden", "false");
+      const image =
+        slide.querySelector(
+          "img[data-src]"
+        );
 
-      document.body.style.overflow = "hidden";
+
+      if (
+        !image ||
+        image.getAttribute("src")
+      ) {
+        return;
+      }
+
+
+      image.setAttribute(
+        "src",
+        image.dataset.src
+      );
 
     }
+
+
+
+    function activateSlide(index) {
+
+      currentSlide = index;
+
+
+      loadSlideImage(
+        currentSlide
+      );
+
+
+      slides.forEach(
+        function(
+          slide,
+          slideIndex
+        ) {
+
+          slide.classList.toggle(
+            "active",
+            slideIndex === currentSlide
+          );
+
+        }
+      );
+
+
+      dots.forEach(
+        function(
+          dot,
+          dotIndex
+        ) {
+
+          dot.classList.toggle(
+            "active",
+            dotIndex === currentSlide
+          );
+
+        }
+      );
+
+    }
+
+
+
+    function showSlide(index) {
+
+      activateSlide(index);
+
+      restartSlider();
+
+    }
+
+
+
+    function nextSlide() {
+
+      const nextIndex =
+        (currentSlide + 1) %
+        slides.length;
+
+
+      activateSlide(
+        nextIndex
+      );
+
+    }
+
+
+
+    function restartSlider() {
+
+      clearInterval(
+        slideTimer
+      );
+
+
+      slideTimer =
+        setInterval(
+          nextSlide,
+          4200
+        );
+
+    }
+
+
+
+    restartSlider();
+
+
+
+    document.addEventListener(
+      "visibilitychange",
+      function() {
+
+        if (
+          document.hidden
+        ) {
+
+          clearInterval(
+            slideTimer
+          );
+
+        } else {
+
+          restartSlider();
+
+        }
+
+      }
+    );
+
+
+
+    /* =====================================
+       홈 화면 추가 안내
+    ====================================== */
+
+    function openHomeGuide() {
+
+      const modal =
+        document.getElementById(
+          "homeGuideModal"
+        );
+
+
+      if (!modal) {
+        return;
+      }
+
+
+      modal.classList.add(
+        "show"
+      );
+
+
+      modal.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+
+      document.body.style.overflow =
+        "hidden";
+
+    }
+
+
 
     function closeHomeGuide() {
 
-      const modal = document.getElementById("homeGuideModal");
+      const modal =
+        document.getElementById(
+          "homeGuideModal"
+        );
+
 
       if (!modal) {
-
         return;
-
       }
 
-      modal.classList.remove("show");
 
-      modal.setAttribute("aria-hidden", "true");
+      modal.classList.remove(
+        "show"
+      );
 
-      document.body.style.overflow = "";
+
+      modal.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      document.body.style.overflow =
+        "";
 
     }
 
-    function closeHomeGuideOutside(event) {
 
-      if (event.target.id === "homeGuideModal") {
+
+    function closeHomeGuideOutside(
+      event
+    ) {
+
+      if (
+        event.target.id ===
+        "homeGuideModal"
+      ) {
 
         closeHomeGuide();
 
@@ -1374,15 +1763,22 @@
 
     }
 
-    document.addEventListener("keydown", function(event) {
 
-      if (event.key === "Escape") {
 
-        closeHomeGuide();
+    document.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (
+          event.key === "Escape"
+        ) {
+
+          closeHomeGuide();
+
+        }
 
       }
-
-    });
+    );
 
   </script>
 
