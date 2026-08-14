@@ -138,26 +138,26 @@
 
 
     .delivery-badge {
-      display: inline-flex;
+  display: inline-flex;
 
-      align-items: center;
+  align-items: center;
 
-      min-height: 30px;
+  min-height: 31px;
 
-      padding: 0 11px;
+  padding: 0 12px;
 
-      border-radius: 999px;
+  border: 1px solid #cce5d4;
+  border-radius: 999px;
 
-      background: #171717;
+  background: #edf8f0;
 
-      color: #ffffff;
+  color: #236c3c;
 
-      font-size: 12px;
-      font-weight: 850;
+  font-size: 12px;
+  font-weight: 900;
 
-      letter-spacing: -0.35px;
-    }
-
+  letter-spacing: -0.4px;
+}
 
 
     /* ========================================
@@ -280,7 +280,7 @@
     .placeholder-number {
       margin-bottom: 12px;
 
-      color: #d9aa6a;
+      color: #9ad3aa;
 
       font-size: 12px;
 
@@ -357,8 +357,8 @@
       display: block;
 
       margin-bottom: 7px;
-
-      color: #efbd76;
+      
+      color: #9ad3aa;
 
       font-size: 12px;
 
@@ -487,7 +487,6 @@
   display: block;
 }
 
-
 .order-button {
   display: flex;
 
@@ -503,7 +502,7 @@
   border: 0;
   border-radius: 22px;
 
-  background: #171717;
+  background: #2f8f50;
 
   color: #ffffff;
 
@@ -515,20 +514,24 @@
   letter-spacing: -1.3px;
 
   box-shadow:
-    0 13px 25px rgba(0, 0, 0, 0.22);
+    0 13px 25px rgba(47, 143, 80, 0.25);
 
   cursor: pointer;
 
   transition:
     transform 0.14s ease,
-    background 0.14s ease;
+    background 0.14s ease,
+    box-shadow 0.14s ease;
 }
 
 
 .order-button:active {
   transform: scale(0.98);
 
-  background: #343434;
+  background: #267642;
+
+  box-shadow:
+    0 7px 15px rgba(47, 143, 80, 0.20);
 }
 
 
@@ -550,25 +553,24 @@
        홈 화면 추가
     ======================================== */
 
-    .home-tip {
-      margin: 19px 0 20px;
+   .home-tip {
+  margin: 18px 0 18px;
 
-      padding: 18px 16px;
+  padding: 17px 16px;
 
-      border: 1px solid #ead8cd;
-      border-radius: 18px;
+  border: 1px solid #dcebe1;
+  border-radius: 18px;
 
-      background: #fff9f5;
+  background: #f7fbf8;
 
-      text-align: center;
+  text-align: center;
 
-      cursor: pointer;
+  cursor: pointer;
 
-      transition:
-        transform 0.15s ease,
-        box-shadow 0.15s ease;
-    }
-
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
 
     .home-tip:active {
       transform: scale(0.985);
@@ -576,24 +578,21 @@
 
 
     .home-tip:focus-visible {
-      outline:
-        3px solid rgba(139, 46, 31, 0.25);
+  outline:
+    3px solid rgba(47, 143, 80, 0.22);
 
-      outline-offset: 3px;
-    }
+  outline-offset: 3px;
+}
+  .home-tip-title {
+  margin: 0 0 7px;
 
+  color: #2c7043;
 
-    .home-tip-title {
-      margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 850;
 
-      color: #8b2e1f;
-
-      font-size: 16px;
-      font-weight: 850;
-
-      word-break: keep-all;
-    }
-
+  word-break: keep-all;
+}
 
     .home-tip-text {
       margin: 0;
@@ -607,30 +606,28 @@
     }
 
 
-    .home-tip-action {
-      display: block;
+  .home-tip-action {
+  display: block;
 
-      margin: 14px 0 0;
+  margin: 13px 0 0;
 
-      padding: 13px 12px;
+  padding: 12px 12px;
 
-      border: 1px solid #eeeeee;
-      border-radius: 14px;
+  border: 1px solid #e2ebe5;
+  border-radius: 14px;
 
-      background: #ffffff;
+  background: #ffffff;
 
-      box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 3px 9px rgba(0, 0, 0, 0.025);
 
-      color: #8b2e1f;
+  color: #2c7043;
 
-      font-size: 14px;
-      font-weight: 850;
+  font-size: 13px;
+  font-weight: 850;
 
-      text-align: center;
-    }
-
-
+  text-align: center;
+}
 
     /* ========================================
        홈 화면 추가 팝업
