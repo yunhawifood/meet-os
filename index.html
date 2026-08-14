@@ -444,170 +444,138 @@
     }
 
 
+/* ========================================
+   주문 박스 - 하나만 강하게
+======================================== */
 
-    /* ========================================
-       주문 박스 - 고객 선택은 이것 하나
-    ======================================== */
+.order-card {
+  margin-top: 18px;
 
-    .order-card {
-      margin-top: 17px;
+  padding: 29px 18px 20px;
 
-      padding: 24px 19px 19px;
+  border: 1px solid #e5ded2;
+  border-radius: 25px;
 
-      border: 1px solid #e5ded2;
-      border-radius: 25px;
+  background: rgba(255, 255, 255, 0.97);
 
-      background: rgba(255, 255, 255, 0.96);
+  box-shadow:
+    0 11px 27px rgba(58, 46, 30, 0.09);
 
-      box-shadow:
-        0 11px 27px rgba(58, 46, 30, 0.09);
+  text-align: center;
+}
 
-      text-align: left;
-    }
 
+.order-eyebrow {
+  margin: 0 0 10px;
 
-    .order-eyebrow {
-      margin: 0 0 7px;
+  color: #9b612f;
 
-      color: #9b612f;
+  font-size: 13px;
+  line-height: 1.3;
 
-      font-size: 13px;
-      line-height: 1.3;
+  font-weight: 950;
 
-      font-weight: 950;
+  letter-spacing: -0.35px;
+}
 
-      letter-spacing: -0.35px;
-    }
 
+.order-title {
+  margin: 0;
 
-    .order-title {
-      margin: 0;
+  color: #171717;
 
-      color: #171717;
+  font-size: 31px;
+  line-height: 1.22;
 
-      font-size: 27px;
-      line-height: 1.22;
+  font-weight: 950;
 
-      font-weight: 950;
+  letter-spacing: -1.8px;
 
-      letter-spacing: -1.7px;
+  text-align: center;
 
-      word-break: keep-all;
-    }
+  word-break: keep-all;
+}
 
 
-    .order-description {
-      margin: 10px 0 0;
+.order-title span {
+  display: block;
+}
 
-      color: #6a6259;
 
-      font-size: 14px;
-      line-height: 1.55;
+.order-description {
+  margin: 13px 0 0;
 
-      font-weight: 700;
+  color: #6a6259;
 
-      letter-spacing: -0.4px;
+  font-size: 14px;
+  line-height: 1.55;
 
-      word-break: keep-all;
-    }
+  font-weight: 700;
 
+  letter-spacing: -0.4px;
 
-    .delivery-line {
-      display: flex;
+  text-align: center;
 
-      align-items: center;
+  word-break: keep-all;
+}
 
-      gap: 10px;
 
-      margin-top: 18px;
+.order-button {
+  display: flex;
 
-      padding: 13px 14px;
+  align-items: center;
+  justify-content: center;
 
-      border-radius: 15px;
+  width: 100%;
 
-      background: #f4f1eb;
-    }
+  min-height: 82px;
 
+  margin-top: 22px;
 
-    .delivery-icon {
-      flex: 0 0 auto;
+  border: 0;
+  border-radius: 21px;
 
-      font-size: 22px;
-      line-height: 1;
-    }
+  background: #181818;
 
+  color: #ffffff;
 
-    .delivery-line-text {
-      min-width: 0;
+  font-size: 24px;
+  line-height: 1;
 
-      color: #332e29;
+  font-weight: 950;
 
-      font-size: 13px;
-      line-height: 1.45;
+  letter-spacing: -1.1px;
 
-      font-weight: 850;
+  box-shadow:
+    0 12px 24px rgba(0, 0, 0, 0.19);
 
-      letter-spacing: -0.35px;
-    }
+  cursor: pointer;
 
+  transition:
+    transform 0.14s ease,
+    background 0.14s ease;
+}
 
-    .order-button {
-      display: flex;
 
-      align-items: center;
-      justify-content: center;
+.order-button:active {
+  transform: scale(0.985);
 
-      width: 100%;
+  background: #363636;
+}
 
-      min-height: 66px;
 
-      margin-top: 15px;
+.order-note {
+  margin: 12px 0 0;
 
-      border: 0;
-      border-radius: 18px;
+  color: #777069;
 
-      background: #181818;
+  font-size: 12px;
+  line-height: 1.4;
 
-      color: #ffffff;
+  font-weight: 750;
 
-      font-size: 20px;
-      line-height: 1;
-
-      font-weight: 950;
-
-      letter-spacing: -0.9px;
-
-      box-shadow:
-        0 9px 19px rgba(0, 0, 0, 0.17);
-
-      cursor: pointer;
-
-      transition:
-        transform 0.14s ease,
-        background 0.14s ease;
-    }
-
-
-    .order-button:active {
-      transform: scale(0.985);
-
-      background: #363636;
-    }
-
-
-    .order-note {
-      margin: 11px 0 0;
-
-      color: #777069;
-
-      font-size: 12px;
-      line-height: 1.4;
-
-      font-weight: 750;
-
-      text-align: center;
-    }
-
+  text-align: center;
+}
 
 
     /* ========================================
@@ -1240,54 +1208,34 @@
          주문 선택지는 단 하나
     ====================================== -->
 
-    <section class="order-card">
+  <section class="order-card">
 
-      <p class="order-eyebrow">
-        전주 돼지고기 새벽배송
-      </p>
+  <p class="order-eyebrow">
+    전주 돼지고기 새벽배송
+  </p>
 
-      <h1 class="order-title">
-        오늘 주문하면,<br />
-        내일 아침 문 앞에.
-      </h1>
+  <h1 class="order-title">
+    <span>오늘 주문하면,</span>
+    <span>내일 아침 문 앞에.</span>
+  </h1>
 
-      <p class="order-description">
-        필요한 고기를 편하게 주문하세요.<br />
-        저녁 장 보러 나가지 않아도 됩니다.
-      </p>
+  <p class="order-description">
+    필요한 돼지고기를 편하게 주문하세요.
+  </p>
 
+  <button
+    class="order-button"
+    type="button"
+    onclick="location.href='morning-delivery.html'"
+  >
+    돼지고기 주문하기 →
+  </button>
 
-      <div class="delivery-line">
+  <p class="order-note">
+    한 팩도 편하게 주문하세요.
+  </p>
 
-        <span
-          class="delivery-icon"
-          aria-hidden="true"
-        >
-          🌙
-        </span>
-
-        <div class="delivery-line-text">
-          오늘 밤 9시 주문 마감 · 다음 날 오전 8시 이전 배송
-        </div>
-
-      </div>
-
-
-      <button
-        class="order-button"
-        type="button"
-        onclick="location.href='morning-delivery.html'"
-      >
-        돼지고기 주문하기 →
-      </button>
-
-
-      <p class="order-note">
-        한 팩도 편하게 주문하세요.
-      </p>
-
-    </section>
-
+</section>
 
 
     <!-- =====================================
