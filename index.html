@@ -805,6 +805,315 @@
 
   cursor: pointer;
 }
+
+    /* ========================================
+       가게 위치 · 소개
+    ======================================== */
+
+    .store-intro-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+
+      margin: 0 0 18px;
+      padding: 15px 16px;
+
+      border: 1px solid #e1e8e3;
+      border-radius: 17px;
+
+      background: rgba(255, 255, 255, 0.82);
+
+      text-align: left;
+    }
+
+    .store-intro-link-copy strong {
+      display: block;
+
+      color: #2c7043;
+
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .store-intro-link-copy span {
+      display: block;
+
+      margin-top: 4px;
+
+      color: #6f6a64;
+
+      font-size: 12px;
+      line-height: 1.5;
+
+      word-break: keep-all;
+    }
+
+    .store-intro-open {
+      flex: 0 0 auto;
+
+      min-height: 40px;
+      padding: 0 14px;
+
+      border: 1px solid #dce8df;
+      border-radius: 999px;
+
+      background: #f5faf7;
+
+      color: #2c7043;
+
+      font-size: 12px;
+      font-weight: 900;
+
+      cursor: pointer;
+    }
+
+    .store-intro-open:active {
+      transform: scale(0.98);
+    }
+
+    .store-intro-open:focus-visible {
+      outline: 3px solid rgba(47, 143, 80, 0.22);
+      outline-offset: 3px;
+    }
+
+    .store-intro-modal {
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 10000;
+
+      display: none;
+      align-items: center;
+      justify-content: center;
+
+      padding: 18px;
+
+      background: rgba(18, 24, 20, 0.66);
+    }
+
+    .store-intro-modal.show {
+      display: flex;
+    }
+
+    .store-intro-dialog {
+      position: relative;
+
+      width: 100%;
+      max-width: 460px;
+      max-height: 90vh;
+
+      overflow-y: auto;
+
+      padding: 27px 19px 20px;
+
+      border-radius: 24px;
+
+      background: #ffffff;
+
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+    }
+
+    .store-intro-close {
+      position: absolute;
+
+      top: 12px;
+      right: 12px;
+
+      width: 38px;
+      height: 38px;
+
+      border: 0;
+      border-radius: 50%;
+
+      background: #edf6f0;
+
+      color: #2c7043;
+
+      font-size: 27px;
+      line-height: 1;
+
+      cursor: pointer;
+    }
+
+    .store-intro-kicker {
+      margin: 0 42px 5px 0;
+
+      color: #2f8f50;
+
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .store-intro-dialog h2 {
+      margin: 0 42px 17px 0;
+
+      color: #222222;
+
+      font-size: 24px;
+      line-height: 1.35;
+
+      word-break: keep-all;
+    }
+
+    .store-intro-photos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+    }
+
+    .store-intro-photos figure {
+      overflow: hidden;
+
+      margin: 0;
+
+      border: 1px solid #e3e8e4;
+      border-radius: 15px;
+
+      background: #f4f5f4;
+    }
+
+    .store-intro-photos img {
+      display: block;
+
+      width: 100%;
+
+      aspect-ratio: 4 / 3;
+
+      object-fit: cover;
+    }
+
+    .store-intro-photos figcaption {
+      padding: 9px 8px 10px;
+
+      color: #555555;
+
+      font-size: 11px;
+      line-height: 1.4;
+      font-weight: 800;
+
+      text-align: center;
+      word-break: keep-all;
+    }
+
+    .store-intro-body {
+      margin: 17px 2px 15px;
+
+      color: #454545;
+
+      font-size: 13px;
+      line-height: 1.7;
+
+      word-break: keep-all;
+    }
+
+    .store-intro-body p {
+      margin: 0 0 11px;
+    }
+
+    .store-intro-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .store-intro-flow {
+      display: block;
+
+      margin: 13px 0;
+      padding: 11px 10px;
+
+      border-radius: 12px;
+
+      background: #edf6f0;
+
+      color: #2c7043;
+
+      font-size: 12px;
+      font-weight: 900;
+
+      text-align: center;
+    }
+
+    .store-intro-slogan {
+      margin: 16px 0 15px;
+      padding: 15px 12px;
+
+      border-radius: 15px;
+
+      background: #222222;
+
+      color: #ffffff;
+
+      font-size: 18px;
+      line-height: 1.35;
+      font-weight: 900;
+
+      text-align: center;
+      word-break: keep-all;
+    }
+
+    .store-intro-address {
+      padding: 14px;
+
+      border: 1px solid #dfeae2;
+      border-radius: 15px;
+
+      background: #f7faf8;
+    }
+
+    .store-intro-address span {
+      display: block;
+
+      margin-bottom: 5px;
+
+      color: #2f8f50;
+
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .store-intro-address strong {
+      display: block;
+
+      color: #292929;
+
+      font-size: 13px;
+      line-height: 1.55;
+
+      word-break: keep-all;
+    }
+
+    .store-intro-map {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      min-height: 51px;
+      margin-top: 11px;
+
+      border-radius: 14px;
+
+      background: #2f8f50;
+
+      color: #ffffff;
+
+      font-size: 14px;
+      font-weight: 900;
+
+      text-decoration: none;
+    }
+
+    @media (max-width: 390px) {
+      .store-intro-link {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .store-intro-open {
+        width: 100%;
+      }
+    }
+
    /* ========================================
    사업자 정보 - 컴팩트 버전
 ======================================== */
@@ -1187,7 +1496,6 @@
     </section>
 
 
-
     <!-- =====================================
          주문 선택지는 단 하나
     ====================================== -->
@@ -1249,6 +1557,41 @@
       <p class="home-tip-action">
         추가 방법 자세히 보기 →
       </p>
+
+    </section>
+
+
+
+    <!-- =====================================
+         가게 위치 · 소개
+    ====================================== -->
+
+    <section
+      class="store-intro-link"
+      aria-labelledby="storeIntroLinkTitle"
+    >
+
+      <div class="store-intro-link-copy">
+
+        <strong id="storeIntroLinkTitle">
+          어디에서, 누가 준비하나요?
+        </strong>
+
+        <span>
+          궁금하신 분만 가게 위치와 준비 모습을 확인해보세요.
+        </span>
+
+      </div>
+
+
+      <button
+        class="store-intro-open"
+        type="button"
+        aria-haspopup="dialog"
+        onclick="openStoreIntro()"
+      >
+        위치·소개 보기 →
+      </button>
 
     </section>
 
@@ -1432,6 +1775,144 @@
       </button>
 
     </div>
+
+  </div>
+
+
+
+  <!-- =====================================
+       가게 위치 · 소개 팝업
+  ====================================== -->
+
+  <div
+    id="storeIntroModal"
+    class="store-intro-modal"
+    aria-hidden="true"
+    onclick="closeStoreIntroOutside(event)"
+  >
+
+    <section
+      class="store-intro-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="storeIntroTitle"
+    >
+
+      <button
+        class="store-intro-close"
+        type="button"
+        aria-label="가게 소개 닫기"
+        onclick="closeStoreIntro()"
+      >
+        ×
+      </button>
+
+
+      <p class="store-intro-kicker">
+        한농직판장 · 전주
+      </p>
+
+
+      <h2 id="storeIntroTitle">
+        전주에서 직접 준비합니다.
+      </h2>
+
+
+      <div class="store-intro-photos">
+
+        <figure>
+
+          <img
+            src="images/storefront.jpg"
+            alt="전주 한농직판장 매장 외관"
+            loading="lazy"
+          />
+
+          <figcaption>
+            전주 한농직판장 매장
+          </figcaption>
+
+        </figure>
+
+
+        <figure>
+
+          <img
+            src="images/store-owner.jpg"
+            alt="한농직판장 작업장에서 고기를 준비하는 모습"
+            loading="lazy"
+          />
+
+          <figcaption>
+            매장에서 직접 손질·상품화합니다
+          </figcaption>
+
+        </figure>
+
+      </div>
+
+
+      <div class="store-intro-body">
+
+        <p>
+          안녕하세요. 한 자리에서 8년간 정육점을 운영해 온
+          한농직판장입니다.
+        </p>
+
+        <p>
+          한농직판장은 김제 장군이포크 육가공의 직영매장입니다.
+          날씨와 거리, 이동이 어려운 고객님의 생활환경을 생각하며
+          전주 지역 새벽배송을 시작했습니다.
+        </p>
+
+        <strong class="store-intro-flow">
+          김제 가공 → 전주 상품화 → 문 앞 배송
+        </strong>
+
+        <p>
+          매일 생산되는 신선한 돼지고기를 여러 유통 단계를 거치지
+          않고 전해드립니다. 굳이 대형마트에 가지 않으셔도,
+          또 다른 고기 브랜드를 찾아 헤매지 않으셔도 되도록
+          저희가 직접 준비하겠습니다.
+        </p>
+
+        <p>
+          고객님의 아침과 저녁 식탁이 더 편하고 든든해지도록
+          한 팩부터 정성껏 보내드리겠습니다.
+        </p>
+
+      </div>
+
+
+      <p class="store-intro-slogan">
+        오지 마세요.<br />
+        제가 갈게요.
+      </p>
+
+
+      <div class="store-intro-address">
+
+        <span>
+          매장 위치
+        </span>
+
+        <strong>
+          전북특별자치도 전주시 완산구 거마평로 177
+        </strong>
+
+      </div>
+
+
+      <a
+        class="store-intro-map"
+        href="https://map.naver.com/p/search/%EC%A0%84%EB%B6%81%ED%8A%B9%EB%B3%84%EC%9E%90%EC%B9%98%EB%8F%84%20%EC%A0%84%EC%A3%BC%EC%8B%9C%20%EC%99%84%EC%82%B0%EA%B5%AC%20%EA%B1%B0%EB%A7%88%ED%8F%89%EB%A1%9C%20177"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        네이버 지도에서 위치 보기 →
+      </a>
+
+    </section>
 
   </div>
 
@@ -1690,6 +2171,126 @@
 
 
 
+    /* =====================================
+       가게 위치 · 소개
+    ====================================== */
+
+    let storeIntroLastFocus = null;
+
+
+    function openStoreIntro() {
+
+      const modal =
+        document.getElementById(
+          "storeIntroModal"
+        );
+
+
+      if (!modal) {
+        return;
+      }
+
+
+      storeIntroLastFocus =
+        document.activeElement;
+
+
+      modal.classList.add(
+        "show"
+      );
+
+
+      modal.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+
+      document.body.style.overflow =
+        "hidden";
+
+
+      const closeButton =
+        modal.querySelector(
+          ".store-intro-close"
+        );
+
+
+      if (closeButton) {
+        closeButton.focus();
+      }
+
+    }
+
+
+
+    function closeStoreIntro() {
+
+      const modal =
+        document.getElementById(
+          "storeIntroModal"
+        );
+
+
+      if (!modal) {
+        return;
+      }
+
+
+      if (
+        !modal.classList.contains(
+          "show"
+        )
+      ) {
+        return;
+      }
+
+
+      modal.classList.remove(
+        "show"
+      );
+
+
+      modal.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      document.body.style.overflow =
+        "";
+
+
+      if (
+        storeIntroLastFocus &&
+        typeof storeIntroLastFocus.focus ===
+          "function"
+      ) {
+        storeIntroLastFocus.focus();
+      }
+
+
+      storeIntroLastFocus = null;
+
+    }
+
+
+
+    function closeStoreIntroOutside(
+      event
+    ) {
+
+      if (
+        event.target.id ===
+        "storeIntroModal"
+      ) {
+        closeStoreIntro();
+      }
+
+    }
+
+
+
     document.addEventListener(
       "keydown",
       function(event) {
@@ -1699,6 +2300,7 @@
         ) {
 
           closeHomeGuide();
+          closeStoreIntro();
 
         }
 
