@@ -2250,6 +2250,23 @@
     font-size: 22px;
   }
 
+  .product-specific-notice {
+    display: none;
+    margin: -4px 0 16px;
+    padding: 13px 14px;
+    border: 1px solid #f0caca;
+    border-radius: 14px;
+    background: #fff6f6;
+    color: #9a2424;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.5;
+  }
+
+  .product-specific-notice.show {
+    display: block;
+  }
+
   .front-use-title.hidden,
   .product-use-list.hidden {
     display: none;
@@ -2494,7 +2511,9 @@
 
     <p class="intro">
 
-      아래 8개 아파트에 새벽배송합니다.
+      현재 8개 아파트에서 시범 운영 중입니다.<br />
+      전주 전역을 시작으로, 더 많은 지역의 아침 문 앞까지<br />
+      배송을 확대해 나가겠습니다.
 
     </p>
 
@@ -2595,6 +2614,9 @@
       </button>
 
     </div>
+
+<p class="product-specific-notice" id="productSpecificNotice"></p>
+
 <p class="front-use-title" id="productUseTitle">
 
   용도를 선택해주세요.
@@ -3063,7 +3085,7 @@ const FALLBACK_PRODUCTS = [
     productId: "deungsim",
     name: "등심",
     unitPrice: 1700,
-    uses: ["돈까스용", "카레용", "잡채용"],
+    uses: ["카레용", "잡채용", "돈까스용"],
     imageUrl: "images/deungsim.PNG",
     status: "SELLING"
   },
@@ -3076,6 +3098,11 @@ const FALLBACK_PRODUCTS = [
     status: "SELLING"
   }
 ];
+
+const PRODUCT_SPECIFIC_NOTICES = {
+  samgyeopsal: "껍데기 없는 삼겹살만 판매합니다. 오겹살이 아닙니다.",
+  apdari: "껍데기 없는 앞다리만 판매합니다. 미박 앞다리(미전지)가 아닙니다."
+};
 
 const productByName = new Map();
 const productById = new Map();
@@ -3352,6 +3379,12 @@ const productById = new Map();
     selectedProductUse = selectedProductRequiresUse
       ? productInfo.uses[0]
       : "";
+
+    const productNotice = document.getElementById("productSpecificNotice");
+    const productNoticeText =
+      PRODUCT_SPECIFIC_NOTICES[productInfo.productId] || "";
+    productNotice.textContent = productNoticeText;
+    productNotice.classList.toggle("show", Boolean(productNoticeText));
 
     document
 
