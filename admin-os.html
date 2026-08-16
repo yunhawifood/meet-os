@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>한농직판장 관리자 OS</title>
+  <style>
+    :root{--green:#235f3f;--soft:#eef7f1;--red:#bd2929;--line:#e3e7e4;--muted:#69716c}*{box-sizing:border-box}body{margin:0;background:#f4f6f5;color:#1b1e1c;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}.page{width:min(100%,1080px);margin:0 auto;padding:24px 18px 80px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}.top h1{margin:0;color:var(--green);font-size:26px}.top small{color:var(--muted)}.top-actions{display:flex;align-items:center;gap:8px}.back{display:inline-flex;align-items:center;min-height:46px;padding:0 16px;border:1px solid var(--line);border-radius:12px;background:#fff;color:#3f4843;font-weight:800;text-decoration:none}.panel{padding:20px;border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:0 8px 25px rgba(0,0,0,.04)}.login{display:grid;grid-template-columns:1fr auto auto;gap:10px}.login input,input,select,textarea{width:100%;border:1px solid #d7ddd9;border-radius:12px;background:#fff;font:inherit;outline:none}.login input,input,select{min-height:46px;padding:0 12px}textarea{min-height:92px;padding:12px;resize:vertical}input:focus,select:focus,textarea:focus{border-color:#4c9169;box-shadow:0 0 0 3px rgba(47,139,80,.1)}button{min-height:46px;padding:0 16px;border:0;border-radius:12px;background:var(--green);color:#fff;font:inherit;font-weight:800;cursor:pointer}button.secondary{border:1px solid var(--line);background:#fff;color:#3f4843}button.danger{background:#fff0f0;color:var(--red)}button:disabled{opacity:.55;cursor:wait}.message{display:none;margin:12px 0 0;padding:11px 13px;border-radius:12px;background:#f3f5f4;color:#4f5853;font-size:14px}.message.show{display:block}.message.error{background:#fff0f0;color:#a62020}.tabs{display:flex;gap:8px;margin:18px 0;overflow:auto}.tab{white-space:nowrap;background:#e7ece9;color:#3e4943}.tab.active{background:var(--green);color:#fff}.view{display:none}.view.active{display:block}.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.section-head h2{margin:0;font-size:21px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.card{padding:16px;border:1px solid var(--line);border-radius:16px;background:#fff}.card h3{margin:0 0 12px;color:var(--green)}.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{color:#59635d;font-size:13px;font-weight:750}.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}.notice-list,.review-list{display:grid;gap:10px;margin-top:14px}.notice-item,.review-item{padding:14px;border:1px solid var(--line);border-radius:14px;background:#fff}.review-item{border-color:#efcccc;background:#fff8f8}.notice-item strong,.review-item strong{display:block;margin-bottom:5px}.status{display:inline-flex;padding:4px 8px;border-radius:999px;background:var(--soft);color:var(--green);font-size:12px;font-weight:800}.output{display:none;margin-top:14px;padding:14px;border-radius:14px;background:var(--soft);word-break:break-all}.output.show{display:block}.output a{color:var(--green);font-weight:800}.help{margin:8px 0 0;color:var(--muted);font-size:13px;line-height:1.55}@media(max-width:720px){.grid,.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.top{align-items:flex-start;flex-direction:column}.top-actions{width:100%}.top-actions>*{flex:1;justify-content:center}.login{grid-template-columns:1fr}}
+    .top{flex-wrap:wrap}.top-actions{flex-wrap:wrap;margin-left:auto}.login{grid-template-columns:minmax(0,1fr) auto auto}.login input{min-width:0}@media(max-width:720px){.login{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="top">
+      <div><h1>한농직판장 관리자 OS</h1><small>상품 · 공지 · 별도 결제요청</small></div>
+      <div class="top-actions">
+        <a class="back" href="./admin-dashboard.html">관리자 홈</a>
+        <button class="secondary" id="refreshButton" type="button">새로고침</button>
+      </div>
+    </header>
+
+    <section class="panel">
+      <div class="login">
+        <input id="adminToken" type="password" autocomplete="off" placeholder="Cloudflare ADMIN_API_TOKEN 입력">
+        <button id="connectButton" type="button">관리자 연결</button>
+        <button class="secondary" id="disconnectButton" type="button">연결 해제</button>
+      </div>
+      <p class="help">관리자 토큰은 이 브라우저 탭의 임시 저장공간에만 보관됩니다. 공용 기기에서는 사용 후 창을 닫아주세요.</p>
+      <div class="message" id="message" role="status"></div>
+    </section>
+
+    <nav class="tabs" aria-label="관리자 메뉴">
+      <button class="tab active" data-view="productsView" type="button">상품관리</button>
+      <button class="tab" data-view="noticesView" type="button">공지관리</button>
+      <button class="tab" data-view="paymentsView" type="button">별도주문·결제요청</button>
+      <button class="tab" data-view="reviewsView" type="button">결제 확인 필요</button>
+    </nav>
+
+    <section class="view active" id="productsView">
+      <div class="section-head"><h2>상품관리</h2><span class="status">100g 기준 가격</span></div>
+      <div class="grid" id="productList"></div>
+    </section>
+
+    <section class="view" id="noticesView">
+      <div class="section-head"><h2>공지관리</h2></div>
+      <div class="panel">
+        <div class="fields">
+          <div class="field"><label for="noticeTitle">공지 제목</label><input id="noticeTitle" maxlength="80"></div>
+          <div class="field"><label for="noticeOrder">노출순서</label><input id="noticeOrder" type="number" min="0" value="0"></div>
+          <div class="field full"><label for="noticeBody">공지 내용</label><textarea id="noticeBody" maxlength="1000"></textarea></div>
+          <div class="field"><label for="noticeActive">노출 여부</label><select id="noticeActive"><option value="true">노출</option><option value="false">숨김</option></select></div>
+        </div>
+        <div class="actions"><button id="addNoticeButton" type="button">공지 추가</button></div>
+      </div>
+      <div class="notice-list" id="noticeList"></div>
+    </section>
+
+    <section class="view" id="paymentsView">
+      <div class="section-head"><h2>별도주문·결제요청</h2></div>
+      <div class="panel">
+        <div class="fields">
+          <div class="field full"><label for="paymentName">주문내용</label><input id="paymentName" placeholder="예: 국내산 돼지 등갈비 약 2kg / 찜용"></div>
+          <div class="field"><label for="paymentAmount">결제금액</label><input id="paymentAmount" type="number" min="100" step="100"></div>
+          <div class="field"><label for="paymentTax">세금구분</label><select id="paymentTax"><option value="TAX_FREE">면세</option><option value="TAXABLE">과세</option></select></div>
+          <div class="field"><label for="paymentCustomer">고객명</label><input id="paymentCustomer"></div>
+          <div class="field"><label for="paymentPhone">전화번호</label><input id="paymentPhone" inputmode="numeric"></div>
+          <div class="field"><label for="paymentMethod">수령방법</label><select id="paymentMethod"><option value="문 앞 배송">문 앞 배송</option><option value="직접 수령">직접 수령</option></select></div>
+          <div class="field"><label for="paymentHours">결제기한</label><select id="paymentHours"><option value="24">24시간</option><option value="72" selected>3일</option><option value="168">7일</option></select></div>
+          <div class="field"><label for="paymentApartment">아파트</label><input id="paymentApartment"></div>
+          <div class="field"><label for="paymentDetail">동·호수</label><input id="paymentDetail"></div>
+          <div class="field full"><label for="paymentEntrance">공동현관 안내</label><input id="paymentEntrance"></div>
+        </div>
+        <p class="help">상품 판매는 보통 면세, 고기수선 같은 서비스는 세무 확인 후 과세 여부를 선택하세요.</p>
+        <div class="actions"><button id="createPaymentButton" type="button">결제주소 만들기</button></div>
+        <div class="output" id="paymentOutput"></div>
+      </div>
+    </section>
+
+    <section class="view" id="reviewsView">
+      <div class="section-head"><h2>결제 확인 필요</h2><span class="status">PAYMENT_REVIEW</span></div>
+      <p class="help">이 목록은 결제기관 응답이 불분명한 주문입니다. 고객에게 재결제를 요청하기 전에 NICEPAY 거래조회에서 먼저 확인해야 합니다.</p>
+      <div class="review-list" id="reviewList"></div>
+    </section>
+  </main>
+
+  <script>
+    const API_BASE = "https://yunhawi-payment-api.yunhawifood.workers.dev";
+    let adminData = { products: [], notices: [], reviewOrders: [] };
+    const tokenInput = document.getElementById("adminToken");
+    tokenInput.value = sessionStorage.getItem("yunhawiAdminToken") || "";
+
+    document.querySelectorAll(".tab").forEach(function(button){
+      button.addEventListener("click", function(){
+        document.querySelectorAll(".tab").forEach(function(item){item.classList.remove("active")});
+        document.querySelectorAll(".view").forEach(function(item){item.classList.remove("active")});
+        button.classList.add("active");
+        document.getElementById(button.dataset.view).classList.add("active");
+      });
+    });
+
+    document.getElementById("connectButton").addEventListener("click", loadAdminData);
+    document.getElementById("refreshButton").addEventListener("click", loadAdminData);
+    document.getElementById("disconnectButton").addEventListener("click", disconnectAdmin);
+    document.getElementById("addNoticeButton").addEventListener("click", addNotice);
+    document.getElementById("createPaymentButton").addEventListener("click", createPaymentRequest);
+
+    function isPlaceholder(value){const text=String(value||"").trim().toLowerCase();return !text||text==="remove"||text==="removed"||text.includes("여기에")}
+    function showMessage(text,isError=false){const element=document.getElementById("message");element.textContent=text;element.className="message show"+(isError?" error":"")}
+    function escapeHtml(value){return String(value??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+    function getToken(){return tokenInput.value.trim()}
+
+    async function api(path,options={}){
+      if(isPlaceholder(API_BASE)){throw new Error("admin-os.html의 API_BASE를 고객 주문 페이지와 같은 Worker 주소로 바꿔주세요.")}
+      const token=getToken();if(!token){throw new Error("ADMIN_API_TOKEN을 입력해주세요.")}
+      sessionStorage.setItem("yunhawiAdminToken",token);
+      const response=await fetch(API_BASE+path,{...options,headers:{"Content-Type":"application/json","Authorization":"Bearer "+token,...(options.headers||{})}});
+      const data=await response.json();if(!response.ok||!data.ok){throw new Error(data.message||"관리자 요청을 처리하지 못했습니다.")}return data;
+    }
+
+    async function loadAdminData(){
+      try{showMessage("관리자 데이터를 불러오고 있습니다.");adminData=await api("/admin/catalog");renderProducts();renderNotices();renderReviews();showMessage("관리자 연결이 완료되었습니다.")}
+      catch(error){showMessage(error.message,true)}
+    }
+
+    function disconnectAdmin(){
+      sessionStorage.removeItem("yunhawiAdminToken");
+      tokenInput.value="";
+      adminData={products:[],notices:[],reviewOrders:[]};
+      renderProducts();
+      renderNotices();
+      renderReviews();
+      document.getElementById("paymentOutput").className="output";
+      showMessage("관리자 연결을 해제했습니다.");
+    }
+
+    function renderProducts(){
+      const list=document.getElementById("productList");list.innerHTML="";
+      [...(adminData.products||[])].sort((a,b)=>a.displayOrder-b.displayOrder).forEach(function(product){
+        const card=document.createElement("article");card.className="card";card.dataset.productId=product.productId;
+        card.innerHTML=`<h3>${escapeHtml(product.name)} <small>${escapeHtml(product.productId)}</small></h3><div class="fields"><div class="field"><label>상품명</label><input data-field="name" value="${escapeHtml(product.name)}"></div><div class="field"><label>100g 가격</label><input data-field="unitPrice" type="number" min="1" value="${Number(product.unitPrice)}"></div><div class="field"><label>판매상태</label><select data-field="status">${statusOptions(product.status)}</select></div><div class="field"><label>세금구분</label><select data-field="taxType">${taxOptions(product.taxType)}</select></div><div class="field"><label>노출순서</label><input data-field="displayOrder" type="number" min="0" value="${Number(product.displayOrder||0)}"></div><div class="field"><label>이미지 경로</label><input data-field="imageUrl" value="${escapeHtml(product.imageUrl)}"></div><div class="field full"><label>용도(쉼표로 구분, 다짐육은 비움)</label><input data-field="uses" value="${escapeHtml((product.uses||[]).join(", "))}"></div></div><div class="actions"><button type="button" data-action="save-product">저장</button></div>`;
+        card.querySelector("[data-action='save-product']").addEventListener("click",()=>saveProduct(card));list.appendChild(card);
+      });
+    }
+    function statusOptions(selected){return [["SELLING","판매중"],["SOLD_OUT","품절"],["INQUIRY","문의판매"],["HIDDEN","숨김"]].map(([value,label])=>`<option value="${value}"${value===selected?" selected":""}>${label}</option>`).join("")}
+    function taxOptions(selected){return [["TAX_FREE","면세"],["TAXABLE","과세"]].map(([value,label])=>`<option value="${value}"${value===selected?" selected":""}>${label}</option>`).join("")}
+    function field(card,name){return card.querySelector(`[data-field='${name}']`).value}
+
+    async function saveProduct(card){
+      const button=card.querySelector("[data-action='save-product']");button.disabled=true;
+      try{const uses=field(card,"uses").split(",").map(value=>value.trim()).filter(Boolean);await api("/admin/products/"+encodeURIComponent(card.dataset.productId),{method:"PUT",body:JSON.stringify({name:field(card,"name"),unitPrice:Number(field(card,"unitPrice")),status:field(card,"status"),taxType:field(card,"taxType"),displayOrder:Number(field(card,"displayOrder")),imageUrl:field(card,"imageUrl"),uses})});showMessage(field(card,"name")+" 상품을 저장했습니다.");await loadAdminData()}
+      catch(error){showMessage(error.message,true)}finally{button.disabled=false}
+    }
+
+    function renderNotices(){
+      const list=document.getElementById("noticeList");list.innerHTML="";
+      (adminData.notices||[]).forEach(function(notice){const item=document.createElement("article");item.className="notice-item";item.innerHTML=`<strong>${escapeHtml(notice.title)}</strong><p>${escapeHtml(notice.body)}</p><span class="status">${Number(notice.is_active)===1?"노출":"숨김"}</span><div class="actions"><button class="secondary" type="button" data-action="toggle">${Number(notice.is_active)===1?"숨기기":"노출하기"}</button><button class="danger" type="button" data-action="delete">삭제</button></div>`;item.querySelector("[data-action='toggle']").addEventListener("click",()=>updateNotice(notice,!Number(notice.is_active)));item.querySelector("[data-action='delete']").addEventListener("click",()=>deleteNotice(notice.id));list.appendChild(item)})
+    }
+    async function addNotice(){try{await api("/admin/notices",{method:"POST",body:JSON.stringify({title:document.getElementById("noticeTitle").value,body:document.getElementById("noticeBody").value,isActive:document.getElementById("noticeActive").value==="true",displayOrder:Number(document.getElementById("noticeOrder").value)})});document.getElementById("noticeTitle").value="";document.getElementById("noticeBody").value="";showMessage("공지를 추가했습니다.");await loadAdminData()}catch(error){showMessage(error.message,true)}}
+    async function updateNotice(notice,isActive){try{await api("/admin/notices/"+notice.id,{method:"PUT",body:JSON.stringify({title:notice.title,body:notice.body,isActive,displayOrder:Number(notice.display_order||0)})});await loadAdminData()}catch(error){showMessage(error.message,true)}}
+    async function deleteNotice(id){if(!confirm("이 공지를 삭제할까요?")){return}try{await api("/admin/notices/"+id,{method:"DELETE"});showMessage("공지를 삭제했습니다.");await loadAdminData()}catch(error){showMessage(error.message,true)}}
+
+    async function createPaymentRequest(){
+      const output=document.getElementById("paymentOutput");
+      try{const data=await api("/admin/payment-requests",{method:"POST",body:JSON.stringify({orderName:document.getElementById("paymentName").value,amount:Number(document.getElementById("paymentAmount").value),taxType:document.getElementById("paymentTax").value,customerName:document.getElementById("paymentCustomer").value,customerPhone:document.getElementById("paymentPhone").value,deliveryMethod:document.getElementById("paymentMethod").value,expiresInHours:Number(document.getElementById("paymentHours").value),apartment:document.getElementById("paymentApartment").value,detailAddress:document.getElementById("paymentDetail").value,entranceInfo:document.getElementById("paymentEntrance").value})});output.className="output show";output.innerHTML=`<strong>고객에게 보낼 결제주소</strong><p><a href="${escapeHtml(data.paymentUrl)}" target="_blank" rel="noopener">${escapeHtml(data.paymentUrl)}</a></p><button class="secondary" id="copyPaymentUrl" type="button">주소 복사</button>`;document.getElementById("copyPaymentUrl").addEventListener("click",async()=>{await navigator.clipboard.writeText(data.paymentUrl);showMessage("결제주소를 복사했습니다.")});showMessage("결제주소를 만들었습니다.")}
+      catch(error){showMessage(error.message,true)}
+    }
+
+    function renderReviews(){const list=document.getElementById("reviewList");list.innerHTML="";const orders=adminData.reviewOrders||[];if(!orders.length){list.innerHTML="<div class='notice-item'>현재 확인이 필요한 결제가 없습니다.</div>";return}orders.forEach(function(order){const item=document.createElement("article");item.className="review-item";item.innerHTML=`<strong>${escapeHtml(order.order_name)} · ${Number(order.amount).toLocaleString("ko-KR")}원</strong><div>${escapeHtml(order.customer_name)} · ${escapeHtml(order.customer_phone)}</div><div>주문번호: ${escapeHtml(order.order_id)}</div><div>발생시각: ${escapeHtml(order.updated_at)}</div>`;list.appendChild(item)})}
+  </script>
+</body>
+</html>

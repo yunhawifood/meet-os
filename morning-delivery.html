@@ -16,7 +16,7 @@
 
   <meta name="theme-color" content="#f7fbf8" />
 
-<title>아침배송 주문하기 | 한농직판장</title>
+<title>새벽배송 주문하기 | 한농직판장</title>
 
 <script src="https://pay.nicepay.co.kr/v1/js/"></script>
 
@@ -2163,18 +2163,109 @@
 
     cursor: not-allowed;
 
-  }</style>
+  }
+
+  .store-notices {
+    display: none;
+    margin: -10px 0 24px;
+    padding: 14px 16px;
+    border: 1px solid #f0dfaa;
+    border-radius: 16px;
+    background: #fffaf0;
+  }
+
+  .store-notices.show {
+    display: block;
+  }
+
+  .store-notices h2 {
+    margin: 0 0 8px;
+    color: #765119;
+    font-size: 15px;
+  }
+
+  .store-notice-item {
+    margin: 0;
+    color: #4f4434;
+    font-size: 14px;
+    line-height: 1.55;
+    white-space: pre-line;
+  }
+
+  .store-notice-item + .store-notice-item {
+    margin-top: 9px;
+    padding-top: 9px;
+    border-top: 1px solid #eadfca;
+  }
+
+  .product[aria-disabled="true"] {
+    opacity: 0.62;
+  }
+
+  .product-status {
+    display: inline-flex;
+    margin-top: 8px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: #f0f0f0;
+    color: #666666;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .repair-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: 14px;
+    padding: 17px 16px;
+    border: 1px solid #dce7e0;
+    border-radius: 18px;
+    background: #f7faf8;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .repair-banner strong,
+  .repair-banner span {
+    display: block;
+  }
+
+  .repair-banner strong {
+    color: var(--green);
+    font-size: 16px;
+  }
+
+  .repair-banner span {
+    margin-top: 4px;
+    color: #666666;
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .repair-banner b {
+    flex: 0 0 auto;
+    color: var(--green);
+    font-size: 22px;
+  }
+
+  .front-use-title.hidden,
+  .product-use-list.hidden {
+    display: none;
+  }
+</style>
 
 </head>
 <body>
 
   <main class="page">
 
-<section class="compact-delivery-guide" aria-label="아침배송 핵심 안내">
+<section class="compact-delivery-guide" aria-label="새벽배송 핵심 안내">
 
   <div class="compact-guide-title">
 
-    🚚 가까운 아파트부터 테스트 운영
+    🚚 오늘 주문하고 내일 문 앞에서 받으세요
 
   </div>
 
@@ -2184,7 +2275,7 @@
 
       <span>🌙</span>
 
-      <strong>저녁 9시</strong>
+      <strong>오늘 21시</strong>
 
       <small>주문 마감</small>
 
@@ -2196,7 +2287,7 @@
 
       <strong>다음 날</strong>
 
-      <small>아침 8시 이전 배송</small>
+      <small>오전 8시 이전 문앞 배송</small>
 
     </div>
 
@@ -2218,7 +2309,7 @@
 
     type="button"
 
-    onclick="document.getElementById('regionModal').classList.add('show')"
+    onclick="openRegionModal()"
 
   >
 
@@ -2226,7 +2317,18 @@
 
   </button>
 
-</section>   
+</section>
+
+<section
+  class="store-notices"
+  id="storeNotices"
+  aria-label="한농직판장 공지사항"
+  aria-live="polite"
+>
+  <h2>📢 한농직판장 안내</h2>
+  <div id="storeNoticeList"></div>
+</section>
+
 <section class="section-head" id="products">
 
   <button
@@ -2245,7 +2347,7 @@
 
   </button>
 
-  <h2>아침배송 주문하기</h2>
+  <h2>새벽배송 주문하기</h2>
 
   <p>
 
@@ -2254,168 +2356,12 @@
   </p>
 
 </section>
-    <section class="products" aria-label="아침배송 상품 목록">
-
-      <article
-
-        class="product"
-
-        onclick="openWeightSheet('삼겹살', 3200)"
-
-      >
-
-        <div class="image-box">
-
-          <img
-
-            src="images/samgyeopsal.PNG"
-
-            alt="삼겹살"
-
-            onerror="showFallback(this)"
-
-          />
-
-          <div class="fallback">🥩</div>
-
-        </div>
-
-        <div class="product-info">
-
-          <h3>삼겹살</h3>
-
-          <p class="price">
-
-            100g
-
-            <strong>3,200원</strong>
-
-          </p>
-
-        </div>
-
-      </article>
-
-      <article
-
-        class="product"
-
-        onclick="openWeightSheet('목살', 2700)"
-
-      >
-
-        <div class="image-box">
-
-          <img
-
-            src="images/moksal.PNG"
-
-            alt="목살"
-
-            onerror="showFallback(this)"
-
-          />
-
-          <div class="fallback">🥩</div>
-
-        </div>
-
-        <div class="product-info">
-
-          <h3>목살</h3>
-
-          <p class="price">
-
-            100g
-
-            <strong>2,700원</strong>
-
-          </p>
-
-        </div>
-
-      </article>
-
-      <article
-
-        class="product"
-
-        onclick="openWeightSheet('앞다리', 1700)"
-      >
-
-        <div class="image-box">
-
-          <img
-
-            src="images/apdari.PNG"
-
-            alt="앞다리"
-
-            onerror="showFallback(this)"
-
-          />
-
-          <div class="fallback">🥩</div>
-
-        </div>
-
-        <div class="product-info">
-
-          <h3>앞다리</h3>
-
-          <p class="price">
-
-            100g
-
-            <strong>1,700원</strong>
-
-          </p>
-
-        </div>
-
-      </article>
-
-      <article
-
-        class="product"
-
-        onclick="openWeightSheet('알사태', 990)"
-
-      >
-
-        <div class="image-box">
-
-          <img
-
-            src="images/alsatae.PNG"
-
-            alt="알사태"
-
-            onerror="showFallback(this)"
-
-          />
-
-          <div class="fallback">🥩</div>
-
-        </div>
-
-        <div class="product-info">
-
-          <h3>알사태</h3>
-
-          <p class="price">
-
-            100g
-
-            <strong>990원</strong>
-
-          </p>
-
-        </div>
-
-      </article>
-
-    </section>
+    <section
+      class="products"
+      id="productGrid"
+      aria-label="새벽배송 상품 목록"
+      aria-live="polite"
+    ></section>
 <section class="test-guide">
 
   <strong>단 한 팩도 정성껏 배달합니다.</strong>
@@ -2475,6 +2421,18 @@
   </div>
 
 </section>
+
+<a
+  class="repair-banner"
+  href="https://pf.kakao.com/_rjhxen/chat"
+  aria-label="카카오톡으로 전주 고기수선집 문의하기"
+>
+  <span>
+    <strong>🔪 고기를 이미 구매하셨나요?</strong>
+    <span>손질이 어려운 고기는 전주 고기수선집에 문의해주세요.</span>
+  </span>
+  <b aria-hidden="true">→</b>
+</a>
   </main>
 
   <div class="bottom-guide" id="bottomGuide">
@@ -2530,13 +2488,13 @@
 
     <h2 id="modalTitle">
 
-      아침배송 가능 지역 안내
+      새벽배송 가능 지역 안내
 
     </h2>
 
     <p class="intro">
 
-      아래 8개 아파트에 아침배송합니다.
+      아래 8개 아파트에 새벽배송합니다.
 
     </p>
 
@@ -2637,7 +2595,7 @@
       </button>
 
     </div>
-<p class="front-use-title">
+<p class="front-use-title" id="productUseTitle">
 
   용도를 선택해주세요.
 
@@ -2971,9 +2929,9 @@
 
     <p>
 
-      오늘 저녁 9시까지 결제가 완료된 주문은
+      오늘 21시까지 결제가 완료된 주문은
 
-      다음 날 아침 8시 이전에 배송합니다.
+      다음 날 오전 8시 이전에 문 앞 배송합니다.
 
       배송 완료 후 문자로 안내드립니다.
 
@@ -3068,15 +3026,59 @@ const NICE_RETURN_URL =
 
   PAYMENT_API + "/payments/nice/callback";
 
-const PRODUCT_IDS = {    "삼겹살": "samgyeopsal",
+const FALLBACK_PRODUCTS = [
+  {
+    productId: "samgyeopsal",
+    name: "삼겹살",
+    unitPrice: 3700,
+    uses: ["구이용", "수육용"],
+    imageUrl: "images/samgyeopsal.PNG",
+    status: "SELLING"
+  },
+  {
+    productId: "moksal",
+    name: "목살",
+    unitPrice: 3200,
+    uses: ["구이용", "수육용", "찌개용"],
+    imageUrl: "images/moksal.PNG",
+    status: "SELLING"
+  },
+  {
+    productId: "apdari",
+    name: "앞다리",
+    unitPrice: 2000,
+    uses: ["찌개용", "불고기용", "수육용"],
+    imageUrl: "images/apdari.PNG",
+    status: "SELLING"
+  },
+  {
+    productId: "alsatae",
+    name: "알사태",
+    unitPrice: 1500,
+    uses: ["수육용", "찌개용"],
+    imageUrl: "images/alsatae.PNG",
+    status: "SELLING"
+  },
+  {
+    productId: "deungsim",
+    name: "등심",
+    unitPrice: 1700,
+    uses: ["돈까스용", "카레용", "잡채용"],
+    imageUrl: "images/deungsim.PNG",
+    status: "SELLING"
+  },
+  {
+    productId: "dajimyuk",
+    name: "다짐육",
+    unitPrice: 1700,
+    uses: [],
+    imageUrl: "images/dajimyuk.PNG",
+    status: "SELLING"
+  }
+];
 
-    "목살": "moksal",
-
-    "앞다리": "apdari",
-
-    "알사태": "alsatae"
-
-  };
+const productByName = new Map();
+const productById = new Map();
 
   const regionModal =
 
@@ -3094,23 +3096,22 @@ const PRODUCT_IDS = {    "삼겹살": "samgyeopsal",
 
   let selectedProductUse = "";
 
+  let selectedProductRequiresUse = true;
+
   let selectedRequestProduct = "";
 
-  let selectedFrontLegUse = "";
-
   window.addEventListener(
-
     "DOMContentLoaded",
-
     function () {
-
-      regionModal.classList.add("show");
-
-      document.body.classList.add("modal-open");
-
+      renderProducts(FALLBACK_PRODUCTS);
+      loadStorefront();
     }
-
   );
+
+  function openRegionModal() {
+    regionModal.classList.add("show");
+    document.body.classList.add("modal-open");
+  }
 
   function confirmRegion() {
 
@@ -3132,6 +3133,159 @@ const PRODUCT_IDS = {    "삼겹살": "samgyeopsal",
 
     }, 120);
 
+  }
+
+  async function loadStorefront() {
+    if (isPlaceholderSetting(PAYMENT_API)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        PAYMENT_API + "/catalog",
+        { headers: { "Accept": "application/json" } }
+      );
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        throw new Error(data.message || "상품정보를 불러오지 못했습니다.");
+      }
+
+      if (Array.isArray(data.products) && data.products.length > 0) {
+        renderProducts(data.products);
+      }
+      renderNotices(data.notices || []);
+    } catch (error) {
+      console.warn(
+        "관리자 상품정보를 불러오지 못해 기본 상품정보를 표시합니다.",
+        error
+      );
+    }
+  }
+
+  function renderProducts(products) {
+    const grid = document.getElementById("productGrid");
+    grid.innerHTML = "";
+    productByName.clear();
+    productById.clear();
+
+    products
+      .filter(function (product) {
+        return product && product.status !== "HIDDEN";
+      })
+      .forEach(function (product) {
+        const normalized = {
+          productId: String(product.productId || ""),
+          name: String(product.name || ""),
+          unitPrice: Number(product.unitPrice),
+          uses: Array.isArray(product.uses)
+            ? product.uses.map(String)
+            : [],
+          imageUrl: safeImageUrl(product.imageUrl),
+          status: String(product.status || "SELLING")
+        };
+
+        if (
+          !normalized.productId ||
+          !normalized.name ||
+          !Number.isInteger(normalized.unitPrice) ||
+          normalized.unitPrice <= 0
+        ) {
+          return;
+        }
+
+        productByName.set(normalized.name, normalized);
+        productById.set(normalized.productId, normalized);
+
+        const card = document.createElement("article");
+        const isSelling = normalized.status === "SELLING";
+        const isInquiry = normalized.status === "INQUIRY";
+        card.className = "product";
+        card.tabIndex = 0;
+        card.setAttribute("role", "button");
+        card.setAttribute("aria-disabled", isSelling || isInquiry ? "false" : "true");
+        card.setAttribute("aria-label", normalized.name + " 상품 선택");
+
+        const imageBox = document.createElement("div");
+        imageBox.className = "image-box";
+        const image = document.createElement("img");
+        image.src = normalized.imageUrl;
+        image.alt = normalized.name;
+        image.onerror = function () { showFallback(image); };
+        const fallback = document.createElement("div");
+        fallback.className = "fallback";
+        fallback.textContent = "🥩";
+        imageBox.append(image, fallback);
+
+        const info = document.createElement("div");
+        info.className = "product-info";
+        const name = document.createElement("h3");
+        name.textContent = normalized.name;
+        const price = document.createElement("p");
+        price.className = "price";
+        price.append("100g ");
+        const priceStrong = document.createElement("strong");
+        priceStrong.textContent =
+          normalized.unitPrice.toLocaleString("ko-KR") + "원";
+        price.appendChild(priceStrong);
+        info.append(name, price);
+
+        if (!isSelling) {
+          const status = document.createElement("span");
+          status.className = "product-status";
+          status.textContent = isInquiry ? "문의판매" : "품절";
+          info.appendChild(status);
+        }
+
+        const selectProduct = function () {
+          if (isSelling) {
+            openWeightSheet(normalized.name);
+          } else if (isInquiry) {
+            openRequestSheet(normalized.name);
+          }
+        };
+        card.onclick = selectProduct;
+        card.onkeydown = function (event) {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            selectProduct();
+          }
+        };
+        card.append(imageBox, info);
+        grid.appendChild(card);
+      });
+  }
+
+  function renderNotices(notices) {
+    const section = document.getElementById("storeNotices");
+    const list = document.getElementById("storeNoticeList");
+    list.innerHTML = "";
+
+    notices.slice(0, 5).forEach(function (notice) {
+      const item = document.createElement("p");
+      item.className = "store-notice-item";
+      const title = String(notice.title || "").trim();
+      const body = String(notice.body || "").trim();
+      item.textContent = title ? title + "\n" + body : body;
+      if (item.textContent.trim()) {
+        list.appendChild(item);
+      }
+    });
+
+    section.classList.toggle("show", list.children.length > 0);
+  }
+
+  function safeImageUrl(value) {
+    const url = String(value || "").trim();
+    if (url.startsWith("images/") || url.startsWith("https://")) {
+      return url;
+    }
+    return "images/product-fallback.PNG";
+  }
+
+  function isPlaceholderSetting(value) {
+    const text = String(value || "").trim().toLowerCase();
+    return !text || text === "remove" || text === "removed" || text.includes("여기에");
   }
 
   function showFallback(image) {
@@ -3184,71 +3338,20 @@ const PRODUCT_IDS = {    "삼겹살": "samgyeopsal",
 
   }
 
-  function openWeightSheet(product, unitPrice) {
+  function openWeightSheet(product) {
+    const productInfo = productByName.get(product);
 
-    selectedProduct = product;
+    if (!productInfo || productInfo.status !== "SELLING") {
+      alert("현재 판매 가능한 상품이 아닙니다.");
+      return;
+    }
 
-    selectedUnitPrice = unitPrice;
-
-    const productUses = {
-
-      "삼겹살": [
-
-        "구이용",
-
-        "수육용"
-
-      ],
-
-      "목살": [
-
-        "구이용",
-
-        "수육용",
-
-        "찌개용"
-
-      ],
-
-      "앞다리": [
-
-        "찌개용",
-
-        "불고기용",
-
-        "수육용"
-
-      ],
-
-      "알사태": [
-
-        "수육용",
-
-        "찌개용",
-
-        "카레용",
-
-        "잡채용"
-
-      ]
-
-    };
-
-    const defaultUses = {
-
-      "삼겹살": "구이용",
-
-      "목살": "구이용",
-
-      "앞다리": "찌개용",
-
-      "알사태": "수육용"
-
-    };
-
-    selectedProductUse =
-
-      defaultUses[product] || "";
+    selectedProduct = productInfo.name;
+    selectedUnitPrice = productInfo.unitPrice;
+    selectedProductRequiresUse = productInfo.uses.length > 0;
+    selectedProductUse = selectedProductRequiresUse
+      ? productInfo.uses[0]
+      : "";
 
     document
 
@@ -3268,7 +3371,11 @@ const PRODUCT_IDS = {    "삼겹살": "samgyeopsal",
 
     useList.innerHTML = "";
 
-    (productUses[product] || [])
+    const useTitle = document.getElementById("productUseTitle");
+    useTitle.classList.toggle("hidden", !selectedProductRequiresUse);
+    useList.classList.toggle("hidden", !selectedProductRequiresUse);
+
+    productInfo.uses
 
       .forEach(function (use) {
 
@@ -3330,7 +3437,7 @@ const PRODUCT_IDS = {    "삼겹살": "samgyeopsal",
 
       .textContent =
 
-        (unitPrice * 5)
+        (selectedUnitPrice * 5)
 
           .toLocaleString("ko-KR") +
 
@@ -3342,7 +3449,7 @@ const PRODUCT_IDS = {    "삼겹살": "samgyeopsal",
 
       .textContent =
 
-        (unitPrice * 10)
+        (selectedUnitPrice * 10)
 
           .toLocaleString("ko-KR") +
 
@@ -3354,7 +3461,7 @@ const PRODUCT_IDS = {    "삼겹살": "samgyeopsal",
 
       .textContent =
 
-        (unitPrice * 15)
+        (selectedUnitPrice * 15)
 
           .toLocaleString("ko-KR") +
 
@@ -3366,7 +3473,7 @@ const PRODUCT_IDS = {    "삼겹살": "samgyeopsal",
 
       .textContent =
 
-        (unitPrice * 20)
+        (selectedUnitPrice * 20)
 
           .toLocaleString("ko-KR") +
 
@@ -3378,7 +3485,10 @@ const PRODUCT_IDS = {    "삼겹살": "samgyeopsal",
 
   function selectWeight(weight, multiplier) {
 
-    if (!selectedProductUse) {
+    if (
+      selectedProductRequiresUse &&
+      !selectedProductUse
+    ) {
 
       alert("용도를 선택해주세요.");
 
@@ -3386,9 +3496,11 @@ const PRODUCT_IDS = {    "삼겹살": "samgyeopsal",
 
     }
 
-    const productId =
+    const productInfo =
+      productByName.get(selectedProduct);
 
-      PRODUCT_IDS[selectedProduct];
+    const productId =
+      productInfo && productInfo.productId;
 
     if (!productId) {
 
@@ -3418,13 +3530,9 @@ const PRODUCT_IDS = {    "삼겹살": "samgyeopsal",
 
       use: selectedProductUse,
 
-      product:
-
-        selectedProduct +
-
-        " " +
-
-        selectedProductUse,
+      product: selectedProductUse
+        ? selectedProduct + " " + selectedProductUse
+        : selectedProduct,
 
       weight,
 
@@ -3471,118 +3579,6 @@ const PRODUCT_IDS = {    "삼겹살": "samgyeopsal",
       "가격 문의 상품은 카카오톡이나 전화로 문의해주세요."
 
     );
-
-  }
-
-  function openFrontLegSheet() {
-
-    selectedFrontLegUse = "";
-
-    document
-
-      .querySelectorAll(
-
-        ".front-use-button"
-
-      )
-
-      .forEach(function (button) {
-
-        button.classList.remove("selected");
-
-      });
-
-    openSheet("frontLegSheet");
-
-  }
-
-  function selectFrontLegUse(
-
-    use,
-
-    selectedButton
-
-  ) {
-
-    selectedFrontLegUse = use;
-
-    document
-
-      .querySelectorAll(
-
-        ".front-use-button"
-
-      )
-
-      .forEach(function (button) {
-
-        button.classList.remove("selected");
-
-      });
-
-    selectedButton.classList.add("selected");
-
-  }
-
-  function addFrontLegToCart(
-
-    weight,
-
-    multiplier
-
-  ) {
-
-    if (!selectedFrontLegUse) {
-
-      alert(
-
-        "먼저 앞다리 용도를 선택해주세요."
-
-      );
-
-      return;
-
-    }
-
-    const numericPrice =
-
-      1700 * multiplier;
-
-    cart.push({
-
-      productId: "apdari",
-
-      name: "앞다리",
-
-      use: selectedFrontLegUse,
-
-      product:
-
-        "앞다리 " +
-
-        selectedFrontLegUse,
-
-      weight,
-
-      weightGrams:
-
-        multiplier * 100,
-
-      numericPrice,
-
-      priceText:
-
-        numericPrice
-
-          .toLocaleString("ko-KR") +
-
-        "원"
-
-    });
-
-    updateCartBar();
-
-    closeAllSheets();
 
   }
 
@@ -4095,20 +4091,13 @@ document.addEventListener(
   }
 
   if (
-
-    !NICE_CLIENT_KEY ||
-
-    NICE_CLIENT_KEY.includes(
-
-      "여기에"
-
-    )
-
+    isPlaceholderSetting(PAYMENT_API) ||
+    isPlaceholderSetting(NICE_CLIENT_KEY)
   ) {
 
     alert(
 
-      "NICEPAY Server 승인 클라이언트 키를 확인해주세요."
+      "공유용 파일의 결제 API 주소와 NICEPAY 클라이언트 키를 운영 파일의 기존 값으로 복원해주세요."
 
     );
 
@@ -4433,7 +4422,7 @@ document.addEventListener(
 
       </strong><br>
 
-      내일 아침 문앞까지<br>
+        내일 오전 8시 이전 문앞까지<br>
 
       배송해 드리겠습니다.
 
