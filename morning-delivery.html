@@ -714,6 +714,37 @@
   color: var(--green);
 
 }
+.compact-contact {
+  padding: 16px;
+  text-align: center;
+}
+
+.compact-contact-copy strong {
+  display: block;
+
+  color: var(--green);
+
+  font-size: 16px;
+  font-weight: 900;
+
+  text-align: center;
+}
+
+.compact-contact-copy p {
+  margin: 5px 0 13px;
+
+  color: #666666;
+
+  font-size: 13px;
+  line-height: 1.45;
+
+  text-align: center;
+}
+.compact-contact .contact-button {
+  min-height: 48px;
+  padding: 10px 8px;
+  font-size: 14px;
+}
 
 @media (max-width: 360px) {
 
@@ -1070,35 +1101,82 @@
 
     }
 
-   .weight-button {
-
+  .weight-button {
   width: 100%;
-
-  min-height: 90px;
-
-  padding: 18px 10px;
+  min-height: 72px;
+  padding: 16px 10px;
 
   border: 1px solid #dddddd;
-
   border-radius: 16px;
 
   background: #ffffff;
-
   color: #222222;
 
   font-size: 21px;
+  font-weight: 850;
+}
 
-  font-weight: 800;
+.weight-button.selected {
+  border: 2px solid var(--green-2);
+  background: var(--green-soft);
+  color: var(--green);
+  box-shadow: 0 0 0 2px rgba(47, 139, 80, 0.07);
+}
 
-  line-height: 1.5;    }
+.weight-selection {
+  display: none;
 
-    .weight-button strong {
+  margin-top: 14px;
+  padding: 15px;
 
-      color: var(--red);
+  border: 1px solid #d8e8dd;
+  border-radius: 16px;
 
-      font-size: 18px;
+  background: #f7fbf8;
+}
 
-    }
+.weight-selection.show {
+  display: block;
+}
+
+.weight-selection-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 5px 2px;
+
+  color: #555555;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.weight-selection-row strong {
+  color: var(--green);
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.weight-confirm-button {
+  width: 100%;
+  min-height: 54px;
+
+  margin-top: 12px;
+
+  border: 0;
+  border-radius: 15px;
+
+  background: var(--green);
+  color: #ffffff;
+
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.weight-confirm-button:disabled {
+  background: #c8d2cc;
+  cursor: default;
+}
 
     .request-description {
 
@@ -2214,58 +2292,125 @@
   }
 
   .repair-banner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    margin-top: 14px;
-    padding: 17px 16px;
-    border: 1px solid #dce7e0;
-    border-radius: 18px;
-    background: #f7faf8;
-    color: inherit;
-    text-decoration: none;
-  }
+  display: block;
 
-  .repair-banner strong,
-  .repair-banner span {
-    display: block;
-  }
+  margin-top: 18px;
+  padding: 24px 20px;
 
-  .repair-banner strong {
-    color: var(--green);
-    font-size: 16px;
-  }
+  border: 1px solid #cfe1d5;
+  border-radius: 22px;
 
-  .repair-banner span {
-    margin-top: 4px;
-    color: #666666;
-    font-size: 13px;
-    line-height: 1.45;
-  }
+  background:
+    linear-gradient(
+      145deg,
+      #f2f8f4 0%,
+      #ffffff 100%
+    );
 
-  .repair-banner b {
-    flex: 0 0 auto;
-    color: var(--green);
-    font-size: 22px;
-  }
+  color: inherit;
+  text-decoration: none;
 
-  .product-specific-notice {
-    display: none;
-    margin: -4px 0 16px;
-    padding: 13px 14px;
-    border: 1px solid #f0caca;
-    border-radius: 14px;
-    background: #fff6f6;
-    color: #9a2424;
-    font-size: 14px;
-    font-weight: 800;
-    line-height: 1.5;
-  }
+  box-shadow:
+    0 8px 22px rgba(35, 95, 63, 0.07);
+}
 
-  .product-specific-notice.show {
-    display: block;
-  }
+.repair-business-copy {
+  text-align: center;
+}
+
+.repair-business-kicker {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #6d8a77;
+
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.3px;
+
+  text-align: center;
+}
+
+.repair-business-title {
+  display: block;
+
+  color: var(--green);
+
+  font-size: 29px;
+  line-height: 1.2;
+  font-weight: 950;
+  letter-spacing: -0.04em;
+
+  text-align: center;
+}
+
+.repair-business-question {
+  margin: 15px 0 0;
+
+  color: #222222;
+
+  font-size: 17px;
+  line-height: 1.55;
+  font-weight: 850;
+
+  text-align: center;
+  word-break: keep-all;
+}
+
+.repair-business-description {
+  margin: 10px 0 0;
+
+  color: #666666;
+
+  font-size: 14px;
+  line-height: 1.6;
+
+  text-align: center;
+  word-break: keep-all;
+}
+
+.repair-business-action {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: min(100%, 320px);
+  min-height: 56px;
+
+  margin: 20px auto 0;
+  padding: 14px 18px;
+
+  border-radius: 15px;
+
+  background: #c64532;
+  color: #ffffff;
+
+  font-size: 16px;
+  font-weight: 900;
+
+  text-align: center;
+
+  box-shadow:
+    0 8px 18px rgba(198, 69, 50, 0.20);
+}
+ .product-specific-notice {
+  display: none;
+  margin: -4px 0 16px;
+  padding: 13px 14px;
+  border: 1px solid #d9e8df;
+  border-radius: 14px;
+  background: #f5faf7;
+  color: #496154;
+  font-size: 14px;
+  font-weight: 750;
+  line-height: 1.5;
+}
+
+.product-specific-notice.show {
+  display: block;
+}
 
   .front-use-title.hidden,
   .product-use-list.hidden {
@@ -2308,15 +2453,15 @@
 
     </div>
 
-    <div class="compact-guide-item">
+   <div class="compact-guide-item">
 
-      <span>🏠</span>
+  <span>🏠</span>
 
-      <strong>지정 아파트</strong>
+  <strong>배송비 0원</strong>
 
-      <small>배송 가능</small>
+  <small>지정 아파트 새벽배송</small>
 
-    </div>
+</div>
 
   </div>
 
@@ -2379,76 +2524,71 @@
       aria-label="새벽배송 상품 목록"
       aria-live="polite"
     ></section>
-<section class="test-guide">
+<section class="contact-box compact-contact" aria-label="상품 문의">
 
-  <strong>단 한 팩도 정성껏 배달합니다.</strong>
+  <div class="compact-contact-copy">
 
-  <p>
+    <strong>단 한 팩도 정성껏 배달합니다.</strong>
 
-    인기상품부터 먼저 준비했습니다.<br />
+    <p>
+      찾으시는 상품이 없다면 편하게 문의해주세요.
+    </p>
 
-    찾으시는 상품이 있다면 언제든 편하게 문의해주세요.
-
-  </p>
-
-</section>    <section class="contact-box" aria-label="상품 문의">
-
-  <h2>찾으시는 상품이 없으세요?</h2>
-
-  <p>
-
-    카카오톡이나 전화로 편하게 문의해주세요.
-
-  </p>
+  </div>
 
   <div class="contact-buttons">
 
     <a
-
       class="contact-button kakao-contact"
-
       href="https://pf.kakao.com/_rjhxen/chat"
-
       aria-label="카카오톡으로 상품 문의하기"
-
     >
-
-      <span>💬</span>
-
-      <span>카카오톡 문의</span>
-
+      💬 카카오톡
     </a>
 
     <a
-
       class="contact-button phone-contact"
-
       href="tel:01085052654"
-
       aria-label="한농직판장으로 전화 문의하기"
-
     >
-
-      <span>☎</span>
-
-      <span>전화 문의</span>
-
+      ☎ 전화
     </a>
 
   </div>
 
 </section>
-
 <a
-  class="repair-banner"
+  class="repair-banner repair-business"
   href="https://pf.kakao.com/_rjhxen/chat"
   aria-label="카카오톡으로 전주 고기수선집 문의하기"
 >
-  <span>
-    <strong>🔪 대형마트·온라인몰에서 원육을 구매한 후 손질을 고민하고 계신가요?</strong>
-    <span>손질이 어려운 고기는 전주 고기수선집에 문의해주세요.</span>
-  </span>
-  <b aria-hidden="true">→</b>
+
+  <div class="repair-business-copy">
+
+    <span class="repair-business-kicker">
+      SERVE BUSINESS
+    </span>
+
+    <strong class="repair-business-title">
+      고기수선집
+    </strong>
+
+    <p class="repair-business-question">
+      대형마트·온라인몰에서 원육을 구매한 후<br />
+      손질을 고민하고 계신가요?
+    </p>
+
+    <p class="repair-business-description">
+      손질 · 정량 소분 · 진공/스킨 포장까지<br />
+      필요한 작업을 맡겨주세요.
+    </p>
+
+    <span class="repair-business-action">
+      고기수선집 문의하기 →
+    </span>
+
+  </div>
+
 </a>
   </main>
 
@@ -2636,74 +2776,66 @@
   중량을 선택해주세요.
 
 </p>   
-    <div class="weight-grid">
+   <div class="weight-grid">
 
-      <button
+  <button
+    class="weight-button"
+    type="button"
+    onclick="selectWeight('500g', 5, this)"
+  >
+    500g
+  </button>
 
-        class="weight-button"
+  <button
+    class="weight-button"
+    type="button"
+    onclick="selectWeight('1kg', 10, this)"
+  >
+    1kg
+  </button>
 
-        type="button"
+  <button
+    class="weight-button"
+    type="button"
+    onclick="selectWeight('1.5kg', 15, this)"
+  >
+    1.5kg
+  </button>
 
-        onclick="selectWeight('500g', 5)"
+  <button
+    class="weight-button"
+    type="button"
+    onclick="selectWeight('2kg', 20, this)"
+  >
+    2kg
+  </button>
 
-      >
+</div>
 
-        500g<br />
+<div
+  class="weight-selection"
+  id="weightSelection"
+>
+  <div class="weight-selection-row">
+    <span>선택한 중량</span>
+    <strong id="selectedWeightText">-</strong>
+  </div>
 
-        <strong id="price500">0원</strong>
+  <div class="weight-selection-row">
+    <span>금액</span>
+    <strong id="selectedWeightPrice">-</strong>
+  </div>
 
-      </button>
-
-      <button
-
-        class="weight-button"
-
-        type="button"
-
-        onclick="selectWeight('1kg', 10)"
-
-      >
-
-        1kg<br />
-
-        <strong id="price1000">0원</strong>
-
-      </button>
-
-      <button
-
-        class="weight-button"
-
-        type="button"
-
-        onclick="selectWeight('1.5kg', 15)"
-
-      >
-
-        1.5kg<br />
-
-        <strong id="price1500">0원</strong>
-
-      </button>
-
-      <button
-
-        class="weight-button"
-
-        type="button"
-
-        onclick="selectWeight('2kg', 20)"
-
-      >
-
-        2kg<br />
-
-        <strong id="price2000">0원</strong>
-
-      </button>
-
-    </div>
-
+  <button
+    class="weight-confirm-button"
+    id="weightConfirmButton"
+    type="button"
+    onclick="addSelectedWeightToCart()"
+    disabled
+  >
+    장바구니 담기
+  </button>
+</div>
   </section>
 
   <!-- 가격 문의 상품 -->
@@ -3125,6 +3257,10 @@ const productById = new Map();
 
   let selectedProductRequiresUse = true;
 
+let selectedWeight = "";
+
+let selectedWeightMultiplier = 0;
+
   let selectedRequestProduct = "";
 
   window.addEventListener(
@@ -3466,129 +3602,160 @@ const productById = new Map();
 
     document
 
-      .getElementById("price500")
-
-      .textContent =
-
-        (selectedUnitPrice * 5)
-
-          .toLocaleString("ko-KR") +
-
-        "원";
-
-    document
-
-      .getElementById("price1000")
-
-      .textContent =
-
-        (selectedUnitPrice * 10)
-
-          .toLocaleString("ko-KR") +
-
-        "원";
-
-    document
-
-      .getElementById("price1500")
-
-      .textContent =
-
-        (selectedUnitPrice * 15)
-
-          .toLocaleString("ko-KR") +
-
-        "원";
-
-    document
-
-      .getElementById("price2000")
-
-      .textContent =
-
-        (selectedUnitPrice * 20)
-
-          .toLocaleString("ko-KR") +
-
-        "원";
-
+     resetWeightSelection();
     openSheet("weightSheet");
 
   }
 
-  function selectWeight(weight, multiplier) {
+  function resetWeightSelection() {
 
-    if (
-      selectedProductRequiresUse &&
-      !selectedProductUse
-    ) {
+  selectedWeight = "";
+  selectedWeightMultiplier = 0;
 
-      alert("용도를 선택해주세요.");
-
-      return;
-
-    }
-
-    const productInfo =
-      productByName.get(selectedProduct);
-
-    const productId =
-      productInfo && productInfo.productId;
-
-    if (!productId) {
-
-      alert(
-
-        "상품정보를 확인할 수 없습니다."
-
-      );
-
-      return;
-
-    }
-
-    const weightGrams =
-
-      multiplier * 100;
-
-    const numericPrice =
-
-      selectedUnitPrice * multiplier;
-
-    cart.push({
-
-      productId,
-
-      name: selectedProduct,
-
-      use: selectedProductUse,
-
-      product: selectedProductUse
-        ? selectedProduct + " " + selectedProductUse
-        : selectedProduct,
-
-      weight,
-
-      weightGrams,
-
-      numericPrice,
-
-      priceText:
-
-        numericPrice
-
-          .toLocaleString("ko-KR") +
-
-        "원"
-
+  document
+    .querySelectorAll(".weight-button")
+    .forEach(function (button) {
+      button.classList.remove("selected");
     });
 
-    updateCartBar();
+  document
+    .getElementById("selectedWeightText")
+    .textContent = "-";
 
-    closeAllSheets();
+  document
+    .getElementById("selectedWeightPrice")
+    .textContent = "-";
+
+  document
+    .getElementById("weightSelection")
+    .classList.remove("show");
+
+  document
+    .getElementById("weightConfirmButton")
+    .disabled = true;
+
+}
+
+
+function selectWeight(
+  weight,
+  multiplier,
+  selectedButton
+) {
+
+  if (
+    selectedProductRequiresUse &&
+    !selectedProductUse
+  ) {
+
+    alert("용도를 선택해주세요.");
+    return;
 
   }
 
+  selectedWeight = weight;
+  selectedWeightMultiplier = multiplier;
+
+  document
+    .querySelectorAll(".weight-button")
+    .forEach(function (button) {
+      button.classList.remove("selected");
+    });
+
+  selectedButton.classList.add("selected");
+
+  document
+    .getElementById("selectedWeightText")
+    .textContent = weight;
+
+  document
+    .getElementById("selectedWeightPrice")
+    .textContent =
+      (
+        selectedUnitPrice *
+        multiplier
+      ).toLocaleString("ko-KR") +
+      "원";
+
+  document
+    .getElementById("weightSelection")
+    .classList.add("show");
+
+  document
+    .getElementById("weightConfirmButton")
+    .disabled = false;
+
+}
+
+
+function addSelectedWeightToCart() {
+
+  if (
+    !selectedWeight ||
+    !selectedWeightMultiplier
+  ) {
+
+    alert("중량을 선택해주세요.");
+    return;
+
+  }
+
+  const productInfo =
+    productByName.get(selectedProduct);
+
+  const productId =
+    productInfo &&
+    productInfo.productId;
+
+  if (!productId) {
+
+    alert(
+      "상품정보를 확인할 수 없습니다."
+    );
+
+    return;
+
+  }
+
+  const weightGrams =
+    selectedWeightMultiplier * 100;
+
+  const numericPrice =
+    selectedUnitPrice *
+    selectedWeightMultiplier;
+
+  cart.push({
+
+    productId,
+
+    name: selectedProduct,
+
+    use: selectedProductUse,
+
+    product: selectedProductUse
+      ? selectedProduct +
+        " " +
+        selectedProductUse
+      : selectedProduct,
+
+    weight: selectedWeight,
+
+    weightGrams,
+
+    numericPrice,
+
+    priceText:
+      numericPrice
+        .toLocaleString("ko-KR") +
+      "원"
+
+  });
+
+  updateCartBar();
+
+  closeAllSheets();
+
+}
   function openRequestSheet(product) {
 
     selectedRequestProduct = product;
