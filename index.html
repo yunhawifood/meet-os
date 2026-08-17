@@ -574,15 +574,15 @@
        홈 화면 추가
     ======================================== */
 
-   .home-tip {
-  margin: 18px 0 18px;
+ .home-tip {
+  margin: 15px 0;
 
-  padding: 17px 16px;
+  padding: 14px 15px;
 
-  border: 1px solid #dcebe1;
-  border-radius: 18px;
+  border: 1px solid #e5e3de;
+  border-radius: 16px;
 
-  background: #f7fbf8;
+  background: rgba(255, 255, 255, 0.72);
 
   text-align: center;
 
@@ -592,7 +592,6 @@
     transform 0.15s ease,
     box-shadow 0.15s ease;
 }
-
     .home-tip:active {
       transform: scale(0.985);
     }
@@ -604,12 +603,12 @@
 
   outline-offset: 3px;
 }
-  .home-tip-title {
-  margin: 0 0 7px;
+.home-tip-title {
+  margin: 0 0 5px;
 
-  color: #2c7043;
+  color: #393939;
 
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 850;
 
   word-break: keep-all;
@@ -626,30 +625,26 @@
       word-break: keep-all;
     }
 
-
-  .home-tip-action {
+.home-tip-action {
   display: block;
 
-  margin: 13px 0 0;
+  margin: 10px 0 0;
 
-  padding: 12px 12px;
+  padding: 9px 10px;
 
-  border: 1px solid #e2ebe5;
-  border-radius: 14px;
+  border: 1px solid #e8e6e1;
+  border-radius: 12px;
 
   background: #ffffff;
 
-  box-shadow:
-    0 3px 9px rgba(0, 0, 0, 0.025);
+  color: #5d665f;
 
-  color: #2c7043;
-
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 850;
 
   text-align: center;
 }
-
+ 
     /* ========================================
        홈 화면 추가 팝업
     ======================================== */
@@ -1015,43 +1010,63 @@
     .store-intro-body p:last-child {
       margin-bottom: 0;
     }
+.store-intro-flow {
+  display: block;
 
-    .store-intro-flow {
-      display: block;
+  margin: 13px 0;
+  padding: 12px 10px;
 
-      margin: 13px 0;
-      padding: 11px 10px;
+  border: 1px solid #eadfca;
+  border-radius: 12px;
 
-      border-radius: 12px;
+  background: #fff8ec;
 
-      background: #edf6f0;
+  color: #725c3d;
 
-      color: #2c7043;
+  font-size: 12px;
+  font-weight: 900;
 
-      font-size: 12px;
-      font-weight: 900;
+  text-align: center;
+}
 
-      text-align: center;
-    }
+ .store-intro-slogan {
+  margin: 21px 0 17px;
+  padding: 20px 22px;
 
-    .store-intro-slogan {
-      margin: 16px 0 15px;
-      padding: 15px 12px;
+  border: 1px solid #e3e8e4;
+  border-radius: 18px;
 
-      border-radius: 15px;
+  background: #ffffff;
 
-      background: #222222;
+  box-shadow:
+    0 7px 18px rgba(0, 0, 0, 0.055);
 
-      color: #ffffff;
+  color: #275f3e;
 
-      font-size: 18px;
-      line-height: 1.35;
-      font-weight: 900;
+  font-size: 21px;
+  line-height: 1.4;
+  font-weight: 950;
+  letter-spacing: -0.7px;
 
-      text-align: center;
-      word-break: keep-all;
-    }
+  word-break: keep-all;
+}
 
+.store-intro-slogan span {
+  display: block;
+}
+
+.store-intro-slogan-first {
+  padding-right: 34px;
+
+  text-align: center;
+}
+
+.store-intro-slogan-second {
+  margin-top: 2px;
+  padding-left: 56px;
+
+  text-align: center;
+}
     .store-intro-address {
       padding: 14px;
 
@@ -1448,15 +1463,14 @@
             03 · 전주 새벽배송
           </span>
 
-          <strong>
-            다음 날 아침<br />
-            문 앞까지.
-          </strong>
+        <strong>
+  준비가 끝나면<br />
+  문 앞으로 갑니다.
+</strong>
 
-          <p>
-            고객이 움직이기 전에 배송을 마칩니다.
-          </p>
-
+<p>
+  전주에서 준비해 직접 배송합니다.
+</p>
         </div>
 
       </article>
@@ -1520,8 +1534,8 @@
   </button>
 
   <p class="order-note">
-    한 팩도 편하게.
-  </p>
+  전주 지정지역 · 배송비 0원
+</p>
 
 </section>
 
@@ -1571,18 +1585,13 @@
       aria-labelledby="storeIntroLinkTitle"
     >
 
-      <div class="store-intro-link-copy">
+   <div class="store-intro-link-copy">
 
-        <strong id="storeIntroLinkTitle">
-          어디에서, 누가 준비하나요?
-        </strong>
+  <strong id="storeIntroLinkTitle">
+    어디에서, 누가 준비하나요?
+  </strong>
 
-        <span>
-          궁금하신 분만 가게 위치와 준비 모습을 확인해보세요.
-        </span>
-
-      </div>
-
+</div>
 
       <button
         class="store-intro-open"
@@ -1791,13 +1800,11 @@
     onclick="closeStoreIntroOutside(event)"
   >
 
-    <section
-      class="store-intro-dialog"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="storeIntroTitle"
-    >
-
+   <section
+  class="store-intro-dialog"
+  role="dialog"
+  aria-modal="true"
+>
       <button
         class="store-intro-close"
         type="button"
@@ -1807,27 +1814,15 @@
         ×
       </button>
 
-
-      <p class="store-intro-kicker">
-        한농직판장 · 전주
-      </p>
-
-
-      <h2 id="storeIntroTitle">
-        전주에서 직접 준비합니다.
-      </h2>
-
-
       <div class="store-intro-photos">
 
         <figure>
 
           <img
-            src="images/storefront.jpg"
-            alt="전주 한농직판장 매장 외관"
-            loading="lazy"
-          />
-
+  src="IMG_1920.jpeg"
+  alt="전주 한농직판장 매장 외관"
+  loading="lazy"
+/>
           <figcaption>
             전주 한농직판장 매장
           </figcaption>
@@ -1883,26 +1878,17 @@
 
       </div>
 
+<div class="store-intro-slogan">
 
-      <p class="store-intro-slogan">
-        오지 마세요.<br />
-        제가 갈게요.
-      </p>
+  <span class="store-intro-slogan-first">
+    오지 마세요.
+  </span>
 
+  <span class="store-intro-slogan-second">
+    제가 갈게요.
+  </span>
 
-      <div class="store-intro-address">
-
-        <span>
-          매장 위치
-        </span>
-
-        <strong>
-          전북특별자치도 전주시 완산구 거마평로 177
-        </strong>
-
-      </div>
-
-
+</div>
       <a
         class="store-intro-map"
         href="https://map.naver.com/p/search/%EC%A0%84%EB%B6%81%ED%8A%B9%EB%B3%84%EC%9E%90%EC%B9%98%EB%8F%84%20%EC%A0%84%EC%A3%BC%EC%8B%9C%20%EC%99%84%EC%82%B0%EA%B5%AC%20%EA%B1%B0%EB%A7%88%ED%8F%89%EB%A1%9C%20177"
