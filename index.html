@@ -535,8 +535,11 @@
   letter-spacing: -1.3px;
 
   box-shadow:
-    0 13px 25px rgba(47, 143, 80, 0.25);
+  inset 0 0 0 2px rgba(255, 255, 255, 0.34),
+  0 13px 25px rgba(47, 143, 80, 0.25);
 
+animation:
+  orderHeartbeat 2.8s ease-in-out infinite;
   cursor: pointer;
 
   transition:
@@ -547,6 +550,8 @@
 
 
 .order-button:active {
+  animation: none;
+
   transform: scale(0.98);
 
   background: #267642;
@@ -554,8 +559,39 @@
   box-shadow:
     0 7px 15px rgba(47, 143, 80, 0.20);
 }
+@keyframes orderHeartbeat {
 
+  0%,
+  70%,
+  100% {
+    transform: scale(1);
+  }
 
+  76% {
+    transform: scale(1.018);
+  }
+
+  82% {
+    transform: scale(1);
+  }
+
+  88% {
+    transform: scale(1.012);
+  }
+
+  94% {
+    transform: scale(1);
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .order-button {
+    animation: none;
+  }
+
+}
 .order-note {
   margin: 13px 0 0;
 
@@ -1119,16 +1155,27 @@
     }
 
     @media (max-width: 390px) {
-      .store-intro-link {
-        align-items: stretch;
-        flex-direction: column;
-      }
 
-      .store-intro-open {
-        width: 100%;
-      }
-    }
+  .store-intro-link {
+    align-items: stretch;
+    flex-direction: column;
+  }
 
+  .store-intro-open {
+    width: 100%;
+  }
+
+  .store-intro-closing-emphasis {
+    display: block;
+
+    margin-top: 8px;
+
+    color: #315c42;
+
+    font-weight: 850;
+  }
+
+}
    /* ========================================
    사업자 정보 - 컴팩트 버전
 ======================================== */
@@ -1871,11 +1918,12 @@
           저희가 직접 준비하겠습니다.
         </p>
 
-        <p>
-          고객님의 아침과 저녁 식탁이 더 편하고 든든해지도록
-          한 팩부터 정성껏 보내드리겠습니다.
-        </p>
-
+   <p class="store-intro-closing">
+  고객님의 아침과 저녁 식탁이 더 편하고 든든해지도록
+  <span class="store-intro-closing-emphasis">
+    한 팩부터 정성껏 보내드리겠습니다.
+  </span>
+</p>
       </div>
 
 <div class="store-intro-slogan">
