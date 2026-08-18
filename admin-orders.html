@@ -1267,10 +1267,31 @@ function focusOrderFromHash() {
 }
 function createOrderCard(order) {
 console.log("카드 생성 데이터:", order);
-  const productText = order.order_items
-  ? order.order_items.map(item => item.product_name).join("<br />")
-  : "";
+ const productText =
+  order.order_items &&
+  order.order_items.length > 0
+    ? order.order_items
+        .map(item => {
 
+          const weight =
+            item.selected_weight ||
+            (
+              item.weight_grams
+                ? item.weight_grams + "g"
+                : ""
+            );
+
+          return [
+            item.product_name,
+            item.selected_use,
+            weight
+          ]
+            .filter(Boolean)
+            .join(" · ");
+
+        })
+        .join("<br />")
+    : "-";
   return `
 
     <article class="order-card" data-id="${order.id}">
@@ -1625,66 +1646,84 @@ list.classList.toggle("open");
 function loadPreparingStatus(orders) {
 
   const preparingContent =
-document.getElementById("preparingContent");
+    document.getElementById(
+      "preparingContent"
+    );
 
+  const productCount = {};
 
-    const productCount = {};
+  orders.forEach(order => {
 
-
-    orders.forEach(order => {
-
-        if(!order.order_items) return;
-
-
-        order.order_items.forEach(item => {
-
-            const name = item.product_name;
-
-
-            const quantity =
-            Number(item.quantity || 1);
-
-
-            if(productCount[name]){
-                productCount[name] += quantity;
-            } else {
-                productCount[name] = quantity;
-            }
-
-        });
-
-    });
-
-
-    if(Object.keys(productCount).length === 0){
-
-        preparingContent.innerHTML =
-        "준비할 상품이 없습니다.";
-
-        return;
-
+    if (!order.order_items) {
+      return;
     }
 
+    order.order_items.forEach(item => {
 
-    let html = "";
+      const weight =
+        item.selected_weight ||
+        (
+          item.weight_grams
+            ? item.weight_grams + "g"
+            : ""
+        );
 
+      const label = [
+        item.product_name,
+        item.selected_use,
+        weight
+      ]
+        .filter(Boolean)
+        .join(" / ");
 
-    Object.keys(productCount).forEach(name => {
+      const quantity =
+        Number(item.quantity || 1);
 
-        html += `
-        <p>
-        ${name} : ${productCount[name]}개
-        </p>
-        `;
+      if (productCount[label]) {
+
+        productCount[label] +=
+          quantity;
+
+      } else {
+
+        productCount[label] =
+          quantity;
+
+      }
 
     });
 
+  });
 
-    preparingContent.innerHTML = html;
+  if (
+    Object.keys(productCount)
+      .length === 0
+  ) {
+
+    preparingContent.innerHTML =
+      "준비할 상품이 없습니다.";
+
+    return;
+
+  }
+
+  let html = "";
+
+  Object.keys(productCount)
+    .forEach(label => {
+
+      html += `
+        <p>
+          ${label} : ${productCount[label]}개
+        </p>
+      `;
+
+    });
+
+  preparingContent.innerHTML =
+    html;
 
 }
-
-
 
 let completedOrdersData = [];
 
@@ -1798,7 +1837,16 @@ ${order.delivery_address_main || "-"}
 ${
   order.order_items && order.order_items.length > 0
   ? order.order_items.map(item => 
-      `${item.product_name} ${item.quantity}개`
+  `${[
+  item.product_name,
+  item.selected_use,
+  item.selected_weight ||
+    (
+      item.weight_grams
+        ? item.weight_grams + "g"
+        : ""
+    )
+].filter(Boolean).join(" · ")} ${item.quantity || 1}개`
     ).join("<br>")
   : "-"
 }
