@@ -3076,7 +3076,17 @@
   />
 
 </div>
-  
+  <div class="field">
+
+  <label for="deliveryRequest">요청사항 (선택)</label>
+
+  <textarea
+    id="deliveryRequest"
+    maxlength="200"
+    placeholder="손질·포장 등 요청사항이 있으시면 자유롭게 적어주세요."
+  ></textarea>
+
+</div>
 <details class="payment-policy">
 
   <summary>
@@ -3988,7 +3998,15 @@ function addSelectedWeightToCart() {
 
         .trim();
 
-  
+  const deliveryRequest =
+
+  document
+
+    .getElementById("deliveryRequest")
+
+    .value
+
+    .trim();
     if (!customerName) {
 
       alert(
@@ -4093,6 +4111,8 @@ return {
   detailAddress,
 
   entranceInfo,
+
+  deliveryRequest,
 
   deliveryMethod: "문 앞 배송"
 
