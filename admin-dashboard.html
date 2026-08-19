@@ -364,7 +364,86 @@ font-size:19px;
       }
 
     }
+.intake-control-card {
+  margin-bottom: 14px;
+  padding: 18px;
+  border: 1px solid #e5e5e5;
+  border-radius: 16px;
+  background: #ffffff;
+}
 
+.intake-control-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.intake-control-head strong {
+  display: block;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.intake-status {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #777777;
+}
+
+.intake-status.open {
+  color: #16794b;
+  font-weight: 700;
+}
+
+.intake-status.closed {
+  color: #b42318;
+  font-weight: 700;
+}
+
+.intake-actions {
+  flex-shrink: 0;
+}
+
+.intake-button {
+  min-height: 42px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.intake-button.close {
+  background: #222222;
+  color: #ffffff;
+}
+
+.intake-button.open {
+  background: #f1f1f1;
+  color: #222222;
+}
+
+.intake-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.intake-button[hidden] {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .intake-control-head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .intake-button {
+    width: 100%;
+  }
+}
   </style>
 
 </head>
@@ -423,26 +502,63 @@ font-size:19px;
     ></div>
 <section class="today-box">
 
-  <h2>오늘 해야 할 일</h2>
+  <h2>오늘 운영</h2>
+
+  <div class="intake-control-card">
+
+    <div class="intake-control-head">
+
+      <div>
+        <strong>새벽배송 주문 접수</strong>
+
+        <div
+          class="intake-status"
+          id="orderIntakeStatus"
+        >
+          확인 중
+        </div>
+      </div>
+
+      <div class="intake-actions">
+
+        <button
+          type="button"
+          id="closeOrderIntakeButton"
+          class="intake-button close"
+        >
+          오늘 주문 마감
+        </button>
+
+        <button
+          type="button"
+          id="openOrderIntakeButton"
+          class="intake-button open"
+          hidden
+        >
+          다시 주문 열기
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
 
   <div class="menu-grid">
 
     <a
-
       class="menu-button"
-
       href="./admin-orders.html"
-
     >
-
       🚚 배송관리
 
       <span id="delivery-count">0건</span>
-      </a>
+    </a>
 
   </div>
 
-</section>    <section class="menu-box">
+</section>
+    <section class="menu-box">
 <h2>관리 메뉴</h2>
 
 <div class="menu-grid manage-grid">
@@ -637,7 +753,235 @@ updateDeliveryCount();
       }
 
     }
+const ORDER_INTAKE_API =
+  "https://yunhawi-payment-api.yunhawifood.workers.dev/admin/order-intake";
 
+
+async function getAdminAccessToken() {
+
+  const {
+    data: { session },
+    error,
+  } =
+    await supabaseClient.auth.getSession();
+
+  if (error) {
+    throw error;
+  }
+
+  if (!session?.access_token) {
+    throw new Error(
+      "관리자 로그인 세션이 없습니다."
+    );
+  }
+
+  return session.access_token;
+}
+
+
+function renderOrderIntakeStatus(intake) {
+
+  const status =
+    document.getElementById(
+      "orderIntakeStatus"
+    );
+
+  const closeButton =
+    document.getElementById(
+      "closeOrderIntakeButton"
+    );
+
+  const openButton =
+    document.getElementById(
+      "openOrderIntakeButton"
+    );
+
+  if (!status) return;
+
+
+  if (intake?.isOpen) {
+
+    status.textContent =
+      "● 주문 접수중";
+
+    status.className =
+      "intake-status open";
+
+    closeButton.hidden = false;
+    openButton.hidden = true;
+
+  } else {
+
+    status.textContent =
+      "● 주문 마감";
+
+    status.className =
+      "intake-status closed";
+
+    closeButton.hidden = true;
+    openButton.hidden = false;
+
+  }
+}
+
+
+async function requestOrderIntake(
+  path = "",
+  method = "GET",
+) {
+
+  const accessToken =
+    await getAdminAccessToken();
+
+  const response =
+    await fetch(
+      ORDER_INTAKE_API + path,
+      {
+        method,
+        headers: {
+          Accept:
+            "application/json",
+          Authorization:
+            "Bearer " +
+            accessToken,
+        },
+        cache: "no-store",
+      }
+    );
+
+  const data =
+    await response.json();
+
+  if (!response.ok || !data.ok) {
+
+    throw new Error(
+      data.message ||
+      "주문 접수 상태를 처리하지 못했습니다."
+    );
+
+  }
+
+  return data;
+}
+
+
+async function loadOrderIntakeStatus() {
+
+  try {
+
+    const data =
+      await requestOrderIntake();
+
+    renderOrderIntakeStatus(
+      data.intake
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    const status =
+      document.getElementById(
+        "orderIntakeStatus"
+      );
+
+    if (status) {
+      status.textContent =
+        "상태 확인 실패";
+    }
+
+  }
+}
+
+
+document
+  .getElementById(
+    "closeOrderIntakeButton"
+  )
+  ?.addEventListener(
+    "click",
+    async () => {
+
+      const confirmed =
+        confirm(
+          "오늘 새벽배송 주문 접수를 마감하시겠습니까?"
+        );
+
+      if (!confirmed) return;
+
+
+      try {
+
+        const data =
+          await requestOrderIntake(
+            "/close",
+            "POST",
+          );
+
+        renderOrderIntakeStatus(
+          data.intake
+        );
+
+        alert(
+          "오늘 주문 접수를 마감했습니다."
+        );
+
+      } catch (error) {
+
+        alert(
+          error.message ||
+          "주문 마감에 실패했습니다."
+        );
+
+      }
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "openOrderIntakeButton"
+  )
+  ?.addEventListener(
+    "click",
+    async () => {
+
+      const confirmed =
+        confirm(
+          "오늘 주문 접수를 다시 여시겠습니까?"
+        );
+
+      if (!confirmed) return;
+
+
+      try {
+
+        const data =
+          await requestOrderIntake(
+            "/open",
+            "POST",
+          );
+
+        renderOrderIntakeStatus(
+          data.intake
+        );
+
+        alert(
+          "주문 접수를 다시 열었습니다."
+        );
+
+      } catch (error) {
+
+        alert(
+          error.message ||
+          "주문 열기에 실패했습니다."
+        );
+
+      }
+
+    }
+  );
     logoutButton.addEventListener(
 
       "click",
@@ -684,8 +1028,8 @@ updateDeliveryCount();
 
     );
 
-    protectAdminPage();
-
+   protectAdminPage()
+  .then(loadOrderIntakeStatus);
   </script>
 
 </body>
