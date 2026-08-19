@@ -3838,7 +3838,14 @@ function selectWeight(
   document
     .getElementById("weightConfirmButton")
     .disabled = false;
-
+requestAnimationFrame(() => {
+  document
+    .getElementById("weightConfirmButton")
+    ?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest"
+    });
+});
 }
 
 
