@@ -2424,6 +2424,31 @@
   .product-use-list.hidden {
     display: none;
   }
+  .intake-closed-notice {
+  display: none;
+  margin: 18px 0 24px;
+  padding: 22px 18px;
+  border-radius: 18px;
+  background: #fff4eb;
+  text-align: center;
+}
+
+.intake-closed-notice.is-visible {
+  display: block;
+}
+
+.intake-closed-notice strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+.intake-closed-notice p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+}
 </style>
 
 </head>
@@ -2498,7 +2523,20 @@
   <h2>📢 한농직판장 안내</h2>
   <div id="storeNoticeList"></div>
 </section>
+<section
+  class="intake-closed-notice"
+  id="intakeClosedNotice"
+  aria-live="polite"
+>
+  <strong>
+    오늘 새벽배송 주문이 마감되었습니다.
+  </strong>
 
+  <p>
+    신선을 위해 하루 40건만 준비하고 있습니다.<br />
+    다음 주문 접수는 오전 9시부터 시작됩니다.
+  </p>
+</section>
 <section class="section-head" id="products">
 
   <button
@@ -3308,15 +3346,19 @@ let selectedWeight = "";
 let selectedWeightMultiplier = 0;
 
   let selectedRequestProduct = "";
+let orderIntakeOpen = true;
+ window.addEventListener(
+  "DOMContentLoaded",
+  function () {
+    renderProducts(FALLBACK_PRODUCTS);
+    loadStorefront();
 
-  window.addEventListener(
-    "DOMContentLoaded",
-    function () {
-      renderProducts(FALLBACK_PRODUCTS);
-      loadStorefront();
-    }
-  );
-
+    setInterval(
+      refreshOrderIntakeStatus,
+      60 * 1000
+    );
+  }
+);
   function openRegionModal() {
     regionModal.classList.add("show");
     document.body.classList.add("modal-open");
@@ -3364,6 +3406,19 @@ let selectedWeightMultiplier = 0;
         renderProducts(data.products);
       }
       renderNotices(data.notices || []);
+      orderIntakeOpen =
+  data.intake?.isOpen !== false;
+  const intakeClosedNotice =
+  document.getElementById(
+    "intakeClosedNotice"
+  );
+
+if (intakeClosedNotice) {
+  intakeClosedNotice.classList.toggle(
+    "is-visible",
+    !orderIntakeOpen
+  );
+}
     } catch (error) {
       console.warn(
         "관리자 상품정보를 불러오지 못해 기본 상품정보를 표시합니다.",
@@ -3371,7 +3426,59 @@ let selectedWeightMultiplier = 0;
       );
     }
   }
+async function refreshOrderIntakeStatus() {
 
+  if (isPlaceholderSetting(PAYMENT_API)) {
+    return;
+  }
+
+  try {
+
+    const response =
+      await fetch(
+        PAYMENT_API + "/catalog",
+        {
+          headers: {
+            "Accept": "application/json"
+          },
+          cache: "no-store"
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if (
+      !response.ok ||
+      !data.ok
+    ) {
+      return;
+    }
+
+    orderIntakeOpen =
+      data.intake?.isOpen !== false;
+
+    const notice =
+      document.getElementById(
+        "intakeClosedNotice"
+      );
+
+    if (notice) {
+      notice.classList.toggle(
+        "is-visible",
+        !orderIntakeOpen
+      );
+    }
+
+  } catch (error) {
+
+    console.warn(
+      "주문 접수 상태 갱신 실패:",
+      error
+    );
+
+  }
+}
   function renderProducts(products) {
     const grid = document.getElementById("productGrid");
     grid.innerHTML = "";
@@ -4148,7 +4255,29 @@ return {
 
   }
 function showPaymentConfirm() {
+  if (!orderIntakeOpen) {
 
+    const notice =
+      document.getElementById(
+        "intakeClosedNotice"
+      );
+
+    if (notice) {
+      notice.classList.add(
+        "is-visible"
+      );
+
+      notice.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+    }
+
+    alert(
+  "현재 새벽배송 주문 접수가 마감되었습니다.\n다음 주문 접수는 오전 9시부터 시작됩니다."
+);
+    return;
+  }
   const overlay =
 
     document.getElementById(
