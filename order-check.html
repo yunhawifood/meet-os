@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
+
+  <meta name="theme-color" content="#f7fbf8" />
+
+  <title>주문 확인 | 한농직판장</title>
+
+  <style>
+    :root {
+      --green: #235f3f;
+      --green-soft: #eef8f1;
+      --red: #b8322a;
+      --text: #171717;
+      --muted: #6c6c6c;
+      --line: #e8e8e8;
+      --soft: #f7f7f7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f6f7f6;
+      color: var(--text);
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Apple SD Gothic Neo",
+        "Noto Sans KR",
+        sans-serif;
+
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button,
+    a {
+      font: inherit;
+    }
+
+    .page {
+      width: min(100%, 620px);
+      margin: 0 auto;
+      padding:
+        20px
+        18px
+        calc(40px + env(safe-area-inset-bottom));
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+
+    .brand {
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .home-link {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .card {
+      padding: 24px 20px;
+      border: 1px solid #ededed;
+      border-radius: 24px;
+      background: #ffffff;
+
+      box-shadow:
+        0 10px 30px
+        rgba(0, 0, 0, 0.05);
+    }
+
+    .title-area {
+      text-align: center;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      min-height: 34px;
+      padding: 6px 12px;
+
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green);
+
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .status-badge.cancelled {
+      background: #f3f3f3;
+      color: #666666;
+    }
+
+    .status-badge.review {
+      background: #fff4de;
+      color: #8a5700;
+    }
+
+    h1 {
+      margin: 15px 0 7px;
+      font-size: 30px;
+      letter-spacing: -0.05em;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .section {
+      margin-top: 26px;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .info-box {
+      overflow: hidden;
+
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: #ffffff;
+    }
+
+    .info-row {
+      display: grid;
+      grid-template-columns: 105px 1fr;
+      gap: 12px;
+
+      padding: 14px 15px;
+
+      border-bottom:
+        1px solid var(--line);
+    }
+
+    .info-row:last-child {
+      border-bottom: 0;
+    }
+
+    .info-row span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .info-row strong {
+      text-align: right;
+      font-size: 14px;
+      line-height: 1.45;
+      word-break: keep-all;
+    }
+
+    .amount {
+      color: var(--green);
+      font-size: 18px !important;
+    }
+
+    .items {
+      display: grid;
+      gap: 10px;
+    }
+
+    .item {
+      padding: 15px;
+      border-radius: 16px;
+      background: var(--soft);
+    }
+
+    .item-name {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .item-option {
+      margin: 5px 0 0;
+      color: #555555;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .item-price {
+      margin: 7px 0 0;
+      text-align: right;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .request-box,
+    .cancel-info {
+      padding: 15px;
+      border-radius: 16px;
+      background: var(--soft);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .cancel-info {
+      background: #faf3f2;
+    }
+
+    .delivery-guide {
+      margin-top: 22px;
+      padding: 16px;
+
+      border-radius: 16px;
+      background: var(--green-soft);
+
+      color: #315742;
+      font-size: 14px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .main-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 100%;
+      min-height: 54px;
+      margin-top: 24px;
+
+      border: 0;
+      border-radius: 16px;
+      background: var(--green);
+
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    /*
+      취소 버튼은 일부러
+      크게 강조하지 않습니다.
+    */
+
+    .cancel-zone {
+      margin-top: 28px;
+      text-align: center;
+    }
+
+    .cancel-button {
+      border: 0;
+      border-bottom: 1px solid #aaaaaa;
+      background: transparent;
+      color: #8a8a8a;
+
+      padding: 3px 1px;
+
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .cancel-button:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+
+    .loading,
+    .error {
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    .loading strong,
+    .error strong {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    .loading p,
+    .error p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <header class="topbar">
+
+      <strong class="brand">
+        한농직판장
+      </strong>
+
+      <a
+        class="home-link"
+        href="index.html"
+      >
+        홈으로
+      </a>
+
+    </header>
+
+
+    <section
+      id="loadingState"
+      class="card loading"
+    >
+
+      <strong>
+        주문을 확인하고 있습니다
+      </strong>
+
+      <p>
+        잠시만 기다려주세요.
+      </p>
+
+    </section>
+
+
+    <section
+      id="errorState"
+      class="card error hidden"
+    >
+
+      <strong>
+        주문을 확인할 수 없습니다
+      </strong>
+
+      <p id="errorMessage">
+        주문 확인 링크를 다시 확인해주세요.
+      </p>
+
+      <a
+        class="main-button"
+        href="index.html"
+      >
+        한농직판장 홈으로
+      </a>
+
+    </section>
+
+
+    <section
+      id="orderContent"
+      class="card hidden"
+    >
+
+      <div class="title-area">
+
+        <span
+          id="statusBadge"
+          class="status-badge"
+        >
+          주문 확인
+        </span>
+
+        <h1>
+          주문 확인
+        </h1>
+
+        <p class="subtitle">
+          주문하신 내용을 확인해주세요.
+        </p>
+
+      </div>
+
+
+      <section class="section">
+
+        <h2 class="section-title">
+          주문 정보
+        </h2>
+
+        <div class="info-box">
+
+          <div class="info-row">
+            <span>주문번호</span>
+            <strong id="orderId">-</strong>
+          </div>
+
+          <div class="info-row">
+            <span>주문시간</span>
+            <strong id="createdAt">-</strong>
+          </div>
+
+          <div class="info-row">
+            <span>결제금액</span>
+            <strong
+              id="amount"
+              class="amount"
+            >
+              -
+            </strong>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section class="section">
+
+        <h2 class="section-title">
+          주문 상품
+        </h2>
+
+        <div
+          id="items"
+          class="items"
+        ></div>
+
+      </section>
+
+
+      <section class="section">
+
+        <h2 class="section-title">
+          배송 정보
+        </h2>
+
+        <div class="info-box">
+
+          <div class="info-row">
+            <span>배송지</span>
+            <strong id="address">-</strong>
+          </div>
+
+          <div class="info-row">
+            <span>배송 예정</span>
+            <strong id="deliveryDate">-</strong>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section
+        id="requestSection"
+        class="section hidden"
+      >
+
+        <h2 class="section-title">
+          요청사항
+        </h2>
+
+        <div
+          id="deliveryRequest"
+          class="request-box"
+        ></div>
+
+      </section>
+
+
+      <section
+        id="cancelInfoSection"
+        class="section hidden"
+      >
+
+        <h2 class="section-title">
+          취소 정보
+        </h2>
+
+        <div
+          id="cancelInfo"
+          class="cancel-info"
+        ></div>
+
+      </section>
+
+
+      <div class="delivery-guide">
+
+        오늘 주문하신 상품은<br />
+
+        <strong>
+          다음 날 오전 8시 이전
+        </strong>
+
+        문 앞 배송됩니다.
+
+      </div>
+
+
+      <a
+        class="main-button"
+        href="index.html"
+      >
+        홈으로 돌아가기
+      </a>
+
+
+      <div
+        id="cancelZone"
+        class="cancel-zone hidden"
+      >
+
+        <button
+          id="cancelButton"
+          class="cancel-button"
+          type="button"
+        >
+          주문 취소하기
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <script>
+
+    const PAYMENT_API =
+      "https://yunhawi-payment-api.yunhawifood.workers.dev";
+
+
+    let currentToken = "";
+
+
+    function getTokenFromUrl() {
+
+      const hash =
+        window.location.hash
+          .replace(/^#/, "");
+
+      const params =
+        new URLSearchParams(hash);
+
+      return String(
+        params.get("token") || ""
+      ).trim();
+
+    }
+
+
+    function formatPrice(value) {
+
+      return (
+        Number(value || 0)
+          .toLocaleString("ko-KR") +
+        "원"
+      );
+
+    }
+
+
+    function formatWeight(value) {
+
+      const grams =
+        Number(value || 0);
+
+      if (grams === 1000) {
+        return "1kg";
+      }
+
+      if (grams === 1500) {
+        return "1.5kg";
+      }
+
+      if (grams === 2000) {
+        return "2kg";
+      }
+
+      return grams + "g";
+
+    }
+
+
+    function parseServerDate(value) {
+
+      const text =
+        String(value || "").trim();
+
+      if (!text) {
+        return null;
+      }
+
+      const normalized =
+        /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/
+          .test(text)
+
+          ? text.replace(" ", "T") + "Z"
+
+          : text;
+
+      const date =
+        new Date(normalized);
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+        return null;
+      }
+
+      return date;
+
+    }
+
+
+    function formatKoreanDateTime(value) {
+
+      const date =
+        parseServerDate(value);
+
+      if (!date) {
+        return "-";
+      }
+
+      return new Intl.DateTimeFormat(
+        "ko-KR",
+        {
+          timeZone: "Asia/Seoul",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+        }
+      ).format(date);
+
+    }
+
+
+    function formatDeliveryDate(value) {
+
+      const date =
+        parseServerDate(value);
+
+      if (!date) {
+        return "다음 날 오전 8시 이전";
+      }
+
+      const nextDay =
+        new Date(
+          date.getTime() +
+          24 * 60 * 60 * 1000
+        );
+
+      const day =
+        new Intl.DateTimeFormat(
+          "ko-KR",
+          {
+            timeZone: "Asia/Seoul",
+            month: "long",
+            day: "numeric",
+          }
+        ).format(nextDay);
+
+      return (
+        day +
+        " 오전 8시 이전"
+      );
+
+    }
+
+
+    function getStatusInfo(status) {
+
+      const map = {
+
+        READY: {
+          text: "결제 대기",
+          type: "review",
+        },
+
+        PAYMENT_PROCESSING: {
+          text: "결제 처리 중",
+          type: "review",
+        },
+
+        PAYMENT_REVIEW: {
+          text: "결제 확인 중",
+          type: "review",
+        },
+
+        PAYMENT_FAILED: {
+          text: "결제 미완료",
+          type: "cancelled",
+        },
+
+        DONE: {
+          text: "주문 접수 완료",
+          type: "",
+        },
+
+        CANCEL_PROCESSING: {
+          text: "취소 처리 중",
+          type: "review",
+        },
+
+        CANCEL_REVIEW: {
+          text: "취소 확인 중",
+          type: "review",
+        },
+
+        CANCELLED: {
+          text: "주문 취소 완료",
+          type: "cancelled",
+        },
+
+      };
+
+      return (
+        map[status] || {
+          text: "주문 확인",
+          type: "",
+        }
+      );
+
+    }
+
+
+    function renderItems(items) {
+
+      const container =
+        document.getElementById(
+          "items"
+        );
+
+      container.innerHTML = "";
+
+      if (
+        !Array.isArray(items) ||
+        items.length === 0
+      ) {
+
+        const empty =
+          document.createElement(
+            "div"
+          );
+
+        empty.className = "item";
+
+        empty.textContent =
+          "상품정보를 확인할 수 없습니다.";
+
+        container.appendChild(
+          empty
+        );
+
+        return;
+      }
+
+
+      items.forEach(
+        function (item) {
+
+          const box =
+            document.createElement(
+              "div"
+            );
+
+          box.className =
+            "item";
+
+
+          const name =
+            document.createElement(
+              "p"
+            );
+
+          name.className =
+            "item-name";
+
+          name.textContent =
+            item.name || "상품";
+
+
+          const option =
+            document.createElement(
+              "p"
+            );
+
+          option.className =
+            "item-option";
+
+
+          const optionParts = [];
+
+          if (item.use) {
+            optionParts.push(
+              String(item.use)
+            );
+          }
+
+          if (item.weightGrams) {
+            optionParts.push(
+              formatWeight(
+                item.weightGrams
+              )
+            );
+          }
+
+
+          option.textContent =
+            optionParts.join(" · ");
+
+
+          const price =
+            document.createElement(
+              "p"
+            );
+
+          price.className =
+            "item-price";
+
+          price.textContent =
+            formatPrice(
+              item.lineAmount
+            );
+
+
+          box.appendChild(name);
+
+          if (
+            option.textContent
+          ) {
+            box.appendChild(option);
+          }
+
+          box.appendChild(price);
+
+          container.appendChild(
+            box
+          );
+
+        }
+      );
+
+    }
+
+
+    function renderOrder(order) {
+
+      const status =
+        getStatusInfo(
+          order.status
+        );
+
+
+      const badge =
+        document.getElementById(
+          "statusBadge"
+        );
+
+      badge.textContent =
+        status.text;
+
+      badge.className =
+        "status-badge";
+
+      if (status.type) {
+        badge.classList.add(
+          status.type
+        );
+      }
+
+
+      document.getElementById(
+        "orderId"
+      ).textContent =
+        order.orderId || "-";
+
+
+      document.getElementById(
+        "createdAt"
+      ).textContent =
+        formatKoreanDateTime(
+          order.createdAt
+        );
+
+
+      document.getElementById(
+        "amount"
+      ).textContent =
+        formatPrice(
+          order.amount
+        );
+
+
+      const address = [
+        order.apartment,
+        order.detailAddress,
+      ]
+        .filter(Boolean)
+        .join(" ");
+
+
+      document.getElementById(
+        "address"
+      ).textContent =
+        address || "-";
+
+
+      document.getElementById(
+        "deliveryDate"
+      ).textContent =
+        formatDeliveryDate(
+          order.createdAt
+        );
+
+
+      renderItems(
+        order.items
+      );
+
+
+      const requestSection =
+        document.getElementById(
+          "requestSection"
+        );
+
+      const deliveryRequest =
+        String(
+          order.deliveryRequest || ""
+        ).trim();
+
+
+      if (deliveryRequest) {
+
+        document.getElementById(
+          "deliveryRequest"
+        ).textContent =
+          deliveryRequest;
+
+        requestSection.classList
+          .remove("hidden");
+
+      } else {
+
+        requestSection.classList
+          .add("hidden");
+
+      }
+
+
+      const cancelInfoSection =
+        document.getElementById(
+          "cancelInfoSection"
+        );
+
+
+      if (
+        order.status ===
+        "CANCELLED"
+      ) {
+
+        const parts = [];
+
+        if (order.cancelledAt) {
+
+          parts.push(
+            "취소일시: " +
+            formatKoreanDateTime(
+              order.cancelledAt
+            )
+          );
+
+        }
+
+        if (order.cancelReason) {
+
+          parts.push(
+            "취소사유: " +
+            order.cancelReason
+          );
+
+        }
+
+        document.getElementById(
+          "cancelInfo"
+        ).textContent =
+          parts.join("\n") ||
+          "취소가 완료된 주문입니다.";
+
+        cancelInfoSection.classList
+          .remove("hidden");
+
+      } else {
+
+        cancelInfoSection.classList
+          .add("hidden");
+
+      }
+
+
+      const cancelZone =
+        document.getElementById(
+          "cancelZone"
+        );
+
+
+      if (
+        order.canCancel === true
+      ) {
+
+        cancelZone.classList
+          .remove("hidden");
+
+      } else {
+
+        cancelZone.classList
+          .add("hidden");
+
+      }
+
+    }
+
+
+    async function loadOrder() {
+
+      const loading =
+        document.getElementById(
+          "loadingState"
+        );
+
+      const errorState =
+        document.getElementById(
+          "errorState"
+        );
+
+      const orderContent =
+        document.getElementById(
+          "orderContent"
+        );
+
+
+      loading.classList
+        .remove("hidden");
+
+      errorState.classList
+        .add("hidden");
+
+      orderContent.classList
+        .add("hidden");
+
+
+      try {
+
+        const response =
+          await fetch(
+
+            PAYMENT_API +
+              "/orders/check",
+
+            {
+
+              method: "POST",
+
+              headers: {
+
+                "Content-Type":
+                  "application/json",
+
+              },
+
+              body:
+                JSON.stringify({
+
+                  token:
+                    currentToken,
+
+                }),
+
+            },
+
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data.ok ||
+          !data.order
+        ) {
+
+          throw new Error(
+
+            data.message ||
+            "주문 정보를 확인할 수 없습니다."
+
+          );
+
+        }
+
+
+        renderOrder(
+          data.order
+        );
+
+
+        loading.classList
+          .add("hidden");
+
+        orderContent.classList
+          .remove("hidden");
+
+
+      } catch (error) {
+
+        loading.classList
+          .add("hidden");
+
+        orderContent.classList
+          .add("hidden");
+
+        document.getElementById(
+          "errorMessage"
+        ).textContent =
+
+          error instanceof Error
+
+            ? error.message
+
+            : "주문 정보를 확인할 수 없습니다.";
+
+
+        errorState.classList
+          .remove("hidden");
+
+      }
+
+    }
+
+
+    async function cancelOrder() {
+
+      const confirmed =
+        window.confirm(
+
+          "주문을 취소하시겠습니까?\n\n취소가 완료되면 되돌릴 수 없습니다."
+
+        );
+
+
+      if (!confirmed) {
+        return;
+      }
+
+
+      const button =
+        document.getElementById(
+          "cancelButton"
+        );
+
+
+      button.disabled = true;
+
+      button.textContent =
+        "취소 처리 중...";
+
+
+      try {
+
+        const response =
+          await fetch(
+
+            PAYMENT_API +
+              "/orders/cancel",
+
+            {
+
+              method: "POST",
+
+              headers: {
+
+                "Content-Type":
+                  "application/json",
+
+              },
+
+              body:
+                JSON.stringify({
+
+                  token:
+                    currentToken,
+
+                }),
+
+            },
+
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data.ok
+        ) {
+
+          throw new Error(
+
+            data.message ||
+            "주문 취소를 완료하지 못했습니다."
+
+          );
+
+        }
+
+
+        alert(
+          data.message ||
+          "주문 취소가 완료되었습니다."
+        );
+
+
+        await loadOrder();
+
+
+      } catch (error) {
+
+        alert(
+
+          error instanceof Error
+
+            ? error.message
+
+            : "주문 취소를 완료하지 못했습니다."
+
+        );
+
+
+      } finally {
+
+        button.disabled = false;
+
+        button.textContent =
+          "주문 취소하기";
+
+      }
+
+    }
+
+
+    document.getElementById(
+      "cancelButton"
+    ).addEventListener(
+      "click",
+      cancelOrder
+    );
+
+
+    currentToken =
+      getTokenFromUrl();
+
+
+    if (
+      !/^[a-f0-9]{64}$/i.test(
+        currentToken
+      )
+    ) {
+
+      document.getElementById(
+        "loadingState"
+      ).classList.add(
+        "hidden"
+      );
+
+      document.getElementById(
+        "errorMessage"
+      ).textContent =
+        "주문 확인 링크가 올바르지 않습니다.";
+
+      document.getElementById(
+        "errorState"
+      ).classList.remove(
+        "hidden"
+      );
+
+    } else {
+
+      loadOrder();
+
+    }
+
+  </script>
+
+</body>
+</html>
