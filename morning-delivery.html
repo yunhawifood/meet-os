@@ -4067,21 +4067,44 @@ function addSelectedWeightToCart() {
 
   function openDeliveryForm() {
 
-    if (cart.length === 0) {
+  if (!orderIntakeOpen) {
 
-      alert(
+    closeAllSheets();
 
-        "장바구니에 상품을 먼저 담아주세요."
-
+    const notice =
+      document.getElementById(
+        "intakeClosedNotice"
       );
 
-      return;
+    if (notice) {
+      notice.classList.add(
+        "is-visible"
+      );
 
+      notice.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
     }
 
-    openSheet("deliverySheet");
+    alert(
+      "현재 새벽배송 주문 접수가 마감되었습니다.\n다음 주문 접수는 오전 9시부터 시작됩니다."
+    );
 
+    return;
   }
+
+  if (cart.length === 0) {
+
+    alert(
+      "장바구니에 상품을 먼저 담아주세요."
+    );
+
+    return;
+  }
+
+  openSheet("deliverySheet");
+}
 
   function validateDeliveryForm() {
 
