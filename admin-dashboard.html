@@ -796,13 +796,25 @@ function renderOrderIntakeStatus(intake) {
       "openOrderIntakeButton"
     );
 
-  if (!status) return;
+  if (
+    !status ||
+    !closeButton ||
+    !openButton
+  ) {
+    return;
+  }
 
 
-  if (intake?.isOpen) {
+  /*
+    정상 주문 접수중
+  */
+  if (
+    intake?.isOpen &&
+    intake?.reason === "OPEN"
+  ) {
 
     status.textContent =
-      "● 주문 접수중";
+      `● 주문 접수중 · ${intake.activeCount ?? 0}/${intake.dailyLimit ?? 30}건`;
 
     status.className =
       "intake-status open";
@@ -810,10 +822,20 @@ function renderOrderIntakeStatus(intake) {
     closeButton.hidden = false;
     openButton.hidden = true;
 
-  } else {
+    return;
+  }
+
+
+  /*
+    관리자가 직접 수동마감한 경우에만
+    다시 주문 열기 버튼을 보여줍니다.
+  */
+  if (
+    intake?.reason === "MANUAL"
+  ) {
 
     status.textContent =
-      "● 주문 마감";
+      "● 수동 마감";
 
     status.className =
       "intake-status closed";
@@ -821,7 +843,59 @@ function renderOrderIntakeStatus(intake) {
     closeButton.hidden = true;
     openButton.hidden = false;
 
+    return;
   }
+
+
+  /*
+    09시 이전 또는 21시 이후
+    자동 시간 마감
+  */
+  if (
+    intake?.reason === "TIME"
+  ) {
+
+    status.textContent =
+      "● 자동 마감 · 운영시간 09:00~21:00";
+
+    status.className =
+      "intake-status closed";
+
+    closeButton.hidden = true;
+    openButton.hidden = true;
+
+    return;
+  }
+
+
+  /*
+    실제 주문 한도 도달
+  */
+  if (
+    intake?.reason === "LIMIT"
+  ) {
+
+    status.textContent =
+      `● 오늘 준비 수량 마감 · ${intake.activeCount ?? 0}/${intake.dailyLimit ?? 30}건`;
+
+    status.className =
+      "intake-status closed";
+
+    closeButton.hidden = true;
+    openButton.hidden = true;
+
+    return;
+  }
+
+
+  status.textContent =
+    "상태 확인 필요";
+
+  status.className =
+    "intake-status";
+
+  closeButton.hidden = true;
+  openButton.hidden = true;
 }
 
 
