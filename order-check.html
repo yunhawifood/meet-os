@@ -404,7 +404,16 @@
 
           <div class="info-row">
             <span>주문번호</span>
-            <strong id="orderId">-</strong>
+            <strong
+  id="orderId"
+  style="
+    min-width: 0;
+    max-width: 68%;
+    overflow-wrap: anywhere;
+    word-break: break-all;
+    text-align: right;
+  "
+>-</strong>
           </div>
 
           <div class="info-row">
@@ -498,7 +507,10 @@
       </section>
 
 
-      <div class="delivery-guide">
+      <div
+  id="deliveryGuide"
+  class="delivery-guide"
+>
 
         오늘 주문하신 상품은<br />
 
@@ -977,7 +989,7 @@
         order.status ===
         "CANCELLED"
       ) {
-
+document.getElementById("deliveryGuide").classList.add("hidden");
         const parts = [];
 
         if (order.cancelledAt) {
