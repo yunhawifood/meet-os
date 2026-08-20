@@ -829,7 +829,25 @@ function renderOrderIntakeStatus(intake) {
     return;
   }
 
+/*
+  토요일 정기휴무
+*/
+if (
+  intake?.reason ===
+  "WEEKLY_CLOSED"
+) {
 
+  status.textContent =
+    "● 정기 휴무 · 일요일 09:00 주문 재개";
+
+  status.className =
+    "intake-status closed";
+
+  closeButton.hidden = true;
+  openButton.hidden = true;
+
+  return;
+}
   /*
     09시 이전 또는 21시 이후
     자동 시간 마감
