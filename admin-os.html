@@ -154,7 +154,12 @@ document.getElementById("refreshButton")
 
     function renderProducts(){
       const list=document.getElementById("productList");list.innerHTML="";
-      [...(adminData.products||[])].sort((a,b)=>a.displayOrder-b.displayOrder).forEach(function(product){
+      const products=[...(adminData.products||[])].sort((a,b)=>a.displayOrder-b.displayOrder);
+      if(!products.length){
+        list.innerHTML="<div class='notice-item'>등록된 상품을 불러오지 못했습니다. 잠시 후 새로고침해 주세요.</div>";
+        return;
+      }
+      products.forEach(function(product){
         const card=document.createElement("article");card.className="card";card.dataset.productId=product.productId;
         card.innerHTML=`<h3>${escapeHtml(product.name)} <small>${escapeHtml(product.productId)}</small></h3><div class="fields"><div class="field"><label>상품명</label><input data-field="name" value="${escapeHtml(product.name)}"></div><div class="field"><label>100g 가격</label><input data-field="unitPrice" type="number" min="1" value="${Number(product.unitPrice)}"></div><div class="field"><label>판매상태</label><select data-field="status">${statusOptions(product.status)}</select></div><div class="field"><label>세금구분</label><select data-field="taxType">${taxOptions(product.taxType)}</select></div><div class="field"><label>노출순서</label><input data-field="displayOrder" type="number" min="0" value="${Number(product.displayOrder||0)}"></div><div class="field"><label>이미지 경로</label><input data-field="imageUrl" value="${escapeHtml(product.imageUrl)}"></div><div class="field full"><label>용도(쉼표로 구분, 다짐육은 비움)</label><input data-field="uses" value="${escapeHtml((product.uses||[]).join(", "))}"></div></div><div class="actions"><button type="button" data-action="save-product">저장</button></div>`;
         card.querySelector("[data-action='save-product']").addEventListener("click",()=>saveProduct(card));list.appendChild(card);
@@ -185,6 +190,22 @@ document.getElementById("refreshButton")
     }
 
     function renderReviews(){const list=document.getElementById("reviewList");list.innerHTML="";const orders=adminData.reviewOrders||[];if(!orders.length){list.innerHTML="<div class='notice-item'>현재 확인이 필요한 결제가 없습니다.</div>";return}orders.forEach(function(order){const item=document.createElement("article");item.className="review-item";item.innerHTML=`<strong>${escapeHtml(order.order_name)} · ${Number(order.amount).toLocaleString("ko-KR")}원</strong><div>${escapeHtml(order.customer_name)} · ${escapeHtml(order.customer_phone)}</div><div>주문번호: ${escapeHtml(order.order_id)}</div><div>발생시각: ${escapeHtml(order.updated_at)}</div>`;list.appendChild(item)})}
+
+    async function initializeAdminOs(){
+      try{
+        const {data:{session},error}=await supabaseClient.auth.getSession();
+        if(error){throw error}
+        if(!session){
+          window.location.replace("./admin-login.html");
+          return;
+        }
+        await loadAdminData();
+      }catch(error){
+        showMessage(error.message||"관리자 로그인 상태를 확인하지 못했습니다.",true);
+      }
+    }
+
+    initializeAdminOs();
   </script>
 </body>
 </html>
