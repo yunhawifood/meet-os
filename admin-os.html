@@ -19,15 +19,12 @@
       </div>
     </header>
 
-    <section class="panel">
-      <div class="login">
-        <input id="adminToken" type="password" autocomplete="off" placeholder="Cloudflare ADMIN_API_TOKEN 입력">
-        <button id="connectButton" type="button">관리자 연결</button>
-        <button class="secondary" id="disconnectButton" type="button">연결 해제</button>
-      </div>
-      <p class="help">관리자 토큰은 이 브라우저 탭의 임시 저장공간에만 보관됩니다. 공용 기기에서는 사용 후 창을 닫아주세요.</p>
-      <div class="message" id="message" role="status"></div>
-    </section>
+  <section class="panel">
+  <p class="help">
+    Supabase 관리자 로그인 상태로 연결됩니다.
+  </p>
+  <div class="message" id="message" role="status"></div>
+</section>
 
     <nav class="tabs" aria-label="관리자 메뉴">
       <button class="tab active" data-view="productsView" type="button">상품관리</button>
@@ -84,10 +81,13 @@
   </main>
 
   <script>
-    const API_BASE = "https://yunhawi-payment-api.yunhawifood.workers.dev";
-    let adminData = { products: [], notices: [], reviewOrders: [] };
-    const tokenInput = document.getElementById("adminToken");
-    tokenInput.value = sessionStorage.getItem("yunhawiAdminToken") || "";
+   const API_BASE = "https://yunhawi-payment-api.yunhawifood.workers.dev";
+
+let adminData = {
+  products: [],
+  notices: [],
+  reviewOrders: []
+};
 
     document.querySelectorAll(".tab").forEach(function(button){
       button.addEventListener("click", function(){
@@ -98,21 +98,37 @@
       });
     });
 
-    document.getElementById("connectButton").addEventListener("click", loadAdminData);
-    document.getElementById("refreshButton").addEventListener("click", loadAdminData);
-    document.getElementById("disconnectButton").addEventListener("click", disconnectAdmin);
+document.getElementById("refreshButton")
+  .addEventListener("click", loadAdminData);
     document.getElementById("addNoticeButton").addEventListener("click", addNotice);
     document.getElementById("createPaymentButton").addEventListener("click", createPaymentRequest);
 
     function isPlaceholder(value){const text=String(value||"").trim().toLowerCase();return !text||text==="remove"||text==="removed"||text.includes("여기에")}
     function showMessage(text,isError=false){const element=document.getElementById("message");element.textContent=text;element.className="message show"+(isError?" error":"")}
     function escapeHtml(value){return String(value??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
-    function getToken(){return tokenInput.value.trim()}
+    async function getToken(){
+
+  const {
+    data: { session },
+    error
+  } = await supabaseClient.auth.getSession();
+
+  if(error){
+    throw error;
+  }
+
+  if(!session?.access_token){
+    throw new Error(
+      "관리자 로그인 세션이 없습니다."
+    );
+  }
+
+  return session.access_token;
+}
 
     async function api(path,options={}){
       if(isPlaceholder(API_BASE)){throw new Error("admin-os.html의 API_BASE를 고객 주문 페이지와 같은 Worker 주소로 바꿔주세요.")}
-      const token=getToken();if(!token){throw new Error("ADMIN_API_TOKEN을 입력해주세요.")}
-      sessionStorage.setItem("yunhawiAdminToken",token);
+      const token = await getToken();
       const response=await fetch(API_BASE+path,{...options,headers:{"Content-Type":"application/json","Authorization":"Bearer "+token,...(options.headers||{})}});
       const data=await response.json();if(!response.ok||!data.ok){throw new Error(data.message||"관리자 요청을 처리하지 못했습니다.")}return data;
     }
@@ -120,17 +136,6 @@
     async function loadAdminData(){
       try{showMessage("관리자 데이터를 불러오고 있습니다.");adminData=await api("/admin/catalog");renderProducts();renderNotices();renderReviews();showMessage("관리자 연결이 완료되었습니다.")}
       catch(error){showMessage(error.message,true)}
-    }
-
-    function disconnectAdmin(){
-      sessionStorage.removeItem("yunhawiAdminToken");
-      tokenInput.value="";
-      adminData={products:[],notices:[],reviewOrders:[]};
-      renderProducts();
-      renderNotices();
-      renderReviews();
-      document.getElementById("paymentOutput").className="output";
-      showMessage("관리자 연결을 해제했습니다.");
     }
 
     function renderProducts(){
