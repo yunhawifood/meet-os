@@ -139,7 +139,7 @@ body {
 
 .dashboard-grid {
   display:grid;
-  grid-template-columns:minmax(0,1.65fr) minmax(260px,.85fr);
+  grid-template-columns:repeat(2,minmax(0,1fr));
   gap:16px;
   align-items:start;
 }
@@ -281,9 +281,78 @@ input {
 }
 
 #closingList,
+#customerData,
 #salesAnalysis {
   color:#3f4843;
   line-height:1.6;
+}
+
+.metrics-grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+
+.metric-card {
+  min-width:0;
+  padding:15px;
+  border:1px solid #dfe8e2;
+  border-radius:14px;
+  background:#f8fbf9;
+}
+
+.metric-card.cancelled {
+  border-color:#efd3d3;
+  background:#fff7f7;
+}
+
+.metric-label {
+  color:var(--muted);
+  font-size:13px;
+  font-weight:800;
+}
+
+.metric-value {
+  margin-top:6px;
+  color:var(--green);
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:-0.04em;
+}
+
+.metric-card.cancelled .metric-value {
+  color:#a53838;
+}
+
+.subsection-title {
+  margin:20px 0 10px;
+  color:var(--green);
+  font-size:16px;
+}
+
+.customer-list {
+  display:grid;
+  gap:8px;
+}
+
+.customer-row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:11px 12px;
+  border-radius:12px;
+  background:#f3f6f4;
+}
+
+.customer-row strong {
+  color:#34433a;
+}
+
+.customer-row span {
+  color:var(--muted);
+  font-size:13px;
+  text-align:right;
 }
 
 #salesAnalysis:not(:empty) {
@@ -345,6 +414,10 @@ input {
     grid-template-columns:1fr;
   }
 
+  .metrics-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
   .box.wide {
     grid-column:auto;
   }
@@ -355,6 +428,10 @@ input {
 
   .section-head {
     align-items:flex-start;
+  }
+
+  .metric-value {
+    font-size:20px;
   }
 }
 
@@ -418,12 +495,10 @@ input {
 
 <div class="section-head">
 <h2>고객 데이터</h2>
-<span class="status">준비 중</span>
+<span class="status">누적 기준</span>
 </div>
 
-<p class="section-copy">
-준비 중입니다.
-</p>
+<div id="customerData">불러오는 중입니다...</div>
 
 </section>
 
@@ -494,6 +569,93 @@ function isValidMonth(value) {
 
 function isValidDate(value) {
   return /^\d{4}-\d{2}-\d{2}$/.test(String(value || ""));
+}
+
+function isCancelledOrder(order) {
+
+  const status = String(
+    order?.order_status || ""
+  ).trim().toLowerCase();
+
+  return [
+    "cancelled",
+    "canceled",
+    "refunded"
+  ].includes(status);
+
+}
+
+function normalizePhone(value) {
+  return String(value || "").replace(/[^0-9]/g, "");
+}
+
+function maskPhone(value) {
+
+  const phone = normalizePhone(value);
+
+  if (phone.length === 11) {
+    return `${phone.slice(0,3)}-****-${phone.slice(-4)}`;
+  }
+
+  if (phone.length === 10) {
+    return `${phone.slice(0,3)}-***-${phone.slice(-4)}`;
+  }
+
+  return "번호 미등록";
+
+}
+
+function formatWon(value) {
+  return `${Math.round(Number(value || 0)).toLocaleString("ko-KR")}원`;
+}
+
+function formatRate(part, total) {
+  if (!total) return "0%";
+  return `${((part / total) * 100).toFixed(1)}%`;
+}
+
+function summarizeOrders(orders) {
+
+  const allOrders = Array.isArray(orders)
+    ? orders
+    : [];
+
+  const cancelledOrders =
+    allOrders.filter(isCancelledOrder);
+
+  const normalOrders =
+    allOrders.filter(order =>
+      !isCancelledOrder(order)
+    );
+
+  const normalSales =
+    normalOrders.reduce(
+      (sum, order) =>
+        sum + Number(order.total_amount || 0),
+      0
+    );
+
+  const cancelledAmount =
+    cancelledOrders.reduce(
+      (sum, order) =>
+        sum + Number(order.total_amount || 0),
+      0
+    );
+
+  return {
+    allOrders,
+    normalOrders,
+    cancelledOrders,
+    totalCount:allOrders.length,
+    normalCount:normalOrders.length,
+    cancelledCount:cancelledOrders.length,
+    normalSales,
+    cancelledAmount,
+    averageOrderValue:normalOrders.length
+      ? normalSales / normalOrders.length
+      : 0
+  };
+
 }
 
 function handleDataAction(event) {
@@ -941,6 +1103,143 @@ ${escapeHtml(
 
 
 }
+
+async function loadCustomerData() {
+
+  const box =
+    document.getElementById("customerData");
+
+  const { data, error } =
+    await supabaseClient
+      .from("orders")
+      .select(`
+        customer_phone,
+        total_amount,
+        order_status,
+        created_at
+      `)
+      .order("created_at", {
+        ascending:true
+      });
+
+  if (error) {
+    console.error(error);
+    box.textContent =
+      "고객 데이터를 불러오지 못했습니다.";
+    return;
+  }
+
+  const {
+    normalOrders,
+    cancelledOrders,
+    normalSales
+  } = summarizeOrders(data);
+
+  const customers = new Map();
+  const cancelledCustomerPhones = new Set();
+
+  normalOrders.forEach(order => {
+
+    const phone =
+      normalizePhone(order.customer_phone);
+
+    if (!phone) return;
+
+    if (!customers.has(phone)) {
+      customers.set(phone, {
+        phone,
+        orderCount:0,
+        totalSales:0
+      });
+    }
+
+    const customer = customers.get(phone);
+    customer.orderCount += 1;
+    customer.totalSales +=
+      Number(order.total_amount || 0);
+
+  });
+
+  cancelledOrders.forEach(order => {
+    const phone =
+      normalizePhone(order.customer_phone);
+    if (phone) cancelledCustomerPhones.add(phone);
+  });
+
+  const customerList =
+    Array.from(customers.values());
+
+  const repeatCustomers =
+    customerList.filter(customer =>
+      customer.orderCount >= 2
+    );
+
+  const averageOrdersPerCustomer =
+    customerList.length
+      ? normalOrders.length / customerList.length
+      : 0;
+
+  const averageSalesPerCustomer =
+    customerList.length
+      ? normalSales / customerList.length
+      : 0;
+
+  const topRepeatCustomers =
+    repeatCustomers
+      .sort((a, b) =>
+        b.orderCount - a.orderCount ||
+        b.totalSales - a.totalSales
+      )
+      .slice(0, 5);
+
+  const repeatListHtml =
+    topRepeatCustomers.length
+      ? `
+        <h3 class="subsection-title">재구매 고객 상위 현황</h3>
+        <div class="customer-list">
+          ${topRepeatCustomers.map(customer => `
+            <div class="customer-row">
+              <strong>${escapeHtml(maskPhone(customer.phone))}</strong>
+              <span>${customer.orderCount}회 · ${formatWon(customer.totalSales)}</span>
+            </div>
+          `).join("")}
+        </div>
+      `
+      : `
+        <p class="section-copy">아직 재구매 고객이 없습니다.</p>
+      `;
+
+  box.innerHTML = `
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">구매 고객</div>
+        <div class="metric-value">${customerList.length}명</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">재구매 고객</div>
+        <div class="metric-value">${repeatCustomers.length}명</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">재구매율</div>
+        <div class="metric-value">${formatRate(repeatCustomers.length, customerList.length)}</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">고객당 주문</div>
+        <div class="metric-value">${averageOrdersPerCustomer.toFixed(1)}회</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">고객당 누적매출</div>
+        <div class="metric-value">${formatWon(averageSalesPerCustomer)}</div>
+      </div>
+      <div class="metric-card cancelled">
+        <div class="metric-label">취소 경험 고객</div>
+        <div class="metric-value">${cancelledCustomerPhones.size}명</div>
+      </div>
+    </div>
+    ${repeatListHtml}
+  `;
+
+}
 async function loadSalesAnalysis(){
 
 const box =
@@ -953,6 +1252,16 @@ document.getElementById("analysisStart").value;
 const end =
 document.getElementById("analysisEnd").value;
 
+if (
+  !isValidDate(start) ||
+  !isValidDate(end) ||
+  start > end
+) {
+  box.textContent =
+    "조회 기간을 올바르게 선택해 주세요.";
+  return;
+}
+
 
 const { data, error } = await supabaseClient
 .from("orders")
@@ -960,6 +1269,7 @@ const { data, error } = await supabaseClient
   total_amount,
   created_at,
   delivery_address_main,
+  order_status,
   order_items (
     product_name,
     quantity
@@ -967,11 +1277,11 @@ const { data, error } = await supabaseClient
 `)
 .gte(
   "created_at",
-  start + "T00:00:00"
+  start + "T00:00:00+09:00"
 )
 .lte(
   "created_at",
-  end + "T23:59:59"
+  end + "T23:59:59.999+09:00"
 );
 
 if(error){
@@ -997,16 +1307,15 @@ return;
 
 
 
-const totalCount =
-data.length;
-
-
-const totalSales =
-data.reduce(
-(sum,item)=>
-sum + Number(item.total_amount || 0),
-0
-);
+const {
+  normalOrders,
+  totalCount,
+  normalCount,
+  cancelledCount,
+  normalSales,
+  cancelledAmount,
+  averageOrderValue
+} = summarizeOrders(data);
 
 
 
@@ -1024,7 +1333,7 @@ const productCount = {};
 
 
 
-data.forEach(item=>{
+normalOrders.forEach(item=>{
 
 
 // 지역 분석
@@ -1125,6 +1434,11 @@ ${escapeHtml(area)}
 
 });
 
+if (!areaHtml) {
+  areaHtml =
+    "<p>정상 주문이 없습니다.</p>";
+}
+
 
 
 
@@ -1161,6 +1475,11 @@ ${escapeHtml(product)}
 
 });
 
+if (!productHtml) {
+  productHtml =
+    "<p>정상 주문이 없습니다.</p>";
+}
+
 
 
 
@@ -1175,17 +1494,32 @@ box.innerHTML = `
 전체 현황
 </h4>
 
-
-<p>
-주문 :
-${totalCount}건
-</p>
-
-
-<p>
-매출 :
-${totalSales.toLocaleString()}원
-</p>
+<div class="metrics-grid">
+  <div class="metric-card">
+    <div class="metric-label">전체 주문</div>
+    <div class="metric-value">${totalCount}건</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-label">정상 주문</div>
+    <div class="metric-value">${normalCount}건</div>
+  </div>
+  <div class="metric-card cancelled">
+    <div class="metric-label">취소 주문 · ${formatRate(cancelledCount, totalCount)}</div>
+    <div class="metric-value">${cancelledCount}건</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-label">정상 매출</div>
+    <div class="metric-value">${formatWon(normalSales)}</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-label">객단가</div>
+    <div class="metric-value">${formatWon(averageOrderValue)}</div>
+  </div>
+  <div class="metric-card cancelled">
+    <div class="metric-label">취소 금액</div>
+    <div class="metric-value">${formatWon(cancelledAmount)}</div>
+  </div>
+</div>
 
 
 <hr>
@@ -1240,6 +1574,7 @@ today;
 
 };
 loadClosingData();
+loadCustomerData();
 
 
 
