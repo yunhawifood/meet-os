@@ -542,34 +542,41 @@
 }
 
 .order-button {
-  display: flex;
+  position: relative;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
 
   align-items: center;
-  justify-content: center;
+  gap: 14px;
 
   width: 100%;
 
-  min-height: 94px;
+  min-height: 116px;
 
   margin-top: 18px;
+  padding: 17px 17px 17px 20px;
 
   border: 0;
   border-radius: 22px;
 
-  background: #2f8f50;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      #1f6d3d 0%,
+      #2f9a58 58%,
+      #51ad6d 100%
+    );
 
   color: #ffffff;
 
-  font-size: 27px;
-  line-height: 1;
-
-  font-weight: 950;
-
-  letter-spacing: -1.3px;
+  text-align: left;
 
   box-shadow:
   inset 0 0 0 2px rgba(255, 255, 255, 0.34),
-  0 13px 25px rgba(47, 143, 80, 0.25);
+  0 15px 28px rgba(31, 109, 61, 0.30);
 
 animation:
   orderHeartbeat 2.8s ease-in-out infinite;
@@ -579,6 +586,102 @@ animation:
     transform 0.14s ease,
     background 0.14s ease,
     box-shadow 0.14s ease;
+}
+
+.order-button::before {
+  position: absolute;
+  inset: -45% auto auto 52%;
+
+  width: 180px;
+  height: 180px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 255, 255, 0.13);
+
+  content: "";
+  pointer-events: none;
+}
+
+.order-button[data-intake-status="closed"] {
+  background:
+    linear-gradient(
+      135deg,
+      #314c3b 0%,
+      #40664e 58%,
+      #547960 100%
+    );
+
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.24),
+    0 13px 25px rgba(38, 70, 49, 0.25);
+}
+
+.order-button-copy,
+.order-button-arrow {
+  position: relative;
+  z-index: 1;
+}
+
+.order-button-copy {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.order-button-badge {
+  width: max-content;
+  max-width: 100%;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.25px;
+}
+
+.order-button[data-intake-status="closed"]
+.order-button-badge {
+  background: #fff0c7;
+  color: #77510d;
+}
+
+.order-button-label {
+  font-size: 27px;
+  line-height: 1.05;
+  font-weight: 950;
+  letter-spacing: -1.3px;
+}
+
+.order-button-meta {
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  word-break: keep-all;
+}
+
+.order-button-arrow {
+  display: grid;
+  place-items: center;
+
+  width: 50px;
+  height: 50px;
+
+  border-radius: 50%;
+  background: #ffffff;
+  color: #287c46;
+
+  font-size: 27px;
+  line-height: 1;
+  font-weight: 900;
+
+  box-shadow:
+    0 8px 18px rgba(12, 67, 35, 0.20);
 }
 
 
@@ -591,6 +694,10 @@ animation:
 
   box-shadow:
     0 7px 15px rgba(47, 143, 80, 0.20);
+}
+
+.order-button:active .order-button-arrow {
+  transform: translateX(2px);
 }
 @keyframes orderHeartbeat {
 
@@ -1386,9 +1493,22 @@ animation:
 
 
       .order-button {
-        min-height: 62px;
+        min-height: 108px;
+        padding: 15px 14px 15px 17px;
+      }
 
-        font-size: 19px;
+      .order-button-label {
+        font-size: 23px;
+      }
+
+      .order-button-meta {
+        font-size: 11px;
+      }
+
+      .order-button-arrow {
+        width: 44px;
+        height: 44px;
+        font-size: 24px;
       }
 
     }
@@ -1634,15 +1754,28 @@ animation:
 
   <button
     class="order-button"
+    id="orderCtaButton"
     type="button"
+    data-intake-status="loading"
     aria-label="새벽배송 상품 주문 화면으로 이동"
     onclick="location.href='morning-delivery.html'"
   >
-    지금 주문하기 →
+    <span class="order-button-copy" aria-live="polite">
+      <span class="order-button-badge" id="orderCtaBadge">
+        전주 무료 새벽배송
+      </span>
+      <span class="order-button-label" id="orderCtaLabel">
+        지금 주문하기
+      </span>
+      <span class="order-button-meta" id="orderCtaMeta">
+        오늘 밤 9시 마감 · 내일 오전 8시 이전 도착
+      </span>
+    </span>
+    <span class="order-button-arrow" aria-hidden="true">→</span>
   </button>
 
-  <p class="order-note">
-  전주 지정지역 · 배송비 0원
+  <p class="order-note" id="orderCtaNote">
+  한 팩도 배송비 0원 · 전주 지정지역
 </p>
 
 </section>
@@ -2021,6 +2154,122 @@ animation:
 
 
   <script>
+
+    /* =====================================
+       주문 버튼 상태
+    ====================================== */
+
+    const ORDER_CATALOG_API =
+      "https://yunhawi-payment-api.yunhawifood.workers.dev/catalog";
+
+    async function syncOrderCtaStatus() {
+
+      const button =
+        document.getElementById(
+          "orderCtaButton"
+        );
+
+      const badge =
+        document.getElementById(
+          "orderCtaBadge"
+        );
+
+      const label =
+        document.getElementById(
+          "orderCtaLabel"
+        );
+
+      const meta =
+        document.getElementById(
+          "orderCtaMeta"
+        );
+
+      const note =
+        document.getElementById(
+          "orderCtaNote"
+        );
+
+      if (
+        !button ||
+        !badge ||
+        !label ||
+        !meta ||
+        !note
+      ) {
+        return;
+      }
+
+      try {
+
+        const response =
+          await fetch(
+            ORDER_CATALOG_API,
+            {
+              headers: {
+                "Accept":
+                  "application/json"
+              },
+              cache: "no-store"
+            }
+          );
+
+        const data =
+          await response.json();
+
+        if (
+          !response.ok ||
+          !data.ok
+        ) {
+          return;
+        }
+
+        const isOpen =
+          data.intake?.isOpen !== false;
+
+        const reason =
+          data.intake?.reason ||
+          (isOpen ? "OPEN" : "TIME");
+
+        if (isOpen) {
+          button.dataset.intakeStatus =
+            "open";
+          badge.textContent =
+            "지금 주문 가능";
+          label.textContent =
+            "지금 주문하기";
+          meta.textContent =
+            "오늘 밤 9시 마감 · 내일 오전 8시 이전 도착";
+          note.textContent =
+            "한 팩도 배송비 0원 · 전주 지정지역";
+        } else {
+          button.dataset.intakeStatus =
+            "closed";
+          badge.textContent =
+            reason === "WEEKLY_CLOSED"
+              ? "오늘은 쉬어갑니다"
+              : "오늘 주문 마감";
+          label.textContent =
+            "상품 미리보기";
+          meta.textContent =
+            reason === "WEEKLY_CLOSED"
+              ? "일요일 오전 9시에 주문이 열립니다"
+              : "내일 오전 9시에 주문이 다시 열립니다";
+          note.textContent =
+            "마감 후에도 상품과 가격을 미리 볼 수 있어요";
+        }
+
+        button.setAttribute(
+          "aria-label",
+          `${label.textContent}. ${meta.textContent}`
+        );
+
+      } catch (error) {
+        // 연결이 불안정하면 기본 주문 안내를 유지합니다.
+      }
+
+    }
+
+    syncOrderCtaStatus();
 
     /* =====================================
        메인 슬라이드
