@@ -13,6 +13,34 @@
 
   <title>한농직판장 | 전주 돼지고기 새벽배송</title>
 
+  <meta
+    name="description"
+    content="전주 지정지역에 신선한 돼지고기를 한 팩부터 무료 새벽배송합니다. 오늘 주문하고 다음 날 오전 8시 이전 문 앞에서 받아보세요."
+  />
+  <link rel="canonical" href="https://yunhawi.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:site_name" content="한농직판장" />
+  <meta property="og:title" content="한농직판장 | 전주 돼지고기 새벽배송" />
+  <meta
+    property="og:description"
+    content="오늘 주문하고 다음 날 오전 8시 이전, 신선한 돼지고기를 문 앞에서 받아보세요."
+  />
+  <meta property="og:url" content="https://yunhawi.com/" />
+  <meta property="og:image" content="https://yunhawi.com/images/og-home.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="900" />
+  <meta property="og:image:alt" content="한농직판장의 돼지고기 준비 과정" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="한농직판장 | 전주 돼지고기 새벽배송" />
+  <meta
+    name="twitter:description"
+    content="오늘 주문하고 다음 날 오전 8시 이전, 신선한 돼지고기를 문 앞에서 받아보세요."
+  />
+  <meta name="twitter:image" content="https://yunhawi.com/images/og-home.jpg" />
+
 
   <!-- Google tag (gtag.js) -->
 
@@ -36,7 +64,8 @@
 
   <link
     rel="apple-touch-icon"
-    href="apple-touch-icon.PNG"
+    sizes="180x180"
+    href="apple-touch-icon-180.png"
   />
 
 
@@ -45,8 +74,12 @@
   <link
   rel="preload"
   as="image"
-  href="images/hero-1.jpg"
+  type="image/webp"
+  href="images/hero-1.webp"
+  fetchpriority="high"
 />
+
+  <link rel="prefetch" href="morning-delivery.html" />
 
   <style>
 
@@ -586,6 +619,18 @@ animation:
 }
 
 @media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 
   .order-button {
     animation: none;
@@ -1387,13 +1432,17 @@ animation:
 
       <!-- 1번 : 김제 육가공장 -->
 
-      <article class="hero-slide active">
+      <article class="hero-slide active" aria-hidden="false">
 
         <div class="slide-media">
 
         <img
-  src="images/hero-1.jpg"
+  src="images/hero-1.webp"
   alt="김제 육가공 작업장"
+  width="1200"
+  height="900"
+  decoding="async"
+  fetchpriority="high"
 />
         </div>
 
@@ -1422,7 +1471,7 @@ animation:
 
       <!-- 2번 : 전주 직접 손질 -->
 
-      <article class="hero-slide">
+      <article class="hero-slide" aria-hidden="true">
 
         <div class="slide-media">
 
@@ -1444,8 +1493,11 @@ animation:
           </div>
 
           <img
-            data-src="images/hero-2.jpg"
+            data-src="images/hero-2.webp"
             alt="전주 한농직판장에서 돼지고기를 직접 손질하는 모습"
+            width="1200"
+            height="801"
+            decoding="async"
             onerror="this.remove()"
           />
 
@@ -1476,7 +1528,7 @@ animation:
 
       <!-- 3번 : 새벽배송 -->
 
-      <article class="hero-slide">
+      <article class="hero-slide" aria-hidden="true">
 
         <div class="slide-media">
 
@@ -1498,8 +1550,11 @@ animation:
           </div>
 
           <img
-            data-src="images/hero-3.jpg"
+            data-src="images/hero-3.webp"
             alt="새벽배송을 위해 포장된 돼지고기"
+            width="1200"
+            height="900"
+            decoding="async"
             onerror="this.remove()"
           />
 
@@ -1538,6 +1593,7 @@ animation:
           class="slider-dot active"
           type="button"
           aria-label="첫 번째 화면"
+          aria-current="true"
           onclick="showSlide(0)"
         ></button>
 
@@ -1578,6 +1634,7 @@ animation:
   <button
     class="order-button"
     type="button"
+    aria-label="새벽배송 상품 주문 화면으로 이동"
     onclick="location.href='morning-delivery.html'"
   >
     지금 주문하기 →
@@ -1854,6 +1911,7 @@ animation:
   class="store-intro-dialog"
   role="dialog"
   aria-modal="true"
+  aria-label="한농직판장 위치와 소개"
 >
       <button
         class="store-intro-close"
@@ -1869,9 +1927,12 @@ animation:
         <figure>
 
           <img
-  src="IMG_1920.jpeg"
+  src="images/storefront.webp"
   alt="전주 한농직판장 매장 외관"
+  width="1200"
+  height="900"
   loading="lazy"
+  decoding="async"
 />
           <figcaption>
             전주 한농직판장 매장
@@ -1883,9 +1944,12 @@ animation:
         <figure>
 
           <img
-            src="images/store-owner.jpg"
+            src="images/store-owner.webp"
             alt="한농직판장 작업장에서 고기를 준비하는 모습"
+            width="1000"
+            height="667"
             loading="lazy"
+            decoding="async"
           />
 
           <figcaption>
@@ -1977,6 +2041,11 @@ animation:
 
     let slideTimer = null;
 
+    const reduceMotionQuery =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      );
+
 
 
     function loadSlideImage(index) {
@@ -2034,6 +2103,13 @@ animation:
             slideIndex === currentSlide
           );
 
+          slide.setAttribute(
+            "aria-hidden",
+            slideIndex === currentSlide
+              ? "false"
+              : "true"
+          );
+
         }
       );
 
@@ -2048,6 +2124,17 @@ animation:
             "active",
             dotIndex === currentSlide
           );
+
+          if (dotIndex === currentSlide) {
+            dot.setAttribute(
+              "aria-current",
+              "true"
+            );
+          } else {
+            dot.removeAttribute(
+              "aria-current"
+            );
+          }
 
         }
       );
@@ -2087,6 +2174,10 @@ animation:
         slideTimer
       );
 
+      if (reduceMotionQuery.matches) {
+        return;
+      }
+
 
       slideTimer =
         setInterval(
@@ -2099,6 +2190,16 @@ animation:
 
 
     restartSlider();
+
+    if (
+      typeof reduceMotionQuery.addEventListener ===
+      "function"
+    ) {
+      reduceMotionQuery.addEventListener(
+        "change",
+        restartSlider
+      );
+    }
 
 
 
@@ -2129,6 +2230,8 @@ animation:
        홈 화면 추가 안내
     ====================================== */
 
+    let homeGuideLastFocus = null;
+
     function openHomeGuide() {
 
       const modal =
@@ -2140,6 +2243,9 @@ animation:
       if (!modal) {
         return;
       }
+
+      homeGuideLastFocus =
+        document.activeElement;
 
 
       modal.classList.add(
@@ -2155,6 +2261,15 @@ animation:
 
       document.body.style.overflow =
         "hidden";
+
+      const closeButton =
+        modal.querySelector(
+          ".home-guide-close"
+        );
+
+      if (closeButton) {
+        closeButton.focus();
+      }
 
     }
 
@@ -2172,6 +2287,14 @@ animation:
         return;
       }
 
+      if (
+        !modal.classList.contains(
+          "show"
+        )
+      ) {
+        return;
+      }
+
 
       modal.classList.remove(
         "show"
@@ -2186,6 +2309,16 @@ animation:
 
       document.body.style.overflow =
         "";
+
+      if (
+        homeGuideLastFocus &&
+        typeof homeGuideLastFocus.focus ===
+          "function"
+      ) {
+        homeGuideLastFocus.focus();
+      }
+
+      homeGuideLastFocus = null;
 
     }
 

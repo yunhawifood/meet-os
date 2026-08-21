@@ -18,7 +18,39 @@
 
 <title>새벽배송 주문하기 | 한농직판장</title>
 
-<script src="https://pay.nicepay.co.kr/v1/js/"></script>
+<meta
+  name="description"
+  content="전주 지정지역 돼지고기 새벽배송 주문 화면입니다. 상품과 중량을 선택하고 안전하게 결제하면 다음 날 오전 8시 이전 문 앞에 배송합니다."
+/>
+<link rel="canonical" href="https://yunhawi.com/morning-delivery.html" />
+
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:site_name" content="한농직판장" />
+<meta property="og:title" content="새벽배송 주문하기 | 한농직판장" />
+<meta
+  property="og:description"
+  content="신선한 돼지고기를 한 팩부터 무료 새벽배송으로 주문하세요."
+/>
+<meta property="og:url" content="https://yunhawi.com/morning-delivery.html" />
+<meta property="og:image" content="https://yunhawi.com/images/og-morning.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="900" />
+<meta property="og:image:alt" content="새벽배송을 위해 준비된 한농직판장 돼지고기" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="새벽배송 주문하기 | 한농직판장" />
+<meta
+  name="twitter:description"
+  content="신선한 돼지고기를 한 팩부터 무료 새벽배송으로 주문하세요."
+/>
+<meta name="twitter:image" content="https://yunhawi.com/images/og-morning.jpg" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180.png" />
+<link rel="preconnect" href="https://pay.nicepay.co.kr" crossorigin />
+<link rel="preconnect" href="https://yunhawi-payment-api.yunhawifood.workers.dev" />
+
+<script defer src="https://pay.nicepay.co.kr/v1/js/"></script>
 
 <!-- Google tag (gtag.js) -->
 
@@ -421,7 +453,7 @@
   text-align: center;
 
 } 
-    .section-head h2 {
+    .section-head h1 {
 
       margin: 0;
 
@@ -2449,6 +2481,25 @@
   font-size: 14px;
   line-height: 1.7;
 }
+
+:is(button, a, input, select, textarea, [role="button"]):focus-visible {
+  outline: 3px solid rgba(47, 139, 80, 0.28);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 </style>
 
 </head>
@@ -2555,7 +2606,7 @@
 
   </button>
 
-  <h2>새벽배송 주문하기</h2>
+  <h1>새벽배송 주문하기</h1>
 
   <p>
 
@@ -2676,6 +2727,8 @@
   class="modal-overlay"
 
   id="regionModal"
+
+  aria-hidden="true"
 
   role="dialog"
 
@@ -2805,6 +2858,8 @@
 
         type="button"
 
+        aria-label="중량 선택창 닫기"
+
         onclick="closeAllSheets()"
 
       >
@@ -2918,6 +2973,8 @@
 
         type="button"
 
+        aria-label="상품 요청창 닫기"
+
         onclick="closeAllSheets()"
 
       >
@@ -2965,6 +3022,8 @@
         class="close-button"
 
         type="button"
+
+        aria-label="장바구니 닫기"
 
         onclick="closeAllSheets()"
 
@@ -3020,6 +3079,8 @@
 
         type="button"
 
+        aria-label="배송정보 입력창 닫기"
+
         onclick="closeAllSheets()"
 
       >
@@ -3040,11 +3101,19 @@
 
     id="customerName"
 
+    name="customerName"
+
     type="text"
+
+    maxlength="30"
+
+    enterkeyhint="next"
 
     placeholder="예: 이윤상"
 
     autocomplete="name"
+
+    required
 
   />
 
@@ -3058,13 +3127,21 @@
 
     id="customerPhone"
 
+    name="customerPhone"
+
     type="tel"
 
     inputmode="numeric"
 
+    maxlength="13"
+
+    enterkeyhint="next"
+
     placeholder="예: 01012345678"
 
     autocomplete="tel"
+
+    required
 
   />
 
@@ -3074,7 +3151,7 @@
 
   <label for="apartmentSelect">배송 아파트</label>
 
- <select id="apartmentSelect">
+ <select id="apartmentSelect" name="apartment" required>
 
   <option value="">아파트를 선택해주세요.</option>
 
@@ -3119,9 +3196,19 @@
 
     id="detailAddress"
 
+    name="detailAddress"
+
     type="text"
 
+    maxlength="50"
+
+    enterkeyhint="next"
+
     placeholder="예: 101동 1001호"
+
+    autocomplete="address-line2"
+
+    required
 
   />
 
@@ -3135,9 +3222,17 @@
 
     id="entranceInfo"
 
+    name="entranceInfo"
+
     type="text"
 
+    maxlength="80"
+
+    enterkeyhint="next"
+
     placeholder="예: 공동현관 1234#"
+
+    autocomplete="off"
 
   />
 
@@ -3148,7 +3243,9 @@
 
   <textarea
     id="deliveryRequest"
+    name="deliveryRequest"
     maxlength="200"
+    autocomplete="off"
     placeholder="손질·포장 등 요청사항이 있으시면 자유롭게 적어주세요."
   ></textarea>
 
@@ -3264,13 +3361,28 @@ const NICE_RETURN_URL =
 
   PAYMENT_API + "/payments/nice/callback";
 
+const OPTIMIZED_PRODUCT_IMAGES = new Map([
+  ["images/alsatae.png", "images/alsatae.webp"],
+  ["images/ansim.png", "images/ansim.webp"],
+  ["images/apdari.png", "images/apdari.webp"],
+  ["images/dajimyuk.png", "images/dajimyuk.webp"],
+  ["images/deunggalbi.png", "images/deunggalbi.webp"],
+  ["images/deungsim.png", "images/deungsim.webp"],
+  ["images/gabrisal.png", "images/gabrisal.webp"],
+  ["images/galbi.png", "images/galbi.webp"],
+  ["images/galmaegisal.png", "images/galmaegisal.webp"],
+  ["images/hangjeongsal.png", "images/hangjeongsal.webp"],
+  ["images/moksal.png", "images/moksal.webp"],
+  ["images/samgyeopsal.png", "images/samgyeopsal.webp"]
+]);
+
 const FALLBACK_PRODUCTS = [
   {
     productId: "samgyeopsal",
     name: "삼겹살",
     unitPrice: 3700,
     uses: ["구이용", "수육용"],
-    imageUrl: "images/samgyeopsal.PNG",
+    imageUrl: "images/samgyeopsal.webp",
     status: "SELLING"
   },
   {
@@ -3278,7 +3390,7 @@ const FALLBACK_PRODUCTS = [
     name: "목살",
     unitPrice: 3200,
     uses: ["구이용", "수육용", "찌개용"],
-    imageUrl: "images/moksal.PNG",
+    imageUrl: "images/moksal.webp",
     status: "SELLING"
   },
   {
@@ -3286,7 +3398,7 @@ const FALLBACK_PRODUCTS = [
     name: "앞다리",
     unitPrice: 2000,
     uses: ["찌개용", "불고기용", "수육용"],
-    imageUrl: "images/apdari.PNG",
+    imageUrl: "images/apdari.webp",
     status: "SELLING"
   },
   {
@@ -3294,7 +3406,7 @@ const FALLBACK_PRODUCTS = [
     name: "알사태",
     unitPrice: 1500,
     uses: ["수육용", "찌개용"],
-    imageUrl: "images/alsatae.PNG",
+    imageUrl: "images/alsatae.webp",
     status: "SELLING"
   },
  {
@@ -3302,7 +3414,7 @@ const FALLBACK_PRODUCTS = [
   name: "등심",
   unitPrice: 1700,
   uses: ["카레용", "잡채용", "돈까스용", "육전용"],
-  imageUrl: "images/deungsim.PNG",
+  imageUrl: "images/deungsim.webp",
   status: "SELLING"
 },
   {
@@ -3310,7 +3422,7 @@ const FALLBACK_PRODUCTS = [
     name: "다짐육",
     unitPrice: 1700,
     uses: [],
-    imageUrl: "images/dajimyuk.PNG",
+    imageUrl: "images/dajimyuk.webp",
     status: "SELLING"
   }
 ];
@@ -3363,12 +3475,15 @@ let orderIntakeReason = "OPEN";
 );
   function openRegionModal() {
     regionModal.classList.add("show");
+    regionModal.setAttribute("aria-hidden", "false");
     document.body.classList.add("modal-open");
   }
 
   function confirmRegion() {
 
     regionModal.classList.remove("show");
+
+    regionModal.setAttribute("aria-hidden", "true");
 
     document.body.classList.remove("modal-open");
 
@@ -3396,7 +3511,10 @@ let orderIntakeReason = "OPEN";
     try {
       const response = await fetch(
         PAYMENT_API + "/catalog",
-        { headers: { "Accept": "application/json" } }
+        {
+          headers: { "Accept": "application/json" },
+          cache: "no-store"
+        }
       );
       const data = await response.json();
 
@@ -3585,6 +3703,10 @@ renderOrderIntakeNotice();
         const image = document.createElement("img");
         image.src = normalized.imageUrl;
         image.alt = normalized.name;
+        image.loading = "lazy";
+        image.decoding = "async";
+        image.width = 720;
+        image.height = 720;
         image.onerror = function () { showFallback(image); };
         const fallback = document.createElement("div");
         fallback.className = "fallback";
@@ -3651,7 +3773,12 @@ renderOrderIntakeNotice();
 
   function safeImageUrl(value) {
     const url = String(value || "").trim();
-    if (url.startsWith("images/") || url.startsWith("https://")) {
+    if (url.startsWith("images/")) {
+      return OPTIMIZED_PRODUCT_IMAGES.get(
+        url.toLowerCase()
+      ) || url;
+    }
+    if (url.startsWith("https://")) {
       return url;
     }
     return "images/product-fallback.PNG";
