@@ -11,29 +11,182 @@
 
 <style>
 
-body {
-  font-family: Arial, sans-serif;
-  background:#f7f7f7;
-  margin:0;
-  padding:20px;
+:root {
+  --green:#235f3f;
+  --green-deep:#194a30;
+  --soft:#eef7f1;
+  --line:#e3e7e4;
+  --muted:#69716c;
+  --surface:#ffffff;
 }
 
+* {
+  box-sizing:border-box;
+}
 
-header {
-  background:white;
-  padding:20px;
-  border-radius:16px;
+body {
+  margin:0;
+  background:#f4f6f5;
+  color:#1b1e1c;
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+}
+
+.page {
+  width:min(100%,1080px);
+  margin:0 auto;
+  padding:24px 18px 80px;
+}
+
+.top {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
   margin-bottom:20px;
 }
 
+.brand h1 {
+  margin:0;
+  color:var(--green);
+  font-size:26px;
+  letter-spacing:-0.04em;
+}
+
+.brand p {
+  margin:6px 0 0;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.top-actions {
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.back,
+.secondary {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:46px;
+  padding:0 16px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  color:#3f4843;
+  font:inherit;
+  font-weight:800;
+  text-decoration:none;
+  cursor:pointer;
+}
+
+.panel {
+  padding:20px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:var(--surface);
+  box-shadow:0 8px 25px rgba(0,0,0,.04);
+}
+
+.intro-panel {
+  margin-bottom:18px;
+}
+
+.intro-panel p {
+  margin:0;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.connection-message {
+  margin-top:14px;
+  padding:13px 15px;
+  border-radius:12px;
+  background:#f3f5f4;
+  color:#4f5853;
+}
+
+.tabs {
+  display:flex;
+  gap:8px;
+  margin:18px 0;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+
+.tabs::-webkit-scrollbar {
+  display:none;
+}
+
+.tab {
+  display:inline-flex;
+  align-items:center;
+  min-height:46px;
+  padding:0 16px;
+  border-radius:12px;
+  background:#e7ece9;
+  color:#3e4943;
+  font-weight:800;
+  text-decoration:none;
+  white-space:nowrap;
+}
+
+.tab.active {
+  background:var(--green);
+  color:#fff;
+}
+
+.dashboard-grid {
+  display:grid;
+  grid-template-columns:minmax(0,1.65fr) minmax(260px,.85fr);
+  gap:16px;
+  align-items:start;
+}
 
 .box {
-  background:white;
-  padding:20px;
-  border-radius:16px;
-  margin-bottom:20px;
+  min-width:0;
+  padding:24px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:var(--surface);
+  box-shadow:0 8px 25px rgba(0,0,0,.04);
 }
 
+.box.wide {
+  grid-column:1/-1;
+}
+
+.section-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:18px;
+}
+
+.section-head h2 {
+  margin:0;
+  font-size:21px;
+  letter-spacing:-0.03em;
+}
+
+.status {
+  display:inline-flex;
+  padding:5px 9px;
+  border-radius:999px;
+  background:var(--soft);
+  color:var(--green);
+  font-size:12px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+.section-copy {
+  margin:0 0 18px;
+  color:var(--muted);
+  line-height:1.65;
+}
 
 h2 {
   margin-top:0;
@@ -46,32 +199,119 @@ h3 {
 
 
 .card {
-  background:#fafafa;
-  border:1px solid #eee;
-  border-radius:12px;
-  padding:12px;
-  margin-top:10px;
+  margin-top:12px;
+  padding:16px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#fbfcfb;
+  overflow-wrap:anywhere;
 }
 
+.card h3 {
+  margin:0 0 10px;
+  color:var(--green);
+  font-size:17px;
+}
+
+.card p {
+  margin:8px 0;
+  line-height:1.55;
+}
 
 button {
-
-  width:100%;
-  padding:16px;
+  min-height:46px;
+  padding:0 16px;
+  border:0;
   border-radius:12px;
-  border:1px solid #ddd;
-  background:white;
-  font-size:16px;
-  color:#222;
-
+  background:var(--green);
+  color:#fff;
+  font:inherit;
+  font-weight:800;
+  cursor:pointer;
 }
 
+button:hover {
+  background:var(--green-deep);
+}
+
+button:focus-visible,
+.back:focus-visible,
+.tab:focus-visible,
+input:focus-visible {
+  outline:3px solid rgba(47,139,80,.18);
+  outline-offset:2px;
+}
+
+.card button {
+  width:100%;
+  margin-top:8px;
+}
+
+.date-fields {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin-bottom:14px;
+}
+
+.field {
+  display:grid;
+  gap:7px;
+}
+
+label {
+  color:#59635d;
+  font-size:14px;
+  font-weight:800;
+}
+
+input {
+  width:100%;
+  min-height:48px;
+  padding:0 13px;
+  border:1px solid #d7ddd9;
+  border-radius:12px;
+  background:#fff;
+  color:#1b1e1c;
+  font:inherit;
+}
+
+.primary-action {
+  width:100%;
+}
+
+#closingList,
+#salesAnalysis {
+  color:#3f4843;
+  line-height:1.6;
+}
+
+#salesAnalysis:not(:empty) {
+  margin-top:16px;
+  padding:18px;
+  border-radius:16px;
+  background:var(--soft);
+}
+
+#salesAnalysis h4 {
+  margin:16px 0 8px;
+  color:var(--green);
+  font-size:17px;
+}
+
+#salesAnalysis h4:first-of-type {
+  margin-top:0;
+}
+
+#salesAnalysis hr {
+  margin:18px 0;
+  border:0;
+  border-top:1px solid #d8e6dc;
+}
 
 .small {
-
-  color:#777;
+  color:var(--muted);
   font-size:14px;
-
 }
 
 
@@ -82,6 +322,41 @@ button {
 
 }
 
+@media (max-width:720px) {
+  .page {
+    padding:18px 14px 60px;
+  }
+
+  .top {
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .top-actions {
+    width:100%;
+  }
+
+  .top-actions > * {
+    flex:1;
+  }
+
+  .dashboard-grid,
+  .date-fields {
+    grid-template-columns:1fr;
+  }
+
+  .box.wide {
+    grid-column:auto;
+  }
+
+  .box {
+    padding:20px 16px;
+  }
+
+  .section-head {
+    align-items:flex-start;
+  }
+}
 
 </style>
 
@@ -93,24 +368,41 @@ button {
 
 <body>
 
+<main class="page">
 
+<header class="top">
 
-<header>
+<div class="brand">
+<h1>한농직판장 관리자 OS</h1>
+<p>영업 마감 · 고객 데이터 · 판매 분석</p>
+</div>
 
-<h2>📊 데이터 관리</h2>
-
-<p>
-운영 기록과 데이터를 관리합니다.
-</p>
+<div class="top-actions">
+<a class="back" href="./admin-dashboard.html">관리자 홈</a>
+<button class="secondary" type="button" onclick="location.reload()">새로고침</button>
+</div>
 
 </header>
 
+<section class="panel intro-panel">
+<p>Supabase 관리자 로그인 상태로 운영 기록과 데이터를 확인합니다.</p>
+<div class="connection-message">필요한 항목을 선택해 운영 데이터를 확인하세요.</div>
+</section>
 
+<nav class="tabs" aria-label="데이터 관리 메뉴">
+<a class="tab active" href="#closingSection">영업 마감 기록</a>
+<a class="tab" href="#customerSection">고객 데이터</a>
+<a class="tab" href="#analysisSection">판매 분석</a>
+</nav>
 
+<div class="dashboard-grid">
 
-<div class="box">
+<section class="box" id="closingSection">
 
-<h3>📒 영업 마감 기록</h3>
+<div class="section-head">
+<h2>영업 마감 기록</h2>
+<span class="status">월별 장부</span>
+</div>
 
 <div id="closingList">
 
@@ -118,47 +410,48 @@ button {
 
 </div>
 
+</section>
+
+
+
+<section class="box" id="customerSection">
+
+<div class="section-head">
+<h2>고객 데이터</h2>
+<span class="status">준비 중</span>
 </div>
 
-
-
-<div class="box">
-
-<h3>👥 고객 데이터</h3>
-
-<p>
+<p class="section-copy">
 준비 중입니다.
 </p>
 
+</section>
+
+
+<section class="box wide" id="analysisSection">
+
+<div class="section-head">
+<h2>판매 분석</h2>
+<span class="status">기간별 조회</span>
 </div>
 
-
-<div class="box">
-
-<h3>📈 판매 분석</h3>
-
-<p>
+<p class="section-copy">
 기간을 선택해 판매 데이터를 확인합니다.
 </p>
 
 
-<div>
+<div class="date-fields">
 
-<div style="
-display:flex;
-gap:10px;
-">
-
-<div style="flex:1;">
-<label>시작일</label>
+<div class="field">
+<label for="analysisStart">시작일</label>
 <input
 id="analysisStart"
 type="date">
 </div>
 
 
-<div style="flex:1;">
-<label>종료일</label>
+<div class="field">
+<label for="analysisEnd">종료일</label>
 <input
 id="analysisEnd"
 type="date">
@@ -166,13 +459,7 @@ type="date">
 
 </div>
 
-</div>
-
-
-<br>
-
-
-<button onclick="loadSalesAnalysis()">
+<button class="primary-action" type="button" onclick="loadSalesAnalysis()">
 분석하기
 </button>
 
@@ -182,9 +469,76 @@ type="date">
 </div>
 
 
+</section>
+
 </div>
 
+</main>
+
 <script>
+
+function escapeHtml(value) {
+
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+function isValidMonth(value) {
+  return /^\d{4}-\d{2}$/.test(String(value || ""));
+}
+
+function isValidDate(value) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(String(value || ""));
+}
+
+function handleDataAction(event) {
+
+  const button = event.target.closest(
+    "button[data-action]"
+  );
+
+  if (
+    !button ||
+    !event.currentTarget.contains(button)
+  ) {
+    return;
+  }
+
+  const action = button.dataset.action;
+
+  if (action === "load-closing") {
+    void loadClosingData();
+    return;
+  }
+
+  if (action === "show-month") {
+    void showMonthBook(button.dataset.month || "");
+    return;
+  }
+
+  if (action === "show-day") {
+    void showDayBook(button.dataset.date || "");
+    return;
+  }
+
+  if (action === "reload") {
+    location.reload();
+  }
+
+}
+
+document
+  .getElementById("closingList")
+  .addEventListener("click", handleDataAction);
+
+document
+  .getElementById("salesAnalysis")
+  .addEventListener("click", handleDataAction);
 
 async function loadClosingData() {
 
@@ -229,7 +583,13 @@ async function loadClosingData() {
 
 
     const month =
-      item.closing_date.substring(0,7);
+      String(item.closing_date || "")
+        .substring(0,7);
+
+
+    if (!isValidMonth(month)) {
+      return;
+    }
 
 
     if(!grouped[month]){
@@ -272,7 +632,7 @@ async function loadClosingData() {
 
 
       <h3>
-      📁 ${month} 장부
+      ${escapeHtml(month)} 장부
       </h3>
 
 
@@ -289,7 +649,9 @@ async function loadClosingData() {
 
 
  <button
-onclick="showMonthBook('${month}')"
+type="button"
+data-action="show-month"
+data-month="${escapeHtml(month)}"
 >
 장부 열기
 </button>
@@ -305,6 +667,12 @@ onclick="showMonthBook('${month}')"
 }
 
 async function showMonthBook(month){
+
+  if (!isValidMonth(month)) {
+    document.getElementById("closingList").textContent =
+      "장부 기간을 확인할 수 없습니다.";
+    return;
+  }
 
   const startDate = `${month}-01`;
 
@@ -351,7 +719,7 @@ const { data, error } = await supabaseClient
 
   box.innerHTML = `
 
-  <button onclick="loadClosingData()">
+  <button type="button" data-action="load-closing">
   ← 처음으로
   </button>
 
@@ -359,7 +727,7 @@ const { data, error } = await supabaseClient
 
 
   <h3>
-  📅 ${month} 날짜별 기록
+  ${escapeHtml(month)} 날짜별 기록
   </h3>
 
 
@@ -369,6 +737,13 @@ const { data, error } = await supabaseClient
 
   data.forEach(item=>{
 
+    const closingDate =
+      String(item.closing_date || "");
+
+    if (!isValidDate(closingDate)) {
+      return;
+    }
+
 
     box.innerHTML += `
 
@@ -377,7 +752,7 @@ const { data, error } = await supabaseClient
 
 
     <h3>
-    📄 ${item.closing_date} 영업 마감
+    ${escapeHtml(closingDate)} 영업 마감
     </h3>
 
 
@@ -395,7 +770,9 @@ const { data, error } = await supabaseClient
 
 
     <button
-    onclick="showDayBook('${item.closing_date}')"
+    type="button"
+    data-action="show-day"
+    data-date="${escapeHtml(closingDate)}"
     >
 
     배송 기록 보기
@@ -414,6 +791,12 @@ const { data, error } = await supabaseClient
 
 }
 async function showDayBook(date){
+
+if (!isValidDate(date)) {
+  document.getElementById("closingList").textContent =
+    "배송 기록 날짜를 확인할 수 없습니다.";
+  return;
+}
 
 console.log("찾는 날짜:", date);
 const { data, error } = await supabaseClient
@@ -448,12 +831,15 @@ if(!data || data.length === 0){
 
 box.innerHTML = `
 
-<button onclick="showMonthBook('${date.substring(0,7)}')">
+<button
+type="button"
+data-action="show-month"
+data-month="${escapeHtml(date.substring(0,7))}">
 ← 날짜별 기록으로
 </button>
 
 <h3>
-🚚 ${date} 배송 기록
+${escapeHtml(date)} 배송 기록
 </h3>
 
 `;
@@ -465,11 +851,14 @@ box.innerHTML = `
 
 box.innerHTML = `
 
-<button onclick="showMonthBook('${date.substring(0,7)}')">
+<button
+type="button"
+data-action="show-month"
+data-month="${escapeHtml(date.substring(0,7))}">
 ← 날짜별 기록으로
 </button>
 <h3>
-🚚 ${date} 배송 기록
+${escapeHtml(date)} 배송 기록
 </h3>
 
 `;
@@ -490,7 +879,7 @@ JSON.parse(item.products || "[]");
 
 products =
 list.map(product =>
-`${product.product_name || ""} ${product.quantity || 0}개`
+`${escapeHtml(product.product_name || "")} ${Number(product.quantity || 0)}개`
 ).join("<br>");
 
 
@@ -508,23 +897,23 @@ box.innerHTML += `
 
 
 <h3>
-📄 주문번호
-${item.order_id || ""}
+주문번호
+${escapeHtml(item.order_id || "")}
 </h3>
 
 
 <p>
-📍 ${item.delivery_address || ""}
+배송지 · ${escapeHtml(item.delivery_address || "")}
 </p>
 
 
 <p>
-☎ ${item.customer_phone || ""}
+전화번호 · ${escapeHtml(item.customer_phone || "")}
 </p>
 
 
 <p>
-🥩 ${products}
+상품<br>${products}
 </p>
 
 
@@ -536,8 +925,10 @@ ${item.order_id || ""}
 
 <p class="small">
 배송시간 :
-${new Date(item.created_at)
-.toLocaleString()}
+${escapeHtml(
+  new Date(item.created_at)
+    .toLocaleString("ko-KR")
+)}
 </p>
 
 
@@ -727,7 +1118,7 @@ Object.keys(areaCount).forEach(area=>{
 areaHtml +=
 `
 <p>
-📍 ${area}
+${escapeHtml(area)}
 : ${areaCount[area]}건
 </p>
 `;
@@ -763,7 +1154,7 @@ Object.keys(productCount).forEach(product=>{
 productHtml +=
 `
 <p>
-🥩 ${product}
+${escapeHtml(product)}
 : ${productCount[product]}개
 </p>
 `;
@@ -775,7 +1166,7 @@ productHtml +=
 
 box.innerHTML = `
 
-<button onclick="location.reload()">
+<button type="button" data-action="reload">
 ← 처음으로
 </button>
 <br><br>
@@ -858,4 +1249,3 @@ loadClosingData();
 </body>
 
 </html>
-

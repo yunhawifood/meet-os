@@ -1153,6 +1153,63 @@ function formatPrice(amount) {
   return Number(amount).toLocaleString("ko-KR") + "원";
 
 }
+
+function escapeHtml(value) {
+
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+function formatOrderItemsHtml(
+  orderItems,
+  includeQuantity = false
+) {
+
+  if (!Array.isArray(orderItems) || orderItems.length === 0) {
+    return "-";
+  }
+
+  return orderItems
+    .map(item => {
+
+      const weight =
+        item.selected_weight ||
+        (
+          item.weight_grams
+            ? item.weight_grams + "g"
+            : ""
+        );
+
+      const label = [
+        item.product_name,
+        item.selected_use,
+        weight
+      ]
+        .filter(Boolean)
+        .map(escapeHtml)
+        .join(" · ");
+
+      if (!includeQuantity) {
+        return label || "-";
+      }
+
+      const quantity = Number(item.quantity || 1);
+      const safeQuantity =
+        Number.isFinite(quantity) && quantity > 0
+          ? quantity
+          : 1;
+
+      return `${label || "-"} ${safeQuantity}개`;
+
+    })
+    .join("<br />");
+
+}
 function focusOrderFromHash() {
 
     const orderId =
@@ -1267,62 +1324,40 @@ function focusOrderFromHash() {
 }
 function createOrderCard(order) {
 console.log("카드 생성 데이터:", order);
- const productText =
-  order.order_items &&
-  order.order_items.length > 0
-    ? order.order_items
-        .map(item => {
-
-          const weight =
-            item.selected_weight ||
-            (
-              item.weight_grams
-                ? item.weight_grams + "g"
-                : ""
-            );
-
-          return [
-            item.product_name,
-            item.selected_use,
-            weight
-          ]
-            .filter(Boolean)
-            .join(" · ");
-
-        })
-        .join("<br />")
-    : "-";
+ const rawOrderId = String(order.id || "");
+ const safeOrderId = escapeHtml(rawOrderId);
+ const productText = formatOrderItemsHtml(order.order_items);
   return `
 
-    <article class="order-card" data-id="${order.id}">
+    <article class="order-card" data-id="${safeOrderId}">
 
       <div class="order-number">
-        주문번호 ${order.id.slice(0,8)}
+        주문번호 ${escapeHtml(rawOrderId.slice(0,8))}
       </div>
 
       <p>
 주문시간<br>
-${formatKoreanTime(order.created_at)}
+${escapeHtml(formatKoreanTime(order.created_at))}
 </p>
 
 <div class="order-info">
 
 <p>
 전화번호<br>
-<strong>${order.customer_phone}</strong>
+<strong>${escapeHtml(order.customer_phone || "-")}</strong>
 </p>
 
 <p>
 배송지역<br>
 <strong>
-${order.delivery_address_main} ${order.delivery_address_detail || ""}
+${escapeHtml(order.delivery_address_main || "-")} ${escapeHtml(order.delivery_address_detail || "")}
 </strong>
 </p>
 
 <p>
 공동현관<br>
 <strong>
-${order.door_password || "-"}
+${escapeHtml(order.door_password || "-")}
 </strong>
 </p>
 </div>
@@ -1340,7 +1375,7 @@ ${order.door_password || "-"}
 ${order.delivery_request ? `
 <div class="order-request">
 고객 요청사항<br><br>
-${order.delivery_request}
+${escapeHtml(order.delivery_request)}
 </div>
 ` : ""}
 
@@ -1354,14 +1389,15 @@ ${order.delivery_request}
 
   <button
     type="button"
-    onclick="sendPhotoMessage('${order.customer_phone}')"
+    data-action="send-photo"
+    data-phone="${escapeHtml(order.customer_phone || "")}"
   >
     📷 고객에게 사진 보내기
   </button>
 
   <button
     type="button"
-    onclick="completeDelivery(this)"
+    data-action="complete-delivery"
   >
     ✅ 배송 완료
   </button>
@@ -1412,6 +1448,57 @@ function renderOrders(orders, selectedStatus = "전체") {
 
 focusOrderFromHash();
 }
+
+function handleOrderActionClick(event) {
+
+  const button = event.target.closest(
+    "button[data-action]"
+  );
+
+  if (
+    !button ||
+    !event.currentTarget.contains(button)
+  ) {
+    return;
+  }
+
+  const action = button.dataset.action;
+
+  if (action === "send-photo") {
+    sendPhotoMessage(button.dataset.phone || "");
+    return;
+  }
+
+  if (action === "complete-delivery") {
+    void completeDelivery(button);
+    return;
+  }
+
+  if (action === "toggle-completed-detail") {
+    toggleCompletedDetail(button);
+    return;
+  }
+
+  if (action === "restore-order") {
+    void restoreOrder(button.dataset.orderId || "");
+    return;
+  }
+
+  if (action === "close-day") {
+    void checkBeforeClosing(button);
+  }
+
+}
+
+todayOrdersList.addEventListener(
+  "click",
+  handleOrderActionClick
+);
+
+completedOrdersList.addEventListener(
+  "click",
+  handleOrderActionClick
+);
 if (
     "scrollRestoration" in history
 ) {
@@ -1700,28 +1787,29 @@ function loadPreparingStatus(orders) {
       .length === 0
   ) {
 
-    preparingContent.innerHTML =
+    preparingContent.textContent =
       "준비할 상품이 없습니다.";
 
     return;
 
   }
 
-  let html = "";
+  preparingContent.replaceChildren();
 
   Object.keys(productCount)
     .forEach(label => {
 
-      html += `
-        <p>
-          ${label} : ${productCount[label]}개
-        </p>
-      `;
+      const paragraph =
+        document.createElement("p");
+
+      paragraph.textContent =
+        `${label} : ${productCount[label]}개`;
+
+      preparingContent.appendChild(
+        paragraph
+      );
 
     });
-
-  preparingContent.innerHTML =
-    html;
 
 }
 
@@ -1750,7 +1838,7 @@ const { data, error } = await supabaseClient
 
 
 document.getElementById("completedCount").innerText =
-data.length + "건";
+(data || []).length + "건";
 
 
 if (error) {
@@ -1782,22 +1870,25 @@ if (!uniqueOrders || uniqueOrders.length === 0) {
   return;
 }
 
+completedOrdersList.innerHTML =
+  uniqueOrders.map((order) => {
 
-uniqueOrders.forEach((order) => {
-    completedOrdersList.innerHTML += `
+    const rawOrderId = String(order.id || "");
 
-      <article class="order-card" data-id="${order.id}">
+    return `
+
+      <article class="order-card" data-id="${escapeHtml(rawOrderId)}">
 
        <div class="completed-top">
 
   <div>
     <h3>
-      주문 번호 #${order.id.slice(0,8)}
+      주문 번호 #${escapeHtml(rawOrderId.slice(0,8))}
     </h3>
 
     <p>
       완료시간<br>
-      ${formatKoreanTime(order.updated_at)}
+      ${escapeHtml(formatKoreanTime(order.updated_at))}
     </p>
 
   </div>
@@ -1808,13 +1899,14 @@ uniqueOrders.forEach((order) => {
 
 <button
 type="button"
-onclick="toggleCompletedDetail(this)">
+data-action="toggle-completed-detail">
 확인하기
 </button>
 
 <button
 type="button"
-onclick="restoreOrder('${order.id}')">
+data-action="restore-order"
+data-order-id="${escapeHtml(rawOrderId)}">
 되돌리기
 </button>
 
@@ -1824,32 +1916,17 @@ onclick="restoreOrder('${order.id}')">
           <br>
 
           전화번호<br>
-          ${order.customer_phone || "-"}
+          ${escapeHtml(order.customer_phone || "-")}
 
 <br><br>
 
 배송지역<br>
-${order.delivery_address_main || "-"}
+${escapeHtml(order.delivery_address_main || "-")}
 
 <br><br>
 
 주문 상품<br>
-${
-  order.order_items && order.order_items.length > 0
-  ? order.order_items.map(item => 
-  `${[
-  item.product_name,
-  item.selected_use,
-  item.selected_weight ||
-    (
-      item.weight_grams
-        ? item.weight_grams + "g"
-        : ""
-    )
-].filter(Boolean).join(" · ")} ${item.quantity || 1}개`
-    ).join("<br>")
-  : "-"
-}
+${formatOrderItemsHtml(order.order_items, true)}
 
 <br><br>
 
@@ -1860,7 +1937,7 @@ ${
 
     `;
 
-  });
+  }).join("");
 
 
   completedOrdersList.innerHTML += `
@@ -1876,7 +1953,7 @@ font-weight:bold;
 padding:18px;
 border-radius:14px;
 "
-onclick="checkBeforeClosing(this)">
+data-action="close-day">
 오늘 배송 마감
 </button>
   `;
@@ -1936,6 +2013,18 @@ function openDeliveryMap(){
 
 function sendPhotoMessage(phone) {
 
+  const safePhone =
+    String(phone || "")
+      .replace(/[^0-9]/g, "");
+
+  if (
+    safePhone.length !== 10 &&
+    safePhone.length !== 11
+  ) {
+    alert("고객 전화번호를 확인해주세요.");
+    return;
+  }
+
   const message =
 
 `안녕하세요 한농직판장입니다.
@@ -1947,7 +2036,7 @@ function sendPhotoMessage(phone) {
 필요하실 때 언제든 이 번호로 연락주세요.`;
 
   const url =
-    "sms:" + phone +
+    "sms:" + safePhone +
     "?body=" +
     encodeURIComponent(message);
 
