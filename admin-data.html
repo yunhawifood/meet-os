@@ -658,6 +658,53 @@ function summarizeOrders(orders) {
 
 }
 
+function summarizeItemUses(orders) {
+
+  const useCount =
+    Object.create(null);
+
+  const orderList =
+    Array.isArray(orders)
+      ? orders
+      : [];
+
+  orderList.forEach(order => {
+
+    const items =
+      Array.isArray(order?.order_items)
+        ? order.order_items
+        : [];
+
+    items.forEach(item => {
+
+      const selectedUse =
+        String(
+          item?.selected_use || ""
+        ).trim();
+
+      const quantity =
+        Number(item?.quantity || 0);
+
+      if (
+        !selectedUse ||
+        !Number.isFinite(quantity) ||
+        quantity <= 0
+      ) {
+        return;
+      }
+
+      useCount[selectedUse] =
+        (useCount[selectedUse] || 0) +
+        quantity;
+
+    });
+
+  });
+
+  return useCount;
+
+}
+
 function handleDataAction(event) {
 
   const button = event.target.closest(
@@ -1272,7 +1319,8 @@ const { data, error } = await supabaseClient
   order_status,
   order_items (
     product_name,
-    quantity
+    quantity,
+    selected_use
   )
 `)
 .gte(
@@ -1330,6 +1378,9 @@ const timeCount = {
 
 
 const productCount = {};
+
+const useCount =
+  summarizeItemUses(normalOrders);
 
 
 
@@ -1482,6 +1533,30 @@ if (!productHtml) {
 
 
 
+let useHtml="";
+
+
+Object.entries(useCount)
+.sort((a,b)=> b[1] - a[1])
+.forEach(([selectedUse, quantity])=>{
+
+useHtml +=
+`
+<p>
+${escapeHtml(selectedUse)}
+: ${quantity}개
+</p>
+`;
+
+});
+
+if (!useHtml) {
+  useHtml =
+    "<p>선택된 용도 데이터가 없습니다.</p>";
+}
+
+
+
 
 box.innerHTML = `
 
@@ -1540,6 +1615,16 @@ ${timeHtml}
 </h4>
 
 ${productHtml}
+
+
+<hr>
+
+
+<h4>
+🔪 용도별 판매
+</h4>
+
+${useHtml}
 
 
 <hr>
