@@ -158,7 +158,7 @@
     } catch (error) {
 
       button.disabled = false;
-      button.textContent = "👍 든든팩 관심 있어요";
+      button.textContent = "이 구성, 나오면 주문할게요";
 
       if (status) {
         status.textContent =
