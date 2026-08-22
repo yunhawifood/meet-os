@@ -2323,6 +2323,154 @@
     font-weight: 800;
   }
 
+  .weekly-pack-card {
+    position: relative;
+    overflow: hidden;
+    margin-top: 22px;
+    padding: 26px 20px 20px;
+    border: 1px solid #d7e7dc;
+    border-radius: 24px;
+    background:
+      radial-gradient(
+        circle at 100% 0%,
+        rgba(255, 219, 137, 0.48),
+        transparent 34%
+      ),
+      linear-gradient(145deg, #f4fbf6 0%, #ffffff 100%);
+    box-shadow: 0 15px 34px rgba(35, 95, 63, 0.12);
+  }
+
+  .weekly-pack-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: #235f3f;
+    color: #ffffff;
+    font-size: 11px;
+    line-height: 1;
+    font-weight: 900;
+    letter-spacing: 0.03em;
+  }
+
+  .weekly-pack-card h2 {
+    margin: 15px 0 0;
+    color: #174a31;
+    font-size: clamp(27px, 7vw, 36px);
+    line-height: 1.22;
+    font-weight: 950;
+    letter-spacing: -0.055em;
+    word-break: keep-all;
+  }
+
+  .weekly-pack-card h2 span {
+    color: #b97816;
+  }
+
+  .weekly-pack-description {
+    margin: 12px 0 0;
+    color: #506056;
+    font-size: 14px;
+    line-height: 1.65;
+    font-weight: 700;
+    word-break: keep-all;
+  }
+
+  .weekly-pack-items {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+    margin-top: 17px;
+  }
+
+  .weekly-pack-item {
+    padding: 12px 7px;
+    border: 1px solid #dce9e0;
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.86);
+    text-align: center;
+  }
+
+  .weekly-pack-item strong,
+  .weekly-pack-item span {
+    display: block;
+  }
+
+  .weekly-pack-item strong {
+    color: #1e5538;
+    font-size: 14px;
+    font-weight: 900;
+  }
+
+  .weekly-pack-item span {
+    margin-top: 3px;
+    color: #777777;
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  .weekly-pack-actions {
+    display: grid;
+    gap: 9px;
+    margin-top: 18px;
+  }
+
+  .weekly-pack-interest-button,
+  .weekly-pack-kakao-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 55px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 900;
+    text-decoration: none;
+  }
+
+  .weekly-pack-interest-button {
+    border: 0;
+    background: #235f3f;
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  .weekly-pack-interest-button.is-registered {
+    background: #dfece4;
+    color: #235f3f;
+  }
+
+  .weekly-pack-kakao-link {
+    border: 1px solid #ead421;
+    background: #fee500;
+    color: #111111;
+  }
+
+  .weekly-pack-privacy,
+  .weekly-pack-status {
+    margin: 10px 0 0;
+    color: #727b75;
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .weekly-pack-status:empty {
+    display: none;
+  }
+
+  .weekly-pack-status.is-success {
+    color: #235f3f;
+    font-weight: 800;
+  }
+
+  .weekly-pack-status.is-error {
+    color: #b8322a;
+    font-weight: 800;
+  }
+
   .repair-banner {
   position: relative;
 
@@ -2741,6 +2889,69 @@
 
   </div>
 
+</section>
+<section
+  class="weekly-pack-card"
+  data-weekly-pack-card
+  aria-labelledby="weeklyPackTitle"
+>
+  <span class="weekly-pack-eyebrow">
+    COMING SOON · 관심조사
+  </span>
+
+  <h2 id="weeklyPackTitle">
+    월요일 아침,<br />
+    <span>이번 주 고기 장보기 끝.</span>
+  </h2>
+
+  <p class="weekly-pack-description">
+    매주 먹기 좋은 구성으로 손질·소분해 문 앞까지.<br />
+    아직 준비 중인 상품이라 관심만 남겨주셔도 됩니다.
+  </p>
+
+  <div class="weekly-pack-items" aria-label="일주일 든든팩 예정 구성">
+    <div class="weekly-pack-item">
+      <strong>삼겹살 2팩</strong>
+      <span>구이용</span>
+    </div>
+    <div class="weekly-pack-item">
+      <strong>목살 2팩</strong>
+      <span>구이·수육용</span>
+    </div>
+    <div class="weekly-pack-item">
+      <strong>앞다리 2팩</strong>
+      <span>불고기·찌개용</span>
+    </div>
+  </div>
+
+  <div class="weekly-pack-actions">
+    <button
+      class="weekly-pack-interest-button"
+      type="button"
+      data-weekly-pack-interest
+      data-source="morning_delivery"
+    >
+      👍 든든팩 관심 있어요
+    </button>
+
+    <a
+      class="weekly-pack-kakao-link"
+      href="https://pf.kakao.com/_rjhxen/chat"
+      aria-label="카카오톡으로 일주일 든든팩 출시 알림 문의하기"
+    >
+      🔔 카카오로 출시 알림 받기
+    </a>
+  </div>
+
+  <p class="weekly-pack-privacy">
+    관심 버튼은 연락처나 이름을 저장하지 않습니다.
+  </p>
+
+  <p
+    class="weekly-pack-status"
+    data-weekly-pack-status
+    aria-live="polite"
+  ></p>
 </section>
 <a
   class="repair-banner repair-business"
@@ -5185,6 +5396,10 @@ document.addEventListener(
 
   </div>
 
-</div></body>
+</div>
+
+<script src="weekly-pack-interest.js"></script>
+
+</body>
 
 </html>

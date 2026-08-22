@@ -282,6 +282,7 @@ input {
 
 #closingList,
 #customerData,
+#weeklyPackInterest,
 #salesAnalysis {
   color:#3f4843;
   line-height:1.6;
@@ -469,6 +470,7 @@ input {
 <nav class="tabs" aria-label="데이터 관리 메뉴">
 <a class="tab active" href="#closingSection">영업 마감 기록</a>
 <a class="tab" href="#customerSection">고객 데이터</a>
+<a class="tab" href="#weeklyPackSection">든든팩 관심</a>
 <a class="tab" href="#analysisSection">판매 분석</a>
 </nav>
 
@@ -499,6 +501,22 @@ input {
 </div>
 
 <div id="customerData">불러오는 중입니다...</div>
+
+</section>
+
+
+<section class="box wide" id="weeklyPackSection">
+
+<div class="section-head">
+<h2>일주일 든든팩 관심 현황</h2>
+<span class="status">연락처 없는 사전 수요</span>
+</div>
+
+<p class="section-copy">
+고객이 ‘관심 있어요’를 누른 고유 기기 수를 확인합니다.
+</p>
+
+<div id="weeklyPackInterest">불러오는 중입니다...</div>
 
 </section>
 
@@ -551,6 +569,9 @@ type="date">
 </main>
 
 <script>
+
+const MANAGEMENT_API =
+  "https://yunhawi-payment-api.yunhawifood.workers.dev";
 
 function escapeHtml(value) {
 
@@ -1287,6 +1308,118 @@ async function loadCustomerData() {
   `;
 
 }
+
+async function loadWeeklyPackInterest() {
+
+  const box =
+    document.getElementById(
+      "weeklyPackInterest"
+    );
+
+  try {
+
+    const {
+      data: { session },
+      error: sessionError
+    } = await supabaseClient.auth.getSession();
+
+    if (
+      sessionError ||
+      !session?.access_token
+    ) {
+      throw new Error(
+        "관리자 로그인이 필요합니다."
+      );
+    }
+
+    const response = await fetch(
+      MANAGEMENT_API +
+        "/admin/weekly-pack-interests",
+      {
+        method:"GET",
+        headers: {
+          Authorization:
+            "Bearer " +
+            session.access_token
+        }
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok || !result.ok) {
+      throw new Error(
+        result.message ||
+        "관심 현황을 불러오지 못했습니다."
+      );
+    }
+
+    const sourceLabels = {
+      morning_delivery:
+        "새벽배송 주문 화면",
+      payment_success:
+        "결제완료 화면",
+      order_check:
+        "주문조회 화면"
+    };
+
+    const sources =
+      Array.isArray(result.sources)
+        ? result.sources
+        : [];
+
+    const sourceHtml = sources.length
+      ? `
+        <h3 class="subsection-title">관심등록 유입 위치</h3>
+        <div class="customer-list">
+          ${sources.map(item => `
+            <div class="customer-row">
+              <strong>${escapeHtml(
+                sourceLabels[item.source] ||
+                item.source ||
+                "기타"
+              )}</strong>
+              <span>${Number(item.count || 0)}명</span>
+            </div>
+          `).join("")}
+        </div>
+      `
+      : `
+        <p class="section-copy">
+          아직 등록된 관심 고객이 없습니다.
+        </p>
+      `;
+
+    box.innerHTML = `
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-label">누적 관심</div>
+          <div class="metric-value">${Number(
+            result.summary?.total || 0
+          )}명</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">최근 7일</div>
+          <div class="metric-value">${Number(
+            result.summary?.last7Days || 0
+          )}명</div>
+        </div>
+      </div>
+      ${sourceHtml}
+    `;
+
+  } catch (error) {
+
+    console.error(error);
+
+    box.textContent =
+      error instanceof Error
+        ? error.message
+        : "관심 현황을 불러오지 못했습니다.";
+
+  }
+
+}
 async function loadSalesAnalysis(){
 
 const box =
@@ -1660,6 +1793,7 @@ today;
 };
 loadClosingData();
 loadCustomerData();
+loadWeeklyPackInterest();
 
 
 

@@ -257,6 +257,123 @@
       text-decoration: none;
     }
 
+    .weekly-pack-card {
+      margin-top: 22px;
+      padding: 20px 17px 17px;
+      border: 1px solid #d5e8db;
+      border-radius: 19px;
+      background:
+        radial-gradient(
+          circle at 100% 0%,
+          rgba(255, 218, 128, 0.45),
+          transparent 36%
+        ),
+        #f4fbf6;
+    }
+
+    .weekly-pack-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: var(--green);
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .weekly-pack-title {
+      margin: 13px 0 0;
+      color: var(--green);
+      font-size: 24px;
+      line-height: 1.3;
+      font-weight: 950;
+      letter-spacing: -0.05em;
+      word-break: keep-all;
+    }
+
+    .weekly-pack-copy {
+      margin: 9px 0 0;
+      color: #536158;
+      font-size: 13px;
+      line-height: 1.65;
+      font-weight: 700;
+      word-break: keep-all;
+    }
+
+    .weekly-pack-composition {
+      margin: 13px 0 0;
+      padding: 11px 12px;
+      border-radius: 12px;
+      background: #ffffff;
+      color: #385244;
+      font-size: 12px;
+      line-height: 1.55;
+      font-weight: 800;
+    }
+
+    .weekly-pack-actions {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .weekly-pack-interest-button,
+    .weekly-pack-kakao-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 50px;
+      padding: 11px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .weekly-pack-interest-button {
+      border: 0;
+      background: var(--green);
+      color: #ffffff;
+      cursor: pointer;
+    }
+
+    .weekly-pack-interest-button.is-registered {
+      background: #dcebe1;
+      color: var(--green);
+    }
+
+    .weekly-pack-kakao-link {
+      border: 1px solid #ead421;
+      background: #fee500;
+      color: #111111;
+    }
+
+    .weekly-pack-privacy,
+    .weekly-pack-status {
+      margin: 9px 0 0;
+      color: #707871;
+      font-size: 11px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .weekly-pack-status:empty {
+      display: none;
+    }
+
+    .weekly-pack-status.is-success {
+      color: var(--green);
+      font-weight: 800;
+    }
+
+    .weekly-pack-status.is-error {
+      color: var(--red);
+      font-weight: 800;
+    }
+
     /*
       취소 버튼은 일부러
       크게 강조하지 않습니다.
@@ -521,6 +638,63 @@
         문 앞 배송됩니다.
 
       </div>
+
+      <section
+        id="weeklyPackCard"
+        class="weekly-pack-card hidden"
+        data-weekly-pack-card
+        aria-labelledby="weeklyPackOrderTitle"
+      >
+        <span class="weekly-pack-eyebrow">
+          다음 주문 미리 준비하기
+        </span>
+
+        <h2
+          class="weekly-pack-title"
+          id="weeklyPackOrderTitle"
+        >
+          월요일 아침,<br />
+          이번 주 고기 장보기 끝.
+        </h2>
+
+        <p class="weekly-pack-copy">
+          매주 일주일치 고기를 손질·소분해 배송하는<br />
+          ‘일주일 든든팩’을 준비하고 있습니다.
+        </p>
+
+        <p class="weekly-pack-composition">
+          삼겹살 2팩 · 목살 2팩 · 앞다리 2팩<br />
+          불고기용과 찌개용까지 맞춤 손질
+        </p>
+
+        <div class="weekly-pack-actions">
+          <button
+            class="weekly-pack-interest-button"
+            type="button"
+            data-weekly-pack-interest
+            data-source="order_check"
+          >
+            👍 든든팩 관심 있어요
+          </button>
+
+          <a
+            class="weekly-pack-kakao-link"
+            href="https://pf.kakao.com/_rjhxen/chat"
+          >
+            🔔 카카오로 출시 알림 받기
+          </a>
+        </div>
+
+        <p class="weekly-pack-privacy">
+          관심 버튼은 연락처나 이름을 저장하지 않습니다.
+        </p>
+
+        <p
+          class="weekly-pack-status"
+          data-weekly-pack-status
+          aria-live="polite"
+        ></p>
+      </section>
 
 
       <a
@@ -1029,6 +1203,20 @@ document.getElementById("deliveryGuide").classList.add("hidden");
       }
 
 
+      const weeklyPackCard =
+        document.getElementById(
+          "weeklyPackCard"
+        );
+
+      if (order.status === "DONE") {
+        weeklyPackCard.classList
+          .remove("hidden");
+      } else {
+        weeklyPackCard.classList
+          .add("hidden");
+      }
+
+
       const cancelZone =
         document.getElementById(
           "cancelZone"
@@ -1325,6 +1513,8 @@ document.getElementById("deliveryGuide").classList.add("hidden");
     }
 
   </script>
+
+  <script src="weekly-pack-interest.js"></script>
 
 </body>
 </html>
