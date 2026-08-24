@@ -2144,13 +2144,17 @@
 
     width: 100%;
 
-    max-width: 390px;
+    max-width: 410px;
 
-    padding: 30px 22px 22px;
+    max-height: calc(100dvh - 24px);
+
+    padding: 20px 18px 18px;
 
     border-radius: 24px;
 
     background: #ffffff;
+
+    overflow-y: auto;
 
     box-shadow:
 
@@ -2162,26 +2166,98 @@
 
   }
 
-  .payment-confirm-icon {
+  .payment-confirm-eyebrow {
 
-    margin-bottom: 17px;
+    margin: 0 0 12px;
 
-    font-size: 42px;
+    color: #0b4f2f;
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    letter-spacing: -0.01em;
+
+  }
+
+  .payment-confirm-visuals {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+
+    margin-bottom: 16px;
+
+  }
+
+  .payment-confirm-visual {
+
+    position: relative;
+
+    margin: 0;
+
+    overflow: hidden;
+
+    border: 1px solid #dce8e0;
+
+    border-radius: 16px;
+
+    background: #f4f7f5;
+
+    box-shadow: 0 7px 18px rgba(11, 79, 47, 0.08);
+
+  }
+
+  .payment-confirm-visual img {
+
+    display: block;
+
+    width: 100%;
+
+    height: auto;
+
+    aspect-ratio: 4 / 3;
+
+    object-fit: cover;
+
+  }
+
+  .payment-confirm-visual figcaption {
+
+    position: absolute;
+
+    right: 8px;
+
+    bottom: 8px;
+
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    background: rgba(11, 79, 47, 0.92);
+
+    color: #ffffff;
+
+    font-size: 12px;
+
+    font-weight: 800;
 
     line-height: 1;
 
   }
 .payment-confirm-message {
 
-  margin: 0 0 28px;
+  margin: 0 0 18px;
 
   color: #222222;
 
-  font-size: 18px;
+  font-size: 16px;
 
   font-weight: 700;
 
-  line-height: 1.75;
+  line-height: 1.55;
 
   word-break: keep-all;
 
@@ -2193,7 +2269,41 @@
 
   font-weight: 800;
 
-}  .payment-confirm-divider {
+}
+
+.payment-confirm-message .freshness-point {
+
+  color: #0b4f2f;
+
+  font-size: 18px;
+
+}
+
+.payment-confirm-message .packing-promise {
+
+  display: block;
+
+  margin-top: 10px;
+
+  color: #444444;
+
+  font-size: 14px;
+
+  font-weight: 650;
+
+  line-height: 1.6;
+
+}
+
+.payment-confirm-message .delivery-promise {
+
+  color: #222222;
+
+  font-weight: 800;
+
+}
+
+  .payment-confirm-divider {
 
     width: 100%;
 
@@ -2272,6 +2382,69 @@
     opacity: 0.6;
 
     cursor: not-allowed;
+
+  }
+
+  @media (max-width: 380px), (max-height: 720px) {
+
+    .payment-confirm-overlay {
+
+      padding: 12px;
+
+    }
+
+    .payment-confirm-modal {
+
+      padding: 16px 14px 14px;
+
+      border-radius: 20px;
+
+    }
+
+    .payment-confirm-eyebrow {
+
+      margin-bottom: 9px;
+
+      font-size: 13px;
+
+    }
+
+    .payment-confirm-visuals {
+
+      gap: 8px;
+
+      margin-bottom: 12px;
+
+    }
+
+    .payment-confirm-message {
+
+      margin-bottom: 14px;
+
+      font-size: 15px;
+
+    }
+
+    .payment-confirm-message .freshness-point {
+
+      font-size: 17px;
+
+    }
+
+    .payment-confirm-message .packing-promise {
+
+      margin-top: 7px;
+
+      font-size: 13px;
+
+    }
+
+    .payment-confirm-pay,
+    .payment-confirm-edit {
+
+      min-height: 48px;
+
+    }
 
   }
 
@@ -5283,9 +5456,59 @@ document.addEventListener(
 
   >
 
-    <div class="payment-confirm-icon">
+    <p class="payment-confirm-eyebrow">
 
-      🚚
+      포장까지 직접 챙깁니다
+
+    </p>
+
+    <div
+
+      class="payment-confirm-visuals"
+
+      aria-label="한농직판장 포장 방식"
+
+    >
+
+      <figure class="payment-confirm-visual">
+
+        <img
+
+          src="images/checkout-skin-pack.webp"
+
+          width="960"
+
+          height="720"
+
+          alt="용도에 맞게 손질한 고기를 스킨포장한 모습"
+
+          decoding="async"
+
+        >
+
+        <figcaption>스킨포장</figcaption>
+
+      </figure>
+
+      <figure class="payment-confirm-visual">
+
+        <img
+
+          src="images/checkout-vacuum-pack.webp"
+
+          width="960"
+
+          height="720"
+
+          alt="용도에 맞게 손질한 고기를 진공포장한 모습"
+
+          decoding="async"
+
+        >
+
+        <figcaption>진공포장</figcaption>
+
+      </figure>
 
     </div>
 
@@ -5297,17 +5520,27 @@ document.addEventListener(
 
     >
 
-      주문하신 상품은<br>
+      날씨와 보관 환경까지 생각해<br>
 
-      <strong>
+      <strong class="freshness-point">
 
-        제가 직접 용도에 맞게
+        조금 더 신선하게 준비합니다.
 
-      </strong><br>
+      </strong>
 
-      스킨 포장 및 진공 포장하여<br>
+      <span class="packing-promise">
 
-      안전하게 배송합니다.
+        제가 직접 용도에 맞춰 손질하고<br>
+
+        스킨 또는 진공 포장해<br>
+
+        <strong class="delivery-promise">
+
+          내일 아침 문 앞까지 안전하게 배송하겠습니다.
+
+        </strong>
+
+      </span>
 
     </p>
 
