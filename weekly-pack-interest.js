@@ -11,6 +11,47 @@
   const REGISTERED_KEY =
     "yunhawiWeeklyPackInterested";
 
+  const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
+
+  function readCookie(key) {
+
+    try {
+      const prefix = encodeURIComponent(key) + "=";
+
+      const matched = document.cookie
+        .split(";")
+        .map(function (value) {
+          return value.trim();
+        })
+        .find(function (value) {
+          return value.startsWith(prefix);
+        });
+
+      return matched
+        ? decodeURIComponent(matched.slice(prefix.length))
+        : "";
+    } catch {
+      return "";
+    }
+
+  }
+
+  function saveCookie(key, value) {
+
+    try {
+      document.cookie =
+        encodeURIComponent(key) +
+        "=" +
+        encodeURIComponent(value) +
+        "; Max-Age=" +
+        COOKIE_MAX_AGE +
+        "; Path=/; Domain=.yunhawi.com; SameSite=Lax; Secure";
+    } catch {
+      /* 쿠키가 차단된 환경에서는 localStorage만 사용합니다. */
+    }
+
+  }
+
   function createAnonymousToken() {
 
     if (
@@ -39,10 +80,17 @@
   function readStoredValue(key) {
 
     try {
-      return localStorage.getItem(key) || "";
+      const stored = localStorage.getItem(key) || "";
+
+      if (stored) {
+        saveCookie(key, stored);
+        return stored;
+      }
     } catch {
-      return "";
+      /* 브라우저 저장공간이 차단되면 공유 쿠키를 확인합니다. */
     }
+
+    return readCookie(key);
 
   }
 
@@ -56,6 +104,8 @@
         현재 페이지의 관심등록은 정상 처리합니다.
       */
     }
+
+    saveCookie(key, value);
 
   }
 
@@ -158,7 +208,7 @@
     } catch (error) {
 
       button.disabled = false;
-      button.textContent = "이 구성, 나오면 주문할게요";
+      button.textContent = "관심 등록할게요";
 
       if (status) {
         status.textContent =
