@@ -852,21 +852,40 @@ let activeDetailOverlay = null;
             .map(
                 item => {
 
-                    const productName =
-                        escapeHtml(
-                            item.product_name ||
-                            "-"
+                    const weight =
+                        item.selected_weight ||
+                        (
+                            item.weight_grams
+                                ? item.weight_grams + "g"
+                                : ""
                         );
 
 
+                    const itemLabel = [
+                        item.product_name,
+                        item.selected_use,
+                        weight
+                    ]
+                        .filter(Boolean)
+                        .map(escapeHtml)
+                        .join(" · ") || "-";
+
+
                     const quantity =
-                        item.quantity ?? "";
+                        Number(item.quantity || 1);
+
+
+                    const safeQuantity =
+                        Number.isFinite(quantity) &&
+                        quantity > 0
+                            ? quantity
+                            : 1;
 
 
                     return `
                         <div>
-                            ${productName}
-                            ${escapeHtml(quantity)}
+                            ${itemLabel} ·
+                            ${safeQuantity}개
                         </div>
                     `;
 
