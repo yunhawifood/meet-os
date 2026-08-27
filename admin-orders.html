@@ -486,6 +486,28 @@ button {
   border: 1px solid #222222;
 
 }
+.order-actions .payment-cancel-button {
+
+  border-color: #b42318;
+  background: #fff7f6;
+  color: #b42318;
+
+}
+.order-actions .payment-cancel-button:disabled {
+
+  cursor: wait;
+  opacity: 0.58;
+
+}
+.payment-cancel-unavailable {
+
+  margin: 2px 0 0;
+  color: #777777;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+
+}
 .order-total {
 
   font-size: 18px;
@@ -966,6 +988,10 @@ class="preparing-close">
 
       "sb_publishable_m-Uc3eR2-57P36HMP_eHsQ_F5h1tfzu";
 
+    const PAYMENT_API_BASE =
+
+      "https://yunhawi-payment-api.yunhawifood.workers.dev";
+
     const supabaseClient = window.supabase.createClient(
 
       SUPABASE_URL,
@@ -1326,10 +1352,18 @@ function createOrderCard(order) {
 console.log("카드 생성 데이터:", order);
  const rawOrderId = String(order.id || "");
  const safeOrderId = escapeHtml(rawOrderId);
+ const externalOrderId =
+   String(order.external_order_id || "").trim();
+ const canCancelPayment =
+   /^YH_[a-f0-9]{32}$/i.test(externalOrderId);
  const productText = formatOrderItemsHtml(order.order_items);
   return `
 
-    <article class="order-card" data-id="${safeOrderId}">
+    <article
+      class="order-card"
+      data-id="${safeOrderId}"
+      data-external-order-id="${escapeHtml(externalOrderId)}"
+    >
 
       <div class="order-number">
         주문번호 ${escapeHtml(rawOrderId.slice(0,8))}
@@ -1401,6 +1435,22 @@ ${escapeHtml(order.delivery_request)}
   >
     ✅ 배송 완료
   </button>
+
+  ${canCancelPayment ? `
+  <button
+    type="button"
+    class="payment-cancel-button"
+    data-action="cancel-payment"
+    data-external-order-id="${escapeHtml(externalOrderId)}"
+    data-amount="${escapeHtml(String(order.total_amount || 0))}"
+  >
+    ↩ 결제 취소
+  </button>
+  ` : `
+  <p class="payment-cancel-unavailable">
+    자동 결제취소 정보가 없는 주문입니다. 필요한 경우 NICEPAY에서 확인해주세요.
+  </p>
+  `}
 
 </div>
     
@@ -1474,6 +1524,11 @@ function handleOrderActionClick(event) {
     return;
   }
 
+  if (action === "cancel-payment") {
+    void cancelPayment(button);
+    return;
+  }
+
   if (action === "toggle-completed-detail") {
     toggleCompletedDetail(button);
     return;
@@ -1486,6 +1541,122 @@ function handleOrderActionClick(event) {
 
   if (action === "close-day") {
     void checkBeforeClosing(button);
+  }
+
+}
+
+async function cancelPayment(button) {
+
+  if (button.disabled) return;
+
+  const card = button.closest(".order-card");
+  const externalOrderId = String(
+    button.dataset.externalOrderId ||
+    card?.dataset.externalOrderId ||
+    ""
+  ).trim();
+  const amount = Number(
+    button.dataset.amount || 0
+  );
+
+  if (!/^YH_[a-f0-9]{32}$/i.test(externalOrderId)) {
+    alert(
+      "결제 주문번호를 확인할 수 없습니다. NICEPAY에서 확인해주세요."
+    );
+    return;
+  }
+
+  const amountText = Number.isFinite(amount)
+    ? formatPrice(amount)
+    : "결제금액";
+
+  const firstConfirmed = confirm(
+    `${amountText} 전액을 결제 취소합니다.\n\n` +
+    "취소 후에는 되돌릴 수 없습니다. 계속하시겠습니까?"
+  );
+
+  if (!firstConfirmed) return;
+
+  const typedConfirmation = prompt(
+    "실수 방지를 위해 아래 입력칸에 ‘취소’를 정확히 입력해주세요."
+  );
+
+  if (typedConfirmation !== "취소") {
+    alert("결제 취소를 중단했습니다.");
+    return;
+  }
+
+  button.disabled = true;
+  const originalText = button.textContent;
+  button.textContent = "결제 취소 처리중...";
+
+  try {
+
+    const {
+      data: { session },
+      error: sessionError
+    } = await supabaseClient.auth.getSession();
+
+    if (sessionError) {
+      throw sessionError;
+    }
+
+    if (!session?.access_token) {
+      moveToLogin();
+      return;
+    }
+
+    const response = await fetch(
+      PAYMENT_API_BASE + "/admin/orders/cancel",
+      {
+        method: "POST",
+        headers: {
+          Authorization:
+            "Bearer " + session.access_token,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          externalOrderId,
+          confirmation: "취소"
+        })
+      }
+    );
+
+    let result = null;
+
+    try {
+      result = await response.json();
+    } catch {
+      result = null;
+    }
+
+    if (!response.ok || !result?.ok) {
+      throw new Error(
+        result?.message ||
+        "결제 취소 결과를 확인할 수 없습니다. 다시 누르지 말고 NICEPAY 거래내역을 확인해주세요."
+      );
+    }
+
+    alert(
+      result.message ||
+      "결제 취소가 완료되었습니다."
+    );
+
+    await showTodayOrders();
+    await showCompletedOrders();
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(
+      error.message ||
+      "결제 취소 처리 중 오류가 발생했습니다. 다시 누르지 말고 NICEPAY 거래내역을 확인해주세요."
+    );
+
+    button.disabled = false;
+    button.textContent = originalText;
+
   }
 
 }
