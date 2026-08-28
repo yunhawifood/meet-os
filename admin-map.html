@@ -291,6 +291,29 @@ color: #333;
             );
 
 
+        function getKoreanDate() {
+
+            return new Date(
+                Date.now() + 9 * 60 * 60 * 1000
+            )
+                .toISOString()
+                .slice(0, 10);
+
+        }
+
+
+        function isDeliveryActionable(order) {
+
+            const deferredUntil = String(
+                order?.delivery_deferred_until || ""
+            );
+
+            return !deferredUntil ||
+                deferredUntil <= getKoreanDate();
+
+        }
+
+
 
         const loadingScreen =
             document.getElementById(
@@ -451,7 +474,9 @@ async function loadDeliveryOrders() {
 
 
     initDeliveryMap(
-        data || []
+        (data || []).filter(
+            isDeliveryActionable
+        )
     );
 
 }

@@ -262,6 +262,20 @@ button {
   border:1px solid #222;
   border-radius:12px;
 }
+@media (max-width: 560px) {
+  .order-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .order-tabs button {
+    min-height: 54px;
+    padding: 9px 5px;
+    font-size: 14px;
+    line-height: 1.25;
+  }
+}
 .completed-action {
   display: flex;
   justify-content: flex-end;
@@ -473,6 +487,65 @@ button {
 
 }
 
+.order-action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.order-actions .order-action-grid button {
+  min-height: 48px;
+  padding: 9px 7px;
+  font-size: 14px;
+}
+
+.order-actions .complete-delivery-button {
+  border-color: #17653c;
+  background: #17653c;
+  color: #ffffff;
+}
+
+.deferred-badge {
+  display: inline-flex;
+  margin: 7px 0 4px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #fff4d8;
+  color: #855a00;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.management-actions {
+  border: 1px solid #dddddd;
+  border-radius: 12px;
+  background: #fafafa;
+}
+
+.management-actions summary {
+  min-height: 44px;
+  padding: 11px 14px;
+  cursor: pointer;
+  color: #666666;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  list-style: none;
+}
+
+.management-actions summary::-webkit-details-marker {
+  display: none;
+}
+
+.management-actions[open] {
+  padding: 0 10px 10px;
+}
+
+.management-actions[open] summary {
+  margin: 0 -10px 10px;
+  border-bottom: 1px solid #dddddd;
+}
+
 
 .order-actions button {
 
@@ -507,6 +580,66 @@ button {
   line-height: 1.5;
   text-align: center;
 
+}
+
+.deferral-dialog {
+  width: min(420px, calc(100% - 32px));
+  padding: 0;
+  border: 0;
+  border-radius: 20px;
+  box-shadow: 0 24px 70px rgba(0,0,0,0.28);
+}
+
+.deferral-dialog::backdrop {
+  background: rgba(0,0,0,0.55);
+}
+
+.deferral-dialog-inner {
+  padding: 24px;
+}
+
+.deferral-dialog h3 {
+  margin: 0 0 10px;
+  font-size: 22px;
+}
+
+.deferral-dialog p {
+  margin: 0 0 16px;
+  color: #666666;
+  line-height: 1.55;
+}
+
+.deferral-dialog input[type="date"] {
+  width: 100%;
+  min-height: 54px;
+  padding: 10px 13px;
+  border: 1px solid #bbbbbb;
+  border-radius: 12px;
+  background: #ffffff;
+  font: inherit;
+  font-size: 18px;
+}
+
+.deferral-dialog-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.deferral-dialog-actions button {
+  min-height: 50px;
+  border: 1px solid #17653c;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #17653c;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.deferral-dialog-actions .confirm-deferral {
+  background: #17653c;
+  color: #ffffff;
 }
 .order-total {
 
@@ -914,6 +1047,10 @@ button:focus {
 오늘 배송 <span id="todayCount">0건</span>
 </button>
 
+<button onclick="showDeferredOrders()">
+배송 연기 <span id="deferredCount">0건</span>
+</button>
+
 <button onclick="showCompletedOrders()">
 완료 목록 <span id="completedCount">0건</span>
 </button>
@@ -974,6 +1111,21 @@ class="preparing-close">
 
 </div>
 </section>
+
+<dialog id="deferralDialog" class="deferral-dialog">
+  <form method="dialog" class="deferral-dialog-inner">
+    <h3>배송일 연기</h3>
+    <p>
+      실제 배송할 날짜를 선택해주세요.<br>
+      선택한 날짜 전까지 오늘 배송·준비수량·지도·마감 확인에서 제외됩니다.
+    </p>
+    <input id="deferralDateInput" type="date" required />
+    <div class="deferral-dialog-actions">
+      <button type="button" id="cancelDeferralDialog">닫기</button>
+      <button type="button" id="confirmDeferral" class="confirm-deferral">연기 저장</button>
+    </div>
+  </form>
+</dialog>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1018,6 +1170,50 @@ function formatKoreanTime(dateString) {
   });
 
 }
+
+function getKoreanDate(offsetDays = 0) {
+
+  return new Date(
+    Date.now() +
+    9 * 60 * 60 * 1000 +
+    offsetDays * 24 * 60 * 60 * 1000
+  )
+    .toISOString()
+    .slice(0, 10);
+
+}
+
+function isFutureDeferredOrder(order) {
+
+  const deferredUntil = String(
+    order?.delivery_deferred_until || ""
+  );
+
+  return Boolean(
+    deferredUntil && deferredUntil > getKoreanDate()
+  );
+
+}
+
+function isDeliveryActionable(order) {
+
+  return !isFutureDeferredOrder(order);
+
+}
+
+function formatKoreanDateOnly(dateString) {
+
+  if (!dateString) return "-";
+
+  const parts = String(dateString).split("-");
+
+  if (parts.length !== 3) return String(dateString);
+
+  return `${Number(parts[1])}월 ${Number(parts[2])}일`;
+
+}
+
+let activeOrdersView = "today";
 
     const loadingScreen =
 
@@ -1348,15 +1544,75 @@ function focusOrderFromHash() {
     return true;
 
 }
-function createOrderCard(order) {
-console.log("카드 생성 데이터:", order);
- const rawOrderId = String(order.id || "");
- const safeOrderId = escapeHtml(rawOrderId);
- const externalOrderId =
-   String(order.external_order_id || "").trim();
- const canCancelPayment =
-   /^YH_[a-f0-9]{32}$/i.test(externalOrderId);
- const productText = formatOrderItemsHtml(order.order_items);
+function createOrderCard(order, viewMode = "today") {
+
+  console.log("카드 생성 데이터:", order);
+
+  const rawOrderId = String(order.id || "");
+  const safeOrderId = escapeHtml(rawOrderId);
+  const externalOrderId =
+    String(order.external_order_id || "").trim();
+  const canCancelPayment =
+    /^YH_[a-f0-9]{32}$/i.test(externalOrderId);
+  const productText = formatOrderItemsHtml(order.order_items);
+  const deferredUntil = String(
+    order.delivery_deferred_until || ""
+  );
+  const isDeferredView = viewMode === "deferred";
+  const deferredBadge = deferredUntil
+    ? `<div class="deferred-badge">⏰ 연기 배송일 ${escapeHtml(formatKoreanDateOnly(deferredUntil))}</div>`
+    : "";
+
+  const normalActions = `
+    <div class="order-action-grid">
+      <button
+        type="button"
+        data-action="send-photo"
+        data-phone="${escapeHtml(order.customer_phone || "")}"
+      >
+        📷 사진 보내기
+      </button>
+
+      <button
+        type="button"
+        data-action="defer-delivery"
+        data-order-id="${safeOrderId}"
+        data-current-date="${escapeHtml(deferredUntil)}"
+      >
+        ⏰ 배송 연기
+      </button>
+    </div>
+
+    <button
+      type="button"
+      class="complete-delivery-button"
+      data-action="complete-delivery"
+    >
+      ✅ 배송 완료
+    </button>
+  `;
+
+  const deferredActions = `
+    <div class="order-action-grid">
+      <button
+        type="button"
+        data-action="defer-delivery"
+        data-order-id="${safeOrderId}"
+        data-current-date="${escapeHtml(deferredUntil)}"
+      >
+        📅 연기일 변경
+      </button>
+
+      <button
+        type="button"
+        data-action="restore-deferred"
+        data-order-id="${safeOrderId}"
+      >
+        ↩ 오늘 배송 복귀
+      </button>
+    </div>
+  `;
+
   return `
 
     <article
@@ -1368,6 +1624,8 @@ console.log("카드 생성 데이터:", order);
       <div class="order-number">
         주문번호 ${escapeHtml(rawOrderId.slice(0,8))}
       </div>
+
+      ${deferredBadge}
 
       <p>
 주문시간<br>
@@ -1421,36 +1679,27 @@ ${escapeHtml(order.delivery_request)}
 
 <div class="order-actions">
 
-  <button
-    type="button"
-    data-action="send-photo"
-    data-phone="${escapeHtml(order.customer_phone || "")}"
-  >
-    📷 고객에게 사진 보내기
-  </button>
+  ${isDeferredView ? deferredActions : normalActions}
 
-  <button
-    type="button"
-    data-action="complete-delivery"
-  >
-    ✅ 배송 완료
-  </button>
+  <details class="management-actions">
+    <summary>관리 기능 ▾</summary>
 
-  ${canCancelPayment ? `
-  <button
-    type="button"
-    class="payment-cancel-button"
-    data-action="cancel-payment"
-    data-external-order-id="${escapeHtml(externalOrderId)}"
-    data-amount="${escapeHtml(String(order.total_amount || 0))}"
-  >
-    ↩ 결제 취소
-  </button>
-  ` : `
-  <p class="payment-cancel-unavailable">
-    자동 결제취소 정보가 없는 주문입니다. 필요한 경우 NICEPAY에서 확인해주세요.
-  </p>
-  `}
+    ${canCancelPayment ? `
+    <button
+      type="button"
+      class="payment-cancel-button"
+      data-action="cancel-payment"
+      data-external-order-id="${escapeHtml(externalOrderId)}"
+      data-amount="${escapeHtml(String(order.total_amount || 0))}"
+    >
+      ↩ 결제 취소
+    </button>
+    ` : `
+    <p class="payment-cancel-unavailable">
+      자동 결제취소 정보가 없는 주문입니다. 필요한 경우 NICEPAY에서 확인해주세요.
+    </p>
+    `}
+  </details>
 
 </div>
     
@@ -1462,7 +1711,7 @@ ${escapeHtml(order.delivery_request)}
 
 }
 
-function renderOrders(orders, selectedStatus = "전체") {
+function renderOrders(orders, viewMode = "today") {
 
   const uniqueOrders = orders.filter(
     (order, index, self) =>
@@ -1470,30 +1719,21 @@ function renderOrders(orders, selectedStatus = "전체") {
   );
 
 
-  const filteredOrders =
+  if (uniqueOrders.length === 0) {
 
-    selectedStatus === "전체"
-
-      ? uniqueOrders
-
-      : uniqueOrders.filter(
-
-          (order) => order.order_status === selectedStatus
-
-        );
-
-
-  if (filteredOrders.length === 0) {
-
-  todayOrdersList.innerHTML = "";
+  todayOrdersList.innerHTML = `
+    <p style="margin:8px 0;color:#777;text-align:center;">
+      ${viewMode === "deferred" ? "연기된 배송이 없습니다." : "배송할 주문이 없습니다."}
+    </p>
+  `;
 
   return;
 
 }
 
  todayOrdersList.innerHTML =
-  filteredOrders
-    .map(createOrderCard)
+  uniqueOrders
+    .map(order => createOrderCard(order, viewMode))
     .join("");
 
 focusOrderFromHash();
@@ -1524,6 +1764,22 @@ function handleOrderActionClick(event) {
     return;
   }
 
+  if (action === "defer-delivery") {
+    openDeferralDialog(
+      button.dataset.orderId || "",
+      button.dataset.currentDate || ""
+    );
+    return;
+  }
+
+  if (action === "restore-deferred") {
+    void restoreDeferredOrder(
+      button.dataset.orderId || "",
+      button
+    );
+    return;
+  }
+
   if (action === "cancel-payment") {
     void cancelPayment(button);
     return;
@@ -1544,6 +1800,137 @@ function handleOrderActionClick(event) {
   }
 
 }
+
+const deferralDialog =
+  document.getElementById("deferralDialog");
+const deferralDateInput =
+  document.getElementById("deferralDateInput");
+const confirmDeferralButton =
+  document.getElementById("confirmDeferral");
+const cancelDeferralDialogButton =
+  document.getElementById("cancelDeferralDialog");
+
+let pendingDeferralOrderId = "";
+
+function openDeferralDialog(orderId, currentDate = "") {
+
+  if (!orderId || !deferralDialog || !deferralDateInput) {
+    alert("주문 정보를 확인할 수 없습니다.");
+    return;
+  }
+
+  pendingDeferralOrderId = orderId;
+  deferralDateInput.min = getKoreanDate(1);
+  deferralDateInput.value =
+    currentDate && currentDate > getKoreanDate()
+      ? currentDate
+      : getKoreanDate(1);
+
+  deferralDialog.showModal();
+
+}
+
+function closeDeferralDialog() {
+
+  pendingDeferralOrderId = "";
+
+  if (deferralDialog?.open) {
+    deferralDialog.close();
+  }
+
+}
+
+async function saveDeferredDate() {
+
+  const orderId = pendingDeferralOrderId;
+  const selectedDate = String(
+    deferralDateInput?.value || ""
+  );
+
+  if (!orderId) {
+    alert("주문 정보를 확인할 수 없습니다.");
+    return;
+  }
+
+  if (!selectedDate || selectedDate <= getKoreanDate()) {
+    alert("내일 이후의 실제 배송일을 선택해주세요.");
+    return;
+  }
+
+  confirmDeferralButton.disabled = true;
+  confirmDeferralButton.textContent = "저장 중...";
+
+  const { error } = await supabaseClient
+    .from("orders")
+    .update({
+      delivery_deferred_until: selectedDate
+    })
+    .eq("id", orderId)
+    .eq("order_status", "received");
+
+  confirmDeferralButton.disabled = false;
+  confirmDeferralButton.textContent = "연기 저장";
+
+  if (error) {
+    console.error(error);
+    alert("배송 연기 저장에 실패했습니다.");
+    return;
+  }
+
+  closeDeferralDialog();
+  alert(
+    `${formatKoreanDateOnly(selectedDate)} 배송으로 연기했습니다.\n\n` +
+    "오늘 준비수량·지도·마감 확인에서는 제외됩니다."
+  );
+  if (activeOrdersView === "deferred") {
+    await showDeferredOrders();
+  } else {
+    await showTodayOrders();
+  }
+
+}
+
+async function restoreDeferredOrder(orderId, button) {
+
+  if (!orderId || button.disabled) return;
+
+  const confirmed = confirm(
+    "이 주문을 오늘 배송 목록으로 되돌리시겠습니까?"
+  );
+
+  if (!confirmed) return;
+
+  button.disabled = true;
+
+  const { error } = await supabaseClient
+    .from("orders")
+    .update({
+      delivery_deferred_until: null
+    })
+    .eq("id", orderId)
+    .eq("order_status", "received");
+
+  if (error) {
+    console.error(error);
+    alert("오늘 배송 복귀에 실패했습니다.");
+    button.disabled = false;
+    return;
+  }
+
+  alert("오늘 배송 목록으로 되돌렸습니다.");
+  await showDeferredOrders();
+
+}
+
+confirmDeferralButton?.addEventListener(
+  "click",
+  () => void saveDeferredDate()
+);
+
+cancelDeferralDialogButton?.addEventListener(
+  "click",
+  closeDeferralDialog
+);
 
 async function cancelPayment(button) {
 
@@ -1806,6 +2193,27 @@ async function loadOrders() {
     return data;
 
 }
+
+function updateReceivedCounts(orders) {
+
+  const todayOrders = orders.filter(
+    isDeliveryActionable
+  );
+  const deferredOrders = orders.filter(
+    isFutureDeferredOrder
+  );
+
+  document.getElementById("todayCount").innerText =
+    `${todayOrders.length}건`;
+  document.getElementById("deferredCount").innerText =
+    `${deferredOrders.length}건`;
+
+  return {
+    todayOrders,
+    deferredOrders
+  };
+
+}
 async function updateCompletedCount() {
 
     const { count, error } =
@@ -1846,34 +2254,29 @@ async function updateCompletedCount() {
 }
 async function showTodayOrders() {
 
-    const orders =
+    activeOrdersView = "today";
+
+    completedOrdersList.innerHTML = "";
+
+    const allReceivedOrders =
         await loadOrders();
+
+    const { todayOrders } =
+        updateReceivedCounts(allReceivedOrders);
 
 
     console.log(
         "오늘배송 불러온 주문:",
-        orders
+        todayOrders
     );
-
-
-    document
-        .getElementById(
-            "todayCount"
-        )
-        .innerText =
-            orders.length + "건";
 
 
     await updateCompletedCount();
 
 
-    const selectedStatus =
-        "전체";
-
-
    renderOrders(
-    orders,
-    selectedStatus
+    todayOrders,
+    "today"
 );
 
 
@@ -1884,10 +2287,51 @@ if (preparingStatus) {
     preparingStatus.style.display = "";
 }
 
+const mapButton =
+    document.getElementById("mapButton");
+
+if (mapButton) {
+    mapButton.style.display = "";
+}
+
 
 loadPreparingStatus(
-    orders
+    todayOrders
 );
+
+}
+
+async function showDeferredOrders() {
+
+  activeOrdersView = "deferred";
+
+  completedOrdersList.innerHTML = "";
+
+  const allReceivedOrders =
+    await loadOrders();
+
+  const { deferredOrders } =
+    updateReceivedCounts(allReceivedOrders);
+
+  await updateCompletedCount();
+
+  renderOrders(
+    deferredOrders,
+    "deferred"
+  );
+
+  const preparingStatus =
+    document.getElementById("preparingStatus");
+  const mapButton =
+    document.getElementById("mapButton");
+
+  if (preparingStatus) {
+    preparingStatus.style.display = "none";
+  }
+
+  if (mapButton) {
+    mapButton.style.display = "none";
+  }
 
 }
 function togglePreparingList(){
@@ -1988,8 +2432,13 @@ let completedOrdersData = [];
 
 async function showCompletedOrders() {
 
+  activeOrdersView = "completed";
+
   todayOrdersList.innerHTML = "";
   completedOrdersList.innerHTML = "";
+
+  const allReceivedOrders = await loadOrders();
+  updateReceivedCounts(allReceivedOrders);
 
   const preparingStatus =
     document.getElementById("preparingStatus");
@@ -1998,12 +2447,19 @@ async function showCompletedOrders() {
     preparingStatus.style.display = "none";
   }
 
+  const mapButton =
+    document.getElementById("mapButton");
+
+  if (mapButton) {
+    mapButton.style.display = "none";
+  }
+
 const { data, error } = await supabaseClient
     .from("orders")
-    .select(
-        "*",
-        "order_items (*)"
-    )
+    .select(`
+        *,
+        order_items (*)
+    `)
     .eq("order_status", "completed")
     .order("created_at", { ascending: false });
 
@@ -2061,6 +2517,13 @@ completedOrdersList.innerHTML =
       완료시간<br>
       ${escapeHtml(formatKoreanTime(order.updated_at))}
     </p>
+
+    ${order.delivery_deferred_until ? `
+    <p>
+      연기 배송일<br>
+      ${escapeHtml(formatKoreanDateOnly(order.delivery_deferred_until))}
+    </p>
+    ` : ""}
 
   </div>
 
@@ -2147,7 +2610,7 @@ function toggleCompletedDetail(button) {
 async function restoreOrder(orderId) {
 
   const confirmRestore = confirm(
-    "배송 완료를 취소하시겠습니까?\n\n오늘 배송 목록으로 다시 이동합니다."
+    "배송 완료를 취소하시겠습니까?\n\n배송 목록으로 다시 이동합니다."
   );
 
   if (!confirmRestore) {
@@ -2223,7 +2686,7 @@ async function checkBeforeClosing(button) {
 
   const { data, error } = await supabaseClient
     .from("orders")
-    .select("id")
+    .select("id,delivery_deferred_until")
     .eq("order_status", "received");
 
 
@@ -2248,11 +2711,19 @@ if (!data) {
   return;
 
 }
-if (data && data.length > 0) {
+const unfinishedTodayOrders = data.filter(
+  isDeliveryActionable
+);
+
+if (unfinishedTodayOrders.length > 0) {
 
     alert(
-      "아직 배송 완료되지 않은 주문이 있습니다.\n배송 완료 후 마감해주세요."
+      `아직 배송 완료되지 않은 주문이 ${unfinishedTodayOrders.length}건 있습니다.\n` +
+      "배송 완료하거나 배송 연기 후 마감해주세요."
     );
+
+    button.disabled = false;
+    button.textContent = "오늘 배송 마감";
 
     return;
   }
@@ -2277,6 +2748,9 @@ if (closingError) {
 
   alert("마감 기록 확인 실패");
 
+  button.disabled = false;
+  button.textContent = "오늘 배송 마감";
+
   return;
 
 }
@@ -2288,12 +2762,20 @@ if (closingData && closingData.length > 0) {
     "오늘 마감 기록이 이미 있습니다.\n중복 저장할 수 없습니다."
   );
 
+  button.disabled = false;
+  button.textContent = "오늘 배송 마감";
+
   return;
 
 }
 
 
-await saveDeliveryLog();
+const saved = await saveDeliveryLog();
+
+if (!saved) {
+  button.disabled = false;
+  button.textContent = "오늘 배송 마감";
+}
 
 }
 async function saveDeliveryLog() {
@@ -2301,7 +2783,7 @@ async function saveDeliveryLog() {
 
   if (!completedOrdersData || completedOrdersData.length === 0) {
     alert("저장할 배송 완료 목록이 없습니다.");
-    return;
+    return false;
   }
 
 
@@ -2328,9 +2810,8 @@ products:
 JSON.stringify(order.order_items || []),
 
     delivery_date:
-  new Date(Date.now() + 9 * 60 * 60 * 1000)
-    .toISOString()
-    .slice(0,10)
+      order.delivery_deferred_until ||
+      getKoreanDate()
 
   }));
 
@@ -2349,7 +2830,7 @@ JSON.stringify(order.order_items || []),
       error.message
     );
 
-    return;
+    return false;
   }
 
 
@@ -2394,6 +2875,8 @@ alert("오늘 배송 기록 저장 완료");
 
 
   completedOrdersList.innerHTML = "";
+
+  return true;
 
 }
   </script>
