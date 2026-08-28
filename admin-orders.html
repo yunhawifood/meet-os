@@ -249,18 +249,42 @@ button {
 
 .order-tabs button {
   flex: 1;
-  min-height: 48px;
-  padding: 12px;
-  font-size: 18px;
+  min-height: 64px;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 16px;
   font-weight: 700;
 
   -webkit-appearance: none;
   appearance: none;
 
   color:#222;
-  background:white;
-  border:1px solid #222;
+  background:#ffffff;
+  border:1px solid #cfd8d2;
   border-radius:12px;
+}
+
+.order-tabs button.is-active {
+  color: #17643d;
+  background: #eef8f2;
+  border-color: #17643d;
+  box-shadow: 0 0 0 1px #17643d inset;
+}
+
+.order-tab-label {
+  display: block;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.order-tab-count {
+  display: block;
+  font-size: 15px;
+  line-height: 1.15;
 }
 @media (max-width: 560px) {
   .order-tabs {
@@ -270,10 +294,13 @@ button {
   }
 
   .order-tabs button {
-    min-height: 54px;
-    padding: 9px 5px;
+    min-height: 62px;
+    padding: 9px 4px;
+    font-size: 15px;
+  }
+
+  .order-tab-count {
     font-size: 14px;
-    line-height: 1.25;
   }
 }
 .completed-action {
@@ -1041,18 +1068,21 @@ button:focus {
 
 <section class="orders-box">
 
-  <h2>오늘 배송 목록</h2>
+  <h2>배송 현황</h2>
 <div class="order-tabs">
- <button onclick="showTodayOrders()">
-오늘 배송 <span id="todayCount">0건</span>
+ <button class="order-tab is-active" data-orders-view="today" type="button" aria-pressed="true" onclick="showTodayOrders()">
+<span class="order-tab-label">오늘 배송</span>
+<span class="order-tab-count" id="todayCount">0건</span>
 </button>
 
-<button onclick="showDeferredOrders()">
-배송 연기 <span id="deferredCount">0건</span>
+<button class="order-tab" data-orders-view="deferred" type="button" aria-pressed="false" onclick="showDeferredOrders()">
+<span class="order-tab-label">배송 연기</span>
+<span class="order-tab-count" id="deferredCount">0건</span>
 </button>
 
-<button onclick="showCompletedOrders()">
-완료 목록 <span id="completedCount">0건</span>
+<button class="order-tab" data-orders-view="completed" type="button" aria-pressed="false" onclick="showCompletedOrders()">
+<span class="order-tab-label">완료 목록</span>
+<span class="order-tab-count" id="completedCount">0건</span>
 </button>
 </div>
 
@@ -1214,6 +1244,24 @@ function formatKoreanDateOnly(dateString) {
 }
 
 let activeOrdersView = "today";
+
+function setActiveOrdersTab(view) {
+  document
+    .querySelectorAll(".order-tabs .order-tab")
+    .forEach((button) => {
+      const isActive =
+        button.dataset.ordersView === view;
+
+      button.classList.toggle(
+        "is-active",
+        isActive
+      );
+      button.setAttribute(
+        "aria-pressed",
+        isActive ? "true" : "false"
+      );
+    });
+}
 
     const loadingScreen =
 
@@ -2255,6 +2303,7 @@ async function updateCompletedCount() {
 async function showTodayOrders() {
 
     activeOrdersView = "today";
+    setActiveOrdersTab("today");
 
     completedOrdersList.innerHTML = "";
 
@@ -2304,6 +2353,7 @@ loadPreparingStatus(
 async function showDeferredOrders() {
 
   activeOrdersView = "deferred";
+  setActiveOrdersTab("deferred");
 
   completedOrdersList.innerHTML = "";
 
@@ -2433,6 +2483,7 @@ let completedOrdersData = [];
 async function showCompletedOrders() {
 
   activeOrdersView = "completed";
+  setActiveOrdersTab("completed");
 
   todayOrdersList.innerHTML = "";
   completedOrdersList.innerHTML = "";
