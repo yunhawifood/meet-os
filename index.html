@@ -524,21 +524,17 @@
 
   color: #151515;
 
-  font-size: 34px;
+  font-size: clamp(22px, 6vw, 28px);
   line-height: 1.18;
 
   font-weight: 950;
 
-  letter-spacing: -2px;
+  letter-spacing: -1.9px;
 
   text-align: center;
 
   word-break: keep-all;
-}
-
-
-.order-title span {
-  display: block;
+  white-space: nowrap;
 }
 
 .order-button {
@@ -552,10 +548,10 @@
 
   width: 100%;
 
-  min-height: 116px;
+  min-height: 144px;
 
-  margin-top: 18px;
-  padding: 17px 17px 17px 20px;
+  margin-top: 22px;
+  padding: 22px 20px 22px 24px;
 
   border: 0;
   border-radius: 22px;
@@ -650,7 +646,7 @@ animation:
 }
 
 .order-button-label {
-  font-size: 27px;
+  font-size: 33px;
   line-height: 1.05;
   font-weight: 950;
   letter-spacing: -1.3px;
@@ -658,7 +654,7 @@ animation:
 
 .order-button-meta {
   color: rgba(255, 255, 255, 0.86);
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.35;
   font-weight: 800;
   letter-spacing: -0.3px;
@@ -669,14 +665,14 @@ animation:
   display: grid;
   place-items: center;
 
-  width: 50px;
-  height: 50px;
+  width: 64px;
+  height: 64px;
 
   border-radius: 50%;
   background: #ffffff;
   color: #287c46;
 
-  font-size: 27px;
+  font-size: 34px;
   line-height: 1;
   font-weight: 900;
 
@@ -1488,27 +1484,28 @@ animation:
 
 
       .order-title {
-        font-size: 25px;
+        font-size: clamp(20px, 5.9vw, 23px);
+        letter-spacing: -1.55px;
       }
 
 
       .order-button {
-        min-height: 108px;
-        padding: 15px 14px 15px 17px;
+        min-height: 136px;
+        padding: 20px 16px 20px 20px;
       }
 
       .order-button-label {
-        font-size: 23px;
+        font-size: 29px;
       }
 
       .order-button-meta {
-        font-size: 11px;
+        font-size: 12px;
       }
 
       .order-button-arrow {
-        width: 44px;
-        height: 44px;
-        font-size: 24px;
+        width: 56px;
+        height: 56px;
+        font-size: 30px;
       }
 
     }
@@ -1748,8 +1745,7 @@ animation:
   </p>
 
   <h1 class="order-title">
-    <span>오늘 주문하면,</span>
-    <span>내일 아침 문 앞에.</span>
+    오늘 주문하면, 내일 아침 문 앞에.
   </h1>
 
   <button
