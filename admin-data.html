@@ -252,11 +252,15 @@ input:focus-visible {
   grid-template-columns:repeat(2,minmax(0,1fr));
   gap:12px;
   margin-bottom:14px;
+  width:100%;
+  min-width:0;
 }
 
 .field {
   display:grid;
   gap:7px;
+  width:100%;
+  min-width:0;
 }
 
 label {
@@ -267,6 +271,8 @@ label {
 
 input {
   width:100%;
+  min-width:0;
+  max-width:100%;
   min-height:48px;
   padding:0 13px;
   border:1px solid #d7ddd9;
@@ -274,6 +280,31 @@ input {
   background:#fff;
   color:#1b1e1c;
   font:inherit;
+}
+
+input[type="date"] {
+  display:block;
+  inline-size:100%;
+  min-inline-size:0;
+  max-inline-size:100%;
+}
+
+.record-search {
+  display:grid;
+  gap:8px;
+  margin:18px 0;
+  padding:14px;
+  border:1px solid #dfe8e2;
+  border-radius:14px;
+  background:#f8fbf9;
+}
+
+.record-search input {
+  background:#fff;
+}
+
+.record-search .small {
+  margin:0;
 }
 
 .primary-action {
@@ -412,7 +443,15 @@ input {
 
   .dashboard-grid,
   .date-fields {
-    grid-template-columns:1fr;
+    grid-template-columns:minmax(0,1fr);
+  }
+
+  .date-fields,
+  .field,
+  .field input {
+    width:100%;
+    min-width:0;
+    max-width:100%;
   }
 
   .metrics-grid {
@@ -767,6 +806,16 @@ document
   .addEventListener("click", handleDataAction);
 
 document
+  .getElementById("closingList")
+  .addEventListener("input", event => {
+
+    if (event.target.id === "deliveryLogPhoneSearch") {
+      filterDeliveryLogs(event.target.value);
+    }
+
+  });
+
+document
   .getElementById("salesAnalysis")
   .addEventListener("click", handleDataAction);
 
@@ -1020,155 +1069,159 @@ const { data, error } = await supabaseClient
 
 
 }
+
+let activeDeliveryLogs = [];
+
+function deliveryLogProductsHtml(value) {
+
+  try {
+
+    const list = Array.isArray(value)
+      ? value
+      : JSON.parse(value || "[]");
+
+    return list.map(product =>
+      `${escapeHtml(product.product_name || "")} ${Number(product.quantity || 0)}개`
+    ).join("<br>");
+
+  } catch (error) {
+
+    console.error(error);
+    return "";
+
+  }
+
+}
+
+function deliveryLogCardHtml(item) {
+
+  const products =
+    deliveryLogProductsHtml(item.products);
+
+  return `
+    <div class="card">
+      <h3>
+        주문번호 ${escapeHtml(item.order_id || "")}
+      </h3>
+      <p>
+        배송지 · ${escapeHtml(item.delivery_address || "")}
+      </p>
+      <p>
+        전화번호 · ${escapeHtml(item.customer_phone || "")}
+      </p>
+      <p>
+        상품<br>${products}
+      </p>
+      <p>
+        💰 ${Number(item.total_amount || 0).toLocaleString()}원
+      </p>
+      <p class="small">
+        배송시간 : ${escapeHtml(
+          new Date(item.created_at).toLocaleString("ko-KR")
+        )}
+      </p>
+    </div>
+  `;
+
+}
+
+function renderDeliveryLogResults(records) {
+
+  const resultBox =
+    document.getElementById("deliveryLogResults");
+
+  const statusBox =
+    document.getElementById("deliveryLogSearchStatus");
+
+  if (!resultBox || !statusBox) {
+    return;
+  }
+
+  const list = Array.isArray(records)
+    ? records
+    : [];
+
+  statusBox.textContent =
+    `검색 결과 ${list.length}건`;
+
+  resultBox.innerHTML = list.length
+    ? list.map(deliveryLogCardHtml).join("")
+    : `<p class="section-copy">일치하는 배송 기록이 없습니다.</p>`;
+
+}
+
+function filterDeliveryLogs(value) {
+
+  const query = normalizePhone(value);
+
+  const filtered = query
+    ? activeDeliveryLogs.filter(item =>
+        normalizePhone(item.customer_phone).includes(query)
+      )
+    : activeDeliveryLogs;
+
+  renderDeliveryLogResults(filtered);
+
+}
+
 async function showDayBook(date){
 
-if (!isValidDate(date)) {
-  document.getElementById("closingList").textContent =
-    "배송 기록 날짜를 확인할 수 없습니다.";
-  return;
-}
+  if (!isValidDate(date)) {
+    document.getElementById("closingList").textContent =
+      "배송 기록 날짜를 확인할 수 없습니다.";
+    return;
+  }
 
-console.log("찾는 날짜:", date);
-const { data, error } = await supabaseClient
-  .from("delivery_logs")
-  .select("*")
-  .eq("delivery_date", date)
-  .order("created_at", {
-    ascending:false
-  });
+  const { data, error } = await supabaseClient
+    .from("delivery_logs")
+    .select("*")
+    .eq("delivery_date", date)
+    .order("created_at", {
+      ascending:false
+    });
 
+  const box =
+    document.getElementById("closingList");
 
+  if(error){
 
-const box =
-document.getElementById("closingList");
+    console.error(error);
+    box.textContent =
+      "배송 기록을 불러오지 못했습니다.";
+    return;
 
+  }
 
+  activeDeliveryLogs = Array.isArray(data)
+    ? data
+    : [];
 
-if(error){
+  box.innerHTML = `
+    <button
+      type="button"
+      data-action="show-month"
+      data-month="${escapeHtml(date.substring(0,7))}">
+      ← 날짜별 기록으로
+    </button>
+    <h3>
+      ${escapeHtml(date)} 배송 기록
+    </h3>
+    <div class="record-search">
+      <label for="deliveryLogPhoneSearch">
+        전화번호로 기록 찾기
+      </label>
+      <input
+        id="deliveryLogPhoneSearch"
+        type="search"
+        inputmode="numeric"
+        autocomplete="off"
+        placeholder="뒤 4자리 또는 전체 번호">
+      <p class="small" id="deliveryLogSearchStatus" aria-live="polite"></p>
+    </div>
+    <div id="deliveryLogResults"></div>
+  `;
 
- console.error(error);
-
- box.innerHTML =
- "배송 기록을 불러오지 못했습니다.";
-
- return;
-
-}
-
-
-
-if(!data || data.length === 0){
-
-box.innerHTML = `
-
-<button
-type="button"
-data-action="show-month"
-data-month="${escapeHtml(date.substring(0,7))}">
-← 날짜별 기록으로
-</button>
-
-<h3>
-${escapeHtml(date)} 배송 기록
-</h3>
-
-`;
- return;
-
-}
-
-
-
-box.innerHTML = `
-
-<button
-type="button"
-data-action="show-month"
-data-month="${escapeHtml(date.substring(0,7))}">
-← 날짜별 기록으로
-</button>
-<h3>
-${escapeHtml(date)} 배송 기록
-</h3>
-
-`;
-
-
-
-data.forEach(item=>{
-
-
-let products="";
-
-
-try{
-
-const list =
-JSON.parse(item.products || "[]");
-
-
-products =
-list.map(product =>
-`${escapeHtml(product.product_name || "")} ${Number(product.quantity || 0)}개`
-).join("<br>");
-
-
-}catch(e){
-
-products="";
-
-}
-
-
-
-box.innerHTML += `
-
-<div class="card">
-
-
-<h3>
-주문번호
-${escapeHtml(item.order_id || "")}
-</h3>
-
-
-<p>
-배송지 · ${escapeHtml(item.delivery_address || "")}
-</p>
-
-
-<p>
-전화번호 · ${escapeHtml(item.customer_phone || "")}
-</p>
-
-
-<p>
-상품<br>${products}
-</p>
-
-
-<p>
-💰 ${Number(item.total_amount || 0)
-.toLocaleString()}원
-</p>
-
-
-<p class="small">
-배송시간 :
-${escapeHtml(
-  new Date(item.created_at)
-    .toLocaleString("ko-KR")
-)}
-</p>
-
-
-</div>
-
-`;
-
-
-});
-
+  renderDeliveryLogResults(activeDeliveryLogs);
 
 }
 
