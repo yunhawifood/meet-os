@@ -42,7 +42,7 @@
       <div class="section-head"><h2>공지관리</h2></div>
       <div class="panel">
         <div class="fields">
-          <div class="field"><label for="noticeTitle">공지 제목</label><input id="noticeTitle" maxlength="80"></div>
+          <div class="field"><label for="noticeTitle">공지 제목 (선택)</label><input id="noticeTitle" maxlength="80" placeholder="비워도 됩니다"></div>
           <div class="field"><label for="noticeOrder">노출순서</label><input id="noticeOrder" type="number" min="0" value="0"></div>
           <div class="field full"><label for="noticeBody">공지 내용</label><textarea id="noticeBody" maxlength="1000"></textarea></div>
           <div class="field"><label for="noticeActive">노출 여부</label><select id="noticeActive"><option value="true">노출</option><option value="false">숨김</option></select></div>
@@ -177,7 +177,7 @@ document.getElementById("refreshButton")
 
     function renderNotices(){
       const list=document.getElementById("noticeList");list.innerHTML="";
-      (adminData.notices||[]).forEach(function(notice){const item=document.createElement("article");item.className="notice-item";item.innerHTML=`<strong>${escapeHtml(notice.title)}</strong><p>${escapeHtml(notice.body)}</p><span class="status">${Number(notice.is_active)===1?"노출":"숨김"}</span><div class="actions"><button class="secondary" type="button" data-action="toggle">${Number(notice.is_active)===1?"숨기기":"노출하기"}</button><button class="danger" type="button" data-action="delete">삭제</button></div>`;item.querySelector("[data-action='toggle']").addEventListener("click",()=>updateNotice(notice,!Number(notice.is_active)));item.querySelector("[data-action='delete']").addEventListener("click",()=>deleteNotice(notice.id));list.appendChild(item)})
+      (adminData.notices||[]).forEach(function(notice){const item=document.createElement("article");item.className="notice-item";item.innerHTML=`<strong>${escapeHtml(notice.title||"제목 없음")}</strong><p>${escapeHtml(notice.body)}</p><span class="status">${Number(notice.is_active)===1?"노출":"숨김"}</span><div class="actions"><button class="secondary" type="button" data-action="toggle">${Number(notice.is_active)===1?"숨기기":"노출하기"}</button><button class="danger" type="button" data-action="delete">삭제</button></div>`;item.querySelector("[data-action='toggle']").addEventListener("click",()=>updateNotice(notice,!Number(notice.is_active)));item.querySelector("[data-action='delete']").addEventListener("click",()=>deleteNotice(notice.id));list.appendChild(item)})
     }
     async function addNotice(){try{await api("/admin/notices",{method:"POST",body:JSON.stringify({title:document.getElementById("noticeTitle").value,body:document.getElementById("noticeBody").value,isActive:document.getElementById("noticeActive").value==="true",displayOrder:Number(document.getElementById("noticeOrder").value)})});document.getElementById("noticeTitle").value="";document.getElementById("noticeBody").value="";showMessage("공지를 추가했습니다.");await loadAdminData()}catch(error){showMessage(error.message,true)}}
     async function updateNotice(notice,isActive){try{await api("/admin/notices/"+notice.id,{method:"PUT",body:JSON.stringify({title:notice.title,body:notice.body,isActive,displayOrder:Number(notice.display_order||0)})});await loadAdminData()}catch(error){showMessage(error.message,true)}}
