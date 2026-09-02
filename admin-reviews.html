@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="referrer" content="same-origin" />
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="default-src 'self'; connect-src https://rbtwvemljpgnwhlzayqy.supabase.co wss://rbtwvemljpgnwhlzayqy.supabase.co https://yunhawi-payment-api.yunhawifood.workers.dev; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'"
+  />
+
+  <title>고객 의견함 | 한농직판장 운영 OS</title>
+
+  <style>
+    :root {
+      color-scheme: light;
+      --green: #235f3f;
+      --green-soft: #eaf4ed;
+      --amber: #9a5c16;
+      --amber-soft: #fff4df;
+      --text: #222722;
+      --muted: #69716b;
+      --line: #dfe4e0;
+      --surface: #ffffff;
+      --background: #f3f5f3;
+      --danger: #a33a31;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Apple SD Gothic Neo",
+        "Noto Sans KR",
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button,
+    a {
+      font: inherit;
+    }
+
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: #ffffff;
+      color: var(--muted);
+      font-weight: 800;
+      text-align: center;
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    .header-inner {
+      display: flex;
+      width: calc(100% - 32px);
+      max-width: 980px;
+      min-height: 72px;
+      margin: 0 auto;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .header-left,
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: -0.035em;
+    }
+
+    .nav-button,
+    .logout-button {
+      min-height: 42px;
+      padding: 9px 13px;
+      border: 1px solid #cfd6d1;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #303631;
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    main {
+      width: calc(100% - 32px);
+      max-width: 980px;
+      margin: 24px auto 56px;
+    }
+
+    .intro {
+      padding: 23px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface);
+    }
+
+    .intro h2 {
+      margin: 0 0 7px;
+      font-size: 22px;
+      letter-spacing: -0.035em;
+    }
+
+    .intro p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .summary-card {
+      padding: 19px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: var(--surface);
+    }
+
+    .summary-card span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .summary-card strong {
+      display: block;
+      margin-top: 6px;
+      color: var(--green);
+      font-size: 28px;
+      letter-spacing: -0.04em;
+    }
+
+    .toolbar {
+      display: flex;
+      margin: 22px 0 12px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .toolbar h2 {
+      margin: 0;
+      font-size: 19px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 7px;
+    }
+
+    .filter-button {
+      min-height: 40px;
+      padding: 8px 13px;
+      border: 1px solid #ccd3ce;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #4f5751;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .filter-button.active {
+      border-color: var(--green);
+      background: var(--green);
+      color: #ffffff;
+    }
+
+    .reviews-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .review-card {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface);
+      box-shadow: 0 6px 20px rgba(25, 48, 32, 0.04);
+    }
+
+    .review-card.improvement {
+      border-color: #ebd0aa;
+      background: #fffdfa;
+    }
+
+    .review-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .rating {
+      display: inline-flex;
+      min-height: 30px;
+      padding: 5px 10px;
+      align-items: center;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .rating.improvement {
+      background: var(--amber-soft);
+      color: var(--amber);
+    }
+
+    .review-time {
+      color: #868d88;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .feedback {
+      margin: 17px 0;
+      color: #2b302c;
+      font-size: 16px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .order-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px 18px;
+      padding-top: 14px;
+      border-top: 1px solid #e9ecea;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .order-info strong {
+      color: #444b46;
+      font-weight: 800;
+    }
+
+    .empty,
+    .error-message {
+      padding: 52px 22px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface);
+      color: var(--muted);
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .error-message {
+      color: var(--danger);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 700px) {
+      .header-inner,
+      .toolbar {
+        align-items: stretch;
+      }
+
+      .header-inner {
+        padding: 12px 0;
+        flex-direction: column;
+      }
+
+      .header-left,
+      .header-actions {
+        justify-content: space-between;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .toolbar {
+        flex-direction: column;
+      }
+
+      .order-info {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="loadingScreen" class="loading-screen">
+    관리자 권한과 고객 의견을 확인하고 있습니다...
+  </div>
+
+  <header>
+    <div class="header-inner">
+      <div class="header-left">
+        <a class="nav-button" href="./admin-dashboard.html">← 대시보드</a>
+        <h1>고객 의견함</h1>
+      </div>
+
+      <div class="header-actions">
+        <a class="nav-button" href="./admin-orders.html">주문 관리</a>
+        <button id="logoutButton" class="logout-button" type="button">
+          로그아웃
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2>배송 후 고객이 남긴 비공개 의견입니다</h2>
+      <p>고객에게는 공개되지 않으며, 개선이 필요한 의견을 먼저 골라볼 수 있습니다.</p>
+    </section>
+
+    <section class="summary-grid" aria-label="고객 의견 요약">
+      <div class="summary-card">
+        <span>전체 의견</span>
+        <strong id="totalCount">0건</strong>
+      </div>
+      <div class="summary-card">
+        <span>최근 7일</span>
+        <strong id="recentCount">0건</strong>
+      </div>
+      <div class="summary-card">
+        <span>개선 필요</span>
+        <strong id="improvementCount">0건</strong>
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <h2>의견 목록</h2>
+      <div class="filters" aria-label="의견 필터">
+        <button class="filter-button active" type="button" data-filter="all" aria-pressed="true">
+          전체
+        </button>
+        <button class="filter-button" type="button" data-filter="improvement" aria-pressed="false">
+          개선 필요만
+        </button>
+      </div>
+    </div>
+
+    <div id="reviewsList" class="reviews-list"></div>
+    <p id="emptyState" class="empty hidden">아직 등록된 고객 의견이 없습니다.</p>
+    <p id="errorMessage" class="error-message hidden" role="alert"></p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL =
+      "https://rbtwvemljpgnwhlzayqy.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_m-Uc3eR2-57P36HMP_eHsQ_F5h1tfzu";
+
+    const PAYMENT_API_BASE =
+      "https://yunhawi-payment-api.yunhawifood.workers.dev";
+
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+    const loadingScreen = document.getElementById("loadingScreen");
+    const reviewsList = document.getElementById("reviewsList");
+    const emptyState = document.getElementById("emptyState");
+    const errorMessage = document.getElementById("errorMessage");
+    const logoutButton = document.getElementById("logoutButton");
+
+    let allReviews = [];
+    let activeFilter = "all";
+
+    function moveToLogin() {
+      window.location.replace("./admin-login.html");
+    }
+
+    function formatKoreanTime(value) {
+      if (!value) return "-";
+
+      const date = new Date(
+        /(?:Z|[+-]\d\d:\d\d)$/.test(value)
+          ? value
+          : value.replace(" ", "T") + "Z"
+      );
+
+      if (Number.isNaN(date.getTime())) return String(value);
+
+      return new Intl.DateTimeFormat("ko-KR", {
+        timeZone: "Asia/Seoul",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+      }).format(date);
+    }
+
+    function formatPhone(value) {
+      const digits = String(value || "").replace(/\D/g, "");
+
+      if (digits.length === 11) {
+        return digits.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+      }
+
+      if (digits.length === 10) {
+        return digits.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+      }
+
+      return value || "-";
+    }
+
+    function ratingInfo(value) {
+      const ratings = {
+        VERY_GOOD: {
+          label: "😊 아주 만족",
+          improvement: false
+        },
+        GOOD: {
+          label: "🙂 만족",
+          improvement: false
+        },
+        NEEDS_IMPROVEMENT: {
+          label: "💬 개선 필요",
+          improvement: true
+        }
+      };
+
+      return ratings[value] || {
+        label: "고객 의견",
+        improvement: false
+      };
+    }
+
+    function addInfoRow(container, label, value) {
+      const row = document.createElement("div");
+      const strong = document.createElement("strong");
+
+      strong.textContent = label + " ";
+      row.appendChild(strong);
+      row.appendChild(document.createTextNode(value || "-"));
+      container.appendChild(row);
+    }
+
+    function createReviewCard(review) {
+      const rating = ratingInfo(review.satisfaction);
+      const card = document.createElement("article");
+      const top = document.createElement("div");
+      const badge = document.createElement("span");
+      const time = document.createElement("time");
+      const feedback = document.createElement("p");
+      const orderInfo = document.createElement("div");
+
+      card.className =
+        "review-card" + (rating.improvement ? " improvement" : "");
+      card.dataset.filter = rating.improvement ? "improvement" : "positive";
+
+      top.className = "review-top";
+      badge.className =
+        "rating" + (rating.improvement ? " improvement" : "");
+      badge.textContent = rating.label;
+
+      time.className = "review-time";
+      time.dateTime = review.created_at || "";
+      time.textContent = formatKoreanTime(review.created_at);
+
+      top.appendChild(badge);
+      top.appendChild(time);
+
+      feedback.className = "feedback";
+      feedback.textContent = review.feedback || "-";
+
+      orderInfo.className = "order-info";
+      addInfoRow(orderInfo, "고객", review.customer_name || "-");
+      addInfoRow(orderInfo, "연락처", formatPhone(review.customer_phone));
+      addInfoRow(orderInfo, "주문상품", review.order_name || "-");
+      addInfoRow(orderInfo, "주문번호", review.order_id || "-");
+
+      card.appendChild(top);
+      card.appendChild(feedback);
+      card.appendChild(orderInfo);
+
+      return card;
+    }
+
+    function renderReviews() {
+      reviewsList.replaceChildren();
+      errorMessage.classList.add("hidden");
+
+      const visibleReviews = allReviews.filter(function (review) {
+        return (
+          activeFilter === "all" ||
+          review.satisfaction === "NEEDS_IMPROVEMENT"
+        );
+      });
+
+      emptyState.textContent =
+        activeFilter === "improvement"
+          ? "개선이 필요하다고 남긴 의견이 없습니다."
+          : "아직 등록된 고객 의견이 없습니다.";
+      emptyState.classList.toggle("hidden", visibleReviews.length > 0);
+
+      visibleReviews.forEach(function (review) {
+        reviewsList.appendChild(createReviewCard(review));
+      });
+    }
+
+    async function getAdminSession() {
+      const {
+        data: { session },
+        error: sessionError
+      } = await supabaseClient.auth.getSession();
+
+      if (sessionError) throw sessionError;
+      if (!session) return null;
+
+      const {
+        data: admin,
+        error: adminError
+      } = await supabaseClient
+        .from("admin_users")
+        .select("user_id, is_active")
+        .eq("user_id", session.user.id)
+        .eq("is_active", true)
+        .maybeSingle();
+
+      if (adminError) throw adminError;
+
+      if (!admin) {
+        await supabaseClient.auth.signOut();
+        return null;
+      }
+
+      return session;
+    }
+
+    async function loadReviews() {
+      try {
+        const session = await getAdminSession();
+
+        if (!session?.access_token) {
+          moveToLogin();
+          return;
+        }
+
+        const response = await fetch(
+          PAYMENT_API_BASE + "/admin/reviews",
+          {
+            method: "GET",
+            headers: {
+              Authorization: "Bearer " + session.access_token,
+              Accept: "application/json"
+            },
+            cache: "no-store"
+          }
+        );
+
+        let data = null;
+
+        try {
+          data = await response.json();
+        } catch {
+          data = null;
+        }
+
+        if (response.status === 401) {
+          moveToLogin();
+          return;
+        }
+
+        if (!response.ok || !data?.ok) {
+          throw new Error(
+            data?.message || "고객 의견을 불러오지 못했습니다."
+          );
+        }
+
+        allReviews = Array.isArray(data.reviews) ? data.reviews : [];
+
+        document.getElementById("totalCount").textContent =
+          Number(data.summary?.total || 0).toLocaleString("ko-KR") + "건";
+        document.getElementById("recentCount").textContent =
+          Number(data.summary?.last7Days || 0).toLocaleString("ko-KR") + "건";
+        document.getElementById("improvementCount").textContent =
+          Number(data.summary?.needsImprovement || 0).toLocaleString("ko-KR") + "건";
+
+        renderReviews();
+      } catch (error) {
+        console.error(error);
+        errorMessage.textContent =
+          error?.message || "고객 의견을 불러오지 못했습니다.";
+        errorMessage.classList.remove("hidden");
+      } finally {
+        loadingScreen.style.display = "none";
+      }
+    }
+
+    document.querySelectorAll(".filter-button").forEach(function (button) {
+      button.addEventListener("click", function () {
+        activeFilter = button.dataset.filter || "all";
+
+        document.querySelectorAll(".filter-button").forEach(function (item) {
+          const active = item === button;
+          item.classList.toggle("active", active);
+          item.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+
+        renderReviews();
+      });
+    });
+
+    logoutButton.addEventListener("click", async function () {
+      logoutButton.disabled = true;
+      logoutButton.textContent = "처리 중...";
+
+      try {
+        await supabaseClient.auth.signOut();
+        moveToLogin();
+      } catch (error) {
+        console.error(error);
+        logoutButton.disabled = false;
+        logoutButton.textContent = "로그아웃";
+      }
+    });
+
+    loadReviews();
+  </script>
+</body>
+</html>
