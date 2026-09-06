@@ -491,118 +491,103 @@
 ======================================== */
 
 .order-card {
-  margin-top: 0;
+  position: relative;
+  overflow: hidden;
+  margin-top: 20px;
+  padding: 31px 24px 22px;
+  border: 1px solid #ded8ce;
+  border-radius: 28px;
+  background: linear-gradient(155deg, #fffdf8 0%, #ffffff 64%, #f4f7f2 100%);
+  box-shadow: 0 16px 44px rgba(46, 39, 29, 0.10);
+  text-align: left;
+}
 
-  padding: 25px 18px 18px;
-
-  border: 1px solid #e5ded2;
-  border-radius: 27px;
-
-  background: #ffffff;
-
-  box-shadow:
-    0 13px 30px rgba(58, 46, 30, 0.11);
-
-  text-align: center;
+.order-card::before {
+  position: absolute;
+  top: 0;
+  left: 24px;
+  width: 54px;
+  height: 4px;
+  border-radius: 0 0 999px 999px;
+  background: #286b43;
+  content: "";
 }
 
 .order-prompt {
-  display: inline-flex;
-  align-items: center;
-  min-height: 28px;
-  margin: 0 0 12px;
-  padding: 0 12px;
-  border-radius: 999px;
-  background: #fff1e4;
-  color: #b34a24;
+  margin: 0 0 7px;
+  color: #a14928;
   font-size: 12px;
-  line-height: 1.25;
+  line-height: 1.35;
   font-weight: 900;
-  letter-spacing: -0.35px;
+  letter-spacing: -0.25px;
   word-break: keep-all;
 }
 
 .order-concept {
-  margin: 0 0 8px;
-
-  color: #2f8f50;
-
-  font-size: 14px;
+  margin: 0 0 14px;
+  color: #37634a;
+  font-size: 13px;
   line-height: 1.3;
-
-  font-weight: 900;
-
-  letter-spacing: -0.35px;
-
-  text-align: center;
+  font-weight: 850;
+  letter-spacing: -0.3px;
 }
 
 .order-title {
   margin: 0;
-
-  color: #151515;
-
-  font-size: clamp(22px, 6vw, 28px);
-  line-height: 1.18;
-
+  color: #171815;
+  font-size: clamp(34px, 9.2vw, 46px);
+  line-height: 1.08;
   font-weight: 950;
-
-  letter-spacing: -1.9px;
-
-  text-align: center;
-
+  letter-spacing: -2.7px;
   word-break: keep-all;
 }
 
 .order-description {
-  max-width: 430px;
-  margin: 13px auto 0;
-  color: #59544d;
+  max-width: 400px;
+  margin: 17px 0 0;
+  color: #5f5b54;
   font-size: 14px;
-  line-height: 1.62;
-  font-weight: 720;
-  letter-spacing: -0.42px;
+  line-height: 1.55;
+  font-weight: 700;
+  letter-spacing: -0.35px;
   word-break: keep-all;
 }
 
 .order-benefits {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  margin-top: 19px;
+  padding: 13px 0;
+  border-top: 1px solid #e7e1d7;
+  border-bottom: 1px solid #e7e1d7;
 }
 
 .order-benefit {
-  display: grid;
-  gap: 3px;
-  align-content: center;
-  min-height: 58px;
-  padding: 10px 8px;
-  border: 1px solid #dbe8de;
-  border-radius: 15px;
-  background: #f5faf6;
-  color: #1e5f37;
-  font-size: 15px;
+  flex: 1 1 0;
+  color: #215f3b;
+  font-size: 14px;
   line-height: 1.2;
   font-weight: 950;
-  letter-spacing: -0.55px;
+  letter-spacing: -0.45px;
+  text-align: center;
 }
 
 .order-benefit small {
-  color: #6f8274;
-  font-size: 10px;
-  font-weight: 850;
-  letter-spacing: -0.2px;
+  display: block;
+  margin-bottom: 4px;
+  color: #898178;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.15px;
 }
 
 .order-benefit.shipping {
-  border-color: #f0d2a8;
-  background: #fff8ec;
-  color: #a75218;
+  border-left: 1px solid #ddd6ca;
+  color: #a04c1f;
 }
 
 .order-benefit.shipping small {
-  color: #9a795e;
+  color: #898178;
 }
 
 .process-heading {
@@ -631,190 +616,91 @@
 }
 
 .order-button {
-  position: relative;
-
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-
   align-items: center;
-  gap: 14px;
-
+  gap: 16px;
   width: 100%;
-
-  min-height: 144px;
-
-  margin-top: 17px;
-  padding: 22px 20px 22px 24px;
-
+  min-height: 82px;
+  margin-top: 18px;
+  padding: 15px 16px 15px 19px;
   border: 0;
-  border-radius: 22px;
-
-  overflow: hidden;
-
-  background:
-    linear-gradient(
-      135deg,
-      #1f6d3d 0%,
-      #2f9a58 58%,
-      #51ad6d 100%
-    );
-
+  border-radius: 17px;
+  background: linear-gradient(135deg, #184b31 0%, #2a7047 100%);
   color: #ffffff;
-
   text-align: left;
-
-  box-shadow:
-  inset 0 0 0 2px rgba(255, 255, 255, 0.34),
-  0 15px 28px rgba(31, 109, 61, 0.30);
-
-animation:
-  orderHeartbeat 2.8s ease-in-out infinite;
+  box-shadow: 0 11px 24px rgba(25, 74, 48, 0.20);
   cursor: pointer;
-
   transition:
     transform 0.14s ease,
     background 0.14s ease,
     box-shadow 0.14s ease;
 }
 
-.order-button::before {
-  position: absolute;
-  inset: -45% auto auto 52%;
-
-  width: 180px;
-  height: 180px;
-
-  border-radius: 50%;
-
-  background:
-    rgba(255, 255, 255, 0.13);
-
-  content: "";
-  pointer-events: none;
-}
-
 .order-button[data-intake-status="closed"] {
-  background:
-    linear-gradient(
-      135deg,
-      #314c3b 0%,
-      #40664e 58%,
-      #547960 100%
-    );
-
-  box-shadow:
-    inset 0 0 0 2px rgba(255, 255, 255, 0.24),
-    0 13px 25px rgba(38, 70, 49, 0.25);
-}
-
-.order-button-copy,
-.order-button-arrow {
-  position: relative;
-  z-index: 1;
+  background: linear-gradient(135deg, #39483f 0%, #526359 100%);
+  box-shadow: 0 9px 20px rgba(39, 55, 45, 0.18);
 }
 
 .order-button-copy {
   display: grid;
-  gap: 5px;
+  gap: 3px;
   min-width: 0;
 }
 
 .order-button-badge {
-  width: max-content;
-  max-width: 100%;
-  padding: 5px 9px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.18);
-  color: #ffffff;
-  font-size: 11px;
-  line-height: 1;
-  font-weight: 900;
-  letter-spacing: -0.25px;
+  color: #cbe2d2;
+  font-size: 10px;
+  line-height: 1.2;
+  font-weight: 850;
+  letter-spacing: 0.1px;
 }
 
 .order-button[data-intake-status="closed"]
 .order-button-badge {
-  background: #fff0c7;
-  color: #77510d;
+  color: #f3d69e;
 }
 
 .order-button-label {
-  font-size: 30px;
-  line-height: 1.12;
+  font-size: 21px;
+  line-height: 1.2;
   font-weight: 950;
-  letter-spacing: -1.3px;
+  letter-spacing: -0.9px;
   word-break: keep-all;
 }
 
 .order-button-meta {
-  color: rgba(255, 255, 255, 0.86);
-  font-size: 13px;
-  line-height: 1.35;
-  font-weight: 800;
-  letter-spacing: -0.3px;
+  color: rgba(255, 255, 255, 0.70);
+  font-size: 11px;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.15px;
   word-break: keep-all;
 }
 
 .order-button-arrow {
   display: grid;
   place-items: center;
-
-  width: 64px;
-  height: 64px;
-
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: #ffffff;
-  color: #287c46;
-
-  font-size: 34px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-size: 23px;
   line-height: 1;
   font-weight: 900;
-
-  box-shadow:
-    0 8px 18px rgba(12, 67, 35, 0.20);
 }
 
 
 .order-button:active {
-  animation: none;
-
   transform: scale(0.98);
-
-  background: #267642;
-
-  box-shadow:
-    0 7px 15px rgba(47, 143, 80, 0.20);
+  background: #143f2a;
+  box-shadow: 0 6px 14px rgba(25, 74, 48, 0.18);
 }
 
 .order-button:active .order-button-arrow {
   transform: translateX(2px);
 }
-@keyframes orderHeartbeat {
-
-  0%,
-  70%,
-  100% {
-    transform: scale(1);
-  }
-
-  76% {
-    transform: scale(1.018);
-  }
-
-  82% {
-    transform: scale(1);
-  }
-
-  88% {
-    transform: scale(1.012);
-  }
-
-  94% {
-    transform: scale(1);
-  }
-
-}
-
 @media (prefers-reduced-motion: reduce) {
 
   html {
@@ -829,22 +715,14 @@ animation:
     transition-duration: 0.01ms !important;
   }
 
-  .order-button {
-    animation: none;
-  }
-
 }
 .order-note {
-  margin: 13px 0 0;
-
-  color: #817a72;
-
-  font-size: 12px;
+  margin: 11px 2px 0;
+  color: #878078;
+  font-size: 11px;
   line-height: 1.4;
-
-  font-weight: 800;
-
-  text-align: center;
+  font-weight: 700;
+  text-align: left;
 }
 
 
@@ -1572,34 +1450,34 @@ animation:
 
 
       .order-card {
-        padding:
-          21px 16px 17px;
+        margin-top: 16px;
+        padding: 27px 19px 19px;
       }
 
 
       .order-title {
-        font-size: clamp(20px, 5.9vw, 23px);
-        letter-spacing: -1.55px;
+        font-size: clamp(32px, 9.4vw, 38px);
+        letter-spacing: -2.25px;
       }
 
 
       .order-button {
-        min-height: 136px;
-        padding: 20px 16px 20px 20px;
+        min-height: 78px;
+        padding: 14px 13px 14px 16px;
       }
 
       .order-button-label {
-        font-size: 29px;
+        font-size: 20px;
       }
 
       .order-button-meta {
-        font-size: 12px;
+        font-size: 10.5px;
       }
 
       .order-button-arrow {
-        width: 56px;
-        height: 56px;
-        font-size: 30px;
+        width: 42px;
+        height: 42px;
+        font-size: 22px;
       }
 
     }
@@ -1638,7 +1516,7 @@ animation:
     <section class="order-card">
 
       <p class="order-prompt">
-        퇴근하고 다시 장보러 나가기 귀찮으시죠?
+        오지 마세요. 제가 갈게요.
       </p>
 
       <p class="order-concept">
@@ -1651,7 +1529,7 @@ animation:
       </h1>
 
       <p class="order-description">
-        오늘 밤 9시까지 주문하면 한농직판장에서 직접 손질해
+        퇴근 후 주문하면 직접 손질해
         내일 오전 8시 이전 문 앞에 가져다드립니다.
       </p>
 
@@ -1676,13 +1554,13 @@ animation:
       >
         <span class="order-button-copy" aria-live="polite">
           <span class="order-button-badge" id="orderCtaBadge">
-            전주 지정지역
+            지금 주문 가능
           </span>
           <span class="order-button-label" id="orderCtaLabel">
-            내일 아침 고기 주문하기
+            고기 고르기
           </span>
           <span class="order-button-meta" id="orderCtaMeta">
-            오늘 밤 9시 마감 · 내일 오전 8시 이전 도착
+            21시 마감 · 내일 08시 전 도착
           </span>
         </span>
         <span class="order-button-arrow" aria-hidden="true">→</span>
@@ -2354,11 +2232,11 @@ animation:
           button.dataset.intakeStatus =
             "open";
           badge.textContent =
-            "전주 지정지역";
+            "지금 주문 가능";
           label.textContent =
-            "내일 아침 고기 주문하기";
+            "고기 고르기";
           meta.textContent =
-            "오늘 밤 9시 마감 · 내일 오전 8시 이전 도착";
+            "21시 마감 · 내일 08시 전 도착";
           note.textContent =
             "한 팩부터 주문 가능 · 전주 지정지역";
         } else {

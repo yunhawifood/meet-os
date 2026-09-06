@@ -445,28 +445,17 @@
     }
 
   .section-head {
-
-  position: relative;
-
-  margin: 8px 0 24px;
-
-  text-align: center;
+  margin: 0 2px 16px;
+  text-align: left;
 
 } 
     .section-head h1 {
-
       margin: 0;
-
-      color: var(--green);
-
-      font-size: clamp(31px, 7vw, 42px);
-
-      line-height: 1.2;
-
-      letter-spacing: -0.055em;
-
-      font-weight: 900;
-
+      color: #1c211e;
+      font-size: clamp(27px, 7vw, 34px);
+      line-height: 1.15;
+      letter-spacing: -0.05em;
+      font-weight: 950;
     }
 
     .section-head p {
@@ -486,17 +475,6 @@
       color: var(--red);
 
     }
-.section-head .back-button {
-
-  position: absolute;
-
-  top: -2px;
-
-  left: 0;
-
-  margin: 0;
-
-} 
     .products {
 
       display: grid;
@@ -1846,128 +1824,54 @@
   font-weight: 650;
 
 }
-    .compact-delivery-guide {
-
-  margin: 18px 0 24px;
-
-  padding: 18px;
-
-  border: 1px solid #dceee4;
-
-  border-radius: 20px;
-
-  background: #f7fcf9;
-
+    .kiosk-region-nav {
+  position: relative;
+  z-index: 2;
+  margin: 0 0 22px;
 }
 
-.compact-guide-title {
-
-  margin-bottom: 14px;
-
-  color: #235f3f;
-
-  font-size: 15px;
-
-  font-weight: 800;
-
-  text-align: center;
-
-}
-
-.compact-guide-grid {
-
+.kiosk-region-button {
   display: grid;
-
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-
-  gap: 8px;
-
-}
-
-.compact-guide-item {
-
-  display: flex;
-
-  flex-direction: column;
-
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-
-  justify-content: center;
-
-  min-height: 88px;
-
-  padding: 10px 6px;
-
-  border: 1px solid #e5eee9;
-
-  border-radius: 14px;
-
-  background: #ffffff;
-
-  text-align: center;
-
-}
-
-.compact-guide-item span {
-
-  margin-bottom: 5px;
-
-  font-size: 21px;
-
-}
-
-.compact-guide-item strong {
-
-  color: #235f3f;
-
-  font-size: 14px;
-
-  line-height: 1.35;
-
-}
-
-.compact-guide-item small {
-
-  margin-top: 3px;
-
-  color: #666666;
-
-  font-size: 11px;
-
-  line-height: 1.35;
-
-  word-break: keep-all;
-
-}
-
-.compact-region-button {
-
+  gap: 12px;
   width: 100%;
-
-  min-height: 46px;
-
-  margin-top: 12px;
-
-  border: 1px solid #dbe8e1;
-
-  border-radius: 13px;
-
+  min-height: 60px;
+  padding: 11px 15px;
+  border: 1px solid #d8e4db;
+  border-radius: 17px;
   background: #ffffff;
-
-  color: #235f3f;
-
-  font-size: 14px;
-
-  font-weight: 800;
-
+  color: #214e36;
+  font-size: 15px;
+  font-weight: 900;
+  text-align: left;
+  box-shadow: 0 7px 20px rgba(35, 95, 63, 0.08);
   cursor: pointer;
-
 }
 
-.compact-region-button:active {
+.kiosk-region-icon,
+.kiosk-region-arrow {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
 
+.kiosk-region-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #edf5ef;
+  font-size: 16px;
+}
+
+.kiosk-region-arrow {
+  color: #6e8b79;
+  font-size: 22px;
+}
+
+.kiosk-region-button:active {
   transform: scale(0.985);
-
+  background: #f8fbf9;
 }
 
 .order-consent {
@@ -2574,7 +2478,7 @@
 
   .store-notices {
     display: none;
-    margin: -10px 0 24px;
+    margin: 18px 0 0;
     padding: 14px 16px;
     border: 1px solid #f0dfaa;
     border-radius: 16px;
@@ -2960,28 +2864,45 @@
   }
   .intake-closed-notice {
   display: none;
-  margin: 18px 0 24px;
-  padding: 22px 18px;
-  border-radius: 18px;
-  background: #fff4eb;
-  text-align: center;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: -8px 0 18px;
+  padding: 11px 13px;
+  border: 1px solid #eee0d2;
+  border-radius: 12px;
+  background: #fffaf5;
+  text-align: left;
 }
 
 .intake-closed-notice.is-visible {
-  display: block;
+  display: flex;
 }
 
 .intake-closed-notice strong {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 17px;
-  line-height: 1.45;
+  flex: 0 0 auto;
+  color: #8a4526;
+  font-size: 13px;
+  line-height: 1.35;
 }
 
 .intake-closed-notice p {
   margin: 0;
-  font-size: 14px;
-  line-height: 1.7;
+  color: #6f6258;
+  font-size: 11px;
+  line-height: 1.4;
+  text-align: right;
+}
+
+@media (max-width: 360px) {
+  .intake-closed-notice.is-visible {
+    display: block;
+  }
+
+  .intake-closed-notice p {
+    margin-top: 3px;
+    text-align: left;
+  }
 }
 
 :is(button, a, input, select, textarea, [role="button"]):focus-visible {
@@ -3009,64 +2930,35 @@
 
   <main class="page">
 
-<section class="compact-delivery-guide" aria-label="새벽배송 핵심 안내">
-
-  <div class="compact-guide-title">
-
-    🚚 오늘 주문하고 내일 문 앞에서 받으세요
-
-  </div>
-
-  <div class="compact-guide-grid">
-
-    <div class="compact-guide-item">
-
-      <span>🌙</span>
-
-      <strong>오늘 21시</strong>
-
-      <small>주문 마감</small>
-
-    </div>
-
-    <div class="compact-guide-item">
-
-      <span>🌅</span>
-
-      <strong>다음 날</strong>
-
-      <small>오전 8시 이전 문앞 배송</small>
-
-    </div>
-
-   <div class="compact-guide-item">
-
-  <span>🏠</span>
-
-  <strong>배송비 0원</strong>
-
-  <small>지정 아파트 새벽배송</small>
-
-</div>
-
-  </div>
-
+<nav class="kiosk-region-nav" aria-label="배송 지역 확인">
   <button
-
-    class="compact-region-button"
-
+    class="kiosk-region-button"
     type="button"
-
     onclick="openRegionModal()"
-
   >
-
-    배송 가능 지역 확인하기 →
-
+    <span class="kiosk-region-icon" aria-hidden="true">⌖</span>
+    <span>배송 가능 지역 확인하기</span>
+    <span class="kiosk-region-arrow" aria-hidden="true">›</span>
   </button>
+</nav>
 
+<section
+  class="intake-closed-notice"
+  id="intakeClosedNotice"
+  aria-live="polite"
+>
+  <strong>오늘 주문 마감</strong>
+  <p>내일 오전 9시에 다시 열립니다.</p>
 </section>
-
+<section class="section-head" id="products">
+  <h1>고기 고르기</h1>
+</section>
+    <section
+      class="products"
+      id="productGrid"
+      aria-label="새벽배송 상품 목록"
+      aria-live="polite"
+    ></section>
 <section
   class="store-notices"
   id="storeNotices"
@@ -3076,53 +2968,6 @@
   <h2>📢 한농직판장 안내</h2>
   <div id="storeNoticeList"></div>
 </section>
-<section
-  class="intake-closed-notice"
-  id="intakeClosedNotice"
-  aria-live="polite"
->
-  <strong>
-    오늘 새벽배송 주문이 마감되었습니다.
-  </strong>
-
-  <p>
-    신선을 위해 하루 40건만 준비하고 있습니다.<br />
-    다음 주문 접수는 오전 9시부터 시작됩니다.
-  </p>
-</section>
-<section class="section-head" id="products">
-
-  <button
-
-    class="back-button"
-
-    type="button"
-
-    onclick="location.href='index.html'"
-
-    aria-label="첫 화면으로 돌아가기"
-
-  >
-
-    ‹
-
-  </button>
-
-  <h1>새벽배송 주문하기</h1>
-
-  <p>
-
-    <strong>500g</strong> 단위로 선택 가능합니다.
-
-  </p>
-
-</section>
-    <section
-      class="products"
-      id="productGrid"
-      aria-label="새벽배송 상품 목록"
-      aria-live="polite"
-    ></section>
 <section class="contact-box compact-contact" aria-label="상품 문의">
 
   <div class="compact-contact-copy">
@@ -4159,13 +4004,12 @@ renderOrderIntakeNotice();
 
     if (title) {
       title.textContent =
-        "오늘은 새벽배송 주문을 쉬어갑니다.";
+        "오늘은 주문 휴무";
     }
 
     if (text) {
       text.innerHTML =
-        "다음 주문 접수는 일요일 오전 9시부터 시작됩니다.<br />" +
-        "주문하신 상품은 월요일 오전 8시 이전 배송됩니다.";
+        "일요일 오전 9시에 다시 열립니다.";
     }
 
     return;
@@ -4174,13 +4018,12 @@ renderOrderIntakeNotice();
 
   if (title) {
     title.textContent =
-      "오늘 새벽배송 주문이 마감되었습니다.";
+      "오늘 주문 마감";
   }
 
   if (text) {
     text.innerHTML =
-      "신선을 위해 하루 40건만 준비하고 있습니다.<br />" +
-      "다음 주문 접수는 오전 9시부터 시작됩니다.";
+      "내일 오전 9시에 다시 열립니다.";
   }
 }
 async function refreshOrderIntakeStatus() {
