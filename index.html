@@ -494,14 +494,14 @@
   position: relative;
   overflow: hidden;
   margin-top: 10px;
-  padding: 29px 24px 20px;
+  padding: 27px 20px 20px;
   border: 1px solid rgba(255, 255, 255, 0.10);
   border-radius: 27px;
   background:
     radial-gradient(circle at 100% 0%, rgba(224, 186, 111, 0.16), transparent 35%),
     linear-gradient(145deg, #143c2a 0%, #1f5338 100%);
   box-shadow: 0 17px 38px rgba(25, 55, 39, 0.20);
-  text-align: left;
+  text-align: center;
 }
 
 .order-card::before {
@@ -516,7 +516,7 @@
 }
 
 .order-prompt {
-  margin: 0 0 13px;
+  margin: 0 0 14px;
   color: #f1cf8e;
   font-size: 12px;
   line-height: 1.35;
@@ -526,9 +526,9 @@
 }
 
 .order-concept {
-  margin: 17px 0 0;
+  margin: 15px 0 0;
   color: #ffffff;
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1.4;
   font-weight: 900;
   letter-spacing: -0.7px;
@@ -538,10 +538,11 @@
 .order-title {
   margin: 0;
   color: #ffffff;
-  font-size: clamp(39px, 10.6vw, 53px);
-  line-height: 1.03;
+  font-size: clamp(22px, 6.8vw, 28px);
+  line-height: 1.2;
   font-weight: 950;
-  letter-spacing: -3.2px;
+  letter-spacing: -1.8px;
+  white-space: nowrap;
   word-break: keep-all;
 }
 
@@ -549,52 +550,71 @@
   color: #f1cf8e;
 }
 
-.order-description {
-  max-width: 390px;
-  margin: 8px 0 0;
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 13px;
-  line-height: 1.5;
-  font-weight: 720;
-  letter-spacing: -0.25px;
+.delivery-promise {
+  display: grid;
+  gap: 4px;
+  margin-top: 17px;
+  padding: 13px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.075);
+  text-align: center;
+}
+
+.delivery-promise span {
+  color: #f1cf8e;
+  font-size: 11px;
+  line-height: 1.3;
+  font-weight: 850;
+  letter-spacing: -0.15px;
+}
+
+.delivery-promise strong {
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 1.35;
+  font-weight: 900;
+  letter-spacing: -0.45px;
   word-break: keep-all;
 }
 
 .order-benefits {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  margin-top: 9px;
   padding: 0;
   border: 0;
 }
 
 .order-benefit {
-  position: relative;
-  flex: 0 1 auto;
-  color: rgba(255, 255, 255, 0.92);
-  font-size: 13px;
+  display: grid;
+  align-content: center;
+  min-height: 66px;
+  padding: 10px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #ffffff;
+  font-size: 14px;
   line-height: 1.2;
-  font-weight: 850;
-  letter-spacing: -0.3px;
+  font-weight: 950;
+  letter-spacing: -0.4px;
+  text-align: center;
+}
+
+.order-benefit small {
+  display: block;
+  margin-bottom: 5px;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 10px;
+  line-height: 1.2;
+  font-weight: 750;
+  letter-spacing: -0.1px;
 }
 
 .order-benefit.shipping {
-  padding-left: 13px;
-  border: 0;
   color: #f1cf8e;
-}
-
-.order-benefit.shipping::before {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.42);
-  transform: translateY(-50%);
-  content: "";
 }
 
 .process-heading {
@@ -628,9 +648,9 @@
   align-items: center;
   gap: 16px;
   width: 100%;
-  min-height: 78px;
-  margin-top: 20px;
-  padding: 15px 16px 15px 19px;
+  min-height: 108px;
+  margin-top: 14px;
+  padding: 18px 18px 18px 21px;
   border: 0;
   border-radius: 17px;
   background: #ffffff;
@@ -638,6 +658,7 @@
   text-align: left;
   box-shadow: 0 11px 24px rgba(7, 31, 19, 0.19);
   cursor: pointer;
+  animation: orderHeartbeat 3.1s ease-in-out infinite;
   transition:
     transform 0.14s ease,
     background 0.14s ease,
@@ -652,7 +673,7 @@
 
 .order-button-copy {
   display: grid;
-  gap: 3px;
+  gap: 5px;
   min-width: 0;
 }
 
@@ -670,8 +691,8 @@
 }
 
 .order-button-label {
-  font-size: 21px;
-  line-height: 1.2;
+  font-size: 27px;
+  line-height: 1.15;
   font-weight: 950;
   letter-spacing: -0.9px;
   word-break: keep-all;
@@ -679,7 +700,7 @@
 
 .order-button-meta {
   color: #718078;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.3;
   font-weight: 700;
   letter-spacing: -0.15px;
@@ -689,18 +710,19 @@
 .order-button-arrow {
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
   background: #e8f1eb;
   color: #1f6540;
-  font-size: 23px;
+  font-size: 30px;
   line-height: 1;
   font-weight: 900;
 }
 
 
 .order-button:active {
+  animation: none;
   transform: scale(0.98);
   background: #f1f6f3;
   box-shadow: 0 6px 14px rgba(7, 31, 19, 0.15);
@@ -708,6 +730,31 @@
 
 .order-button:active .order-button-arrow {
   transform: translateX(2px);
+}
+
+@keyframes orderHeartbeat {
+  0%,
+  70%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 11px 24px rgba(7, 31, 19, 0.19);
+  }
+
+  77% {
+    transform: scale(1.018);
+    box-shadow:
+      0 0 0 5px rgba(241, 207, 142, 0.16),
+      0 15px 30px rgba(7, 31, 19, 0.23);
+  }
+
+  84% {
+    transform: scale(1);
+    box-shadow: 0 11px 24px rgba(7, 31, 19, 0.19);
+  }
+
+  91% {
+    transform: scale(1.011);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
 
@@ -723,6 +770,10 @@
     transition-duration: 0.01ms !important;
   }
 
+  .order-button {
+    animation: none;
+  }
+
 }
 .order-note {
   margin: 11px 2px 0;
@@ -730,7 +781,7 @@
   font-size: 11px;
   line-height: 1.4;
   font-weight: 700;
-  text-align: left;
+  text-align: center;
 }
 
 
@@ -1459,33 +1510,33 @@
 
       .order-card {
         margin-top: 8px;
-        padding: 26px 20px 18px;
+        padding: 24px 17px 18px;
       }
 
 
       .order-title {
-        font-size: clamp(38px, 10.6vw, 44px);
-        letter-spacing: -2.8px;
+        font-size: clamp(22px, 6.8vw, 27px);
+        letter-spacing: -1.3px;
       }
 
 
       .order-button {
-        min-height: 78px;
-        padding: 14px 13px 14px 16px;
+        min-height: 102px;
+        padding: 16px 14px 16px 18px;
       }
 
       .order-button-label {
-        font-size: 20px;
+        font-size: 23px;
       }
 
       .order-button-meta {
-        font-size: 10.5px;
+        font-size: 11px;
       }
 
       .order-button-arrow {
-        width: 42px;
-        height: 42px;
-        font-size: 22px;
+        width: 54px;
+        height: 54px;
+        font-size: 28px;
       }
 
     }
@@ -1528,25 +1579,26 @@
       </p>
 
       <h1 class="order-title">
-        오지 마세요.<br />
-        <span>제가 갈게요.</span>
+        오지 마세요, <span>제가 갈게요.</span>
       </h1>
 
       <p class="order-concept">
         내일 먹을 고기, 오늘 밤 주문해두세요.
       </p>
 
-      <p class="order-description">
-        오늘 밤 9시까지 주문하면 직접 손질해
-        내일 오전 8시 이전 문 앞에 가져다드립니다.
-      </p>
+      <div class="delivery-promise" aria-label="주문 및 배송 시간">
+        <span>21시까지 주문 시</span>
+        <strong>다음 날 오전 8시 이전 문 앞 배송</strong>
+      </div>
 
       <div class="order-benefits" aria-label="새벽배송 핵심 혜택">
         <span class="order-benefit">
+          <small>가격 혜택</small>
           매장가격 그대로
         </span>
         <span class="order-benefit shipping">
-          배송비 0원
+          <small>배송 혜택</small>
+          배송비 무료
         </span>
       </div>
 
