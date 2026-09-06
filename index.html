@@ -11,21 +11,21 @@
 
   <meta name="theme-color" content="#f5f2ec" />
 
-  <title>한농직판장 | 전주 돼지고기 새벽배송</title>
+  <title>내일 먹을 고기, 오늘 밤 주문하세요 | 한농직판장</title>
 
   <meta
     name="description"
-    content="전주 지정지역에 신선한 돼지고기를 한 팩부터 무료 새벽배송합니다. 오늘 주문하고 다음 날 오전 8시 이전 문 앞에서 받아보세요."
+    content="퇴근 후 장보러 다시 나가지 마세요. 오늘 밤 9시까지 주문하면 매장가격 그대로, 배송비 0원으로 다음 날 오전 8시 이전 문 앞에 배송합니다."
   />
   <link rel="canonical" href="https://yunhawi.com/" />
 
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="ko_KR" />
   <meta property="og:site_name" content="한농직판장" />
-  <meta property="og:title" content="한농직판장 | 전주 돼지고기 새벽배송" />
+  <meta property="og:title" content="내일 먹을 고기, 오늘 밤 주문하세요 | 한농직판장" />
   <meta
     property="og:description"
-    content="오늘 주문하고 다음 날 오전 8시 이전, 신선한 돼지고기를 문 앞에서 받아보세요."
+    content="퇴근 후 주문하는 문 앞의 동네 정육점. 매장가격 그대로 다음 날 오전 8시 이전에 받아보세요."
   />
   <meta property="og:url" content="https://yunhawi.com/" />
   <meta property="og:image" content="https://yunhawi.com/images/og-home.jpg" />
@@ -34,10 +34,10 @@
   <meta property="og:image:alt" content="한농직판장의 돼지고기 준비 과정" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="한농직판장 | 전주 돼지고기 새벽배송" />
+  <meta name="twitter:title" content="내일 먹을 고기, 오늘 밤 주문하세요 | 한농직판장" />
   <meta
     name="twitter:description"
-    content="오늘 주문하고 다음 날 오전 8시 이전, 신선한 돼지고기를 문 앞에서 받아보세요."
+    content="퇴근 후 주문하는 문 앞의 동네 정육점. 매장가격 그대로 다음 날 오전 8시 이전에 받아보세요."
   />
   <meta name="twitter:image" content="https://yunhawi.com/images/og-home.jpg" />
 
@@ -201,6 +201,8 @@
       position: relative;
 
       width: 100%;
+
+      margin-top: 12px;
 
       aspect-ratio: 4 / 3;
 
@@ -489,9 +491,9 @@
 ======================================== */
 
 .order-card {
-  margin-top: 18px;
+  margin-top: 0;
 
-  padding: 32px 18px 18px;
+  padding: 25px 18px 18px;
 
   border: 1px solid #e5ded2;
   border-radius: 27px;
@@ -504,8 +506,24 @@
   text-align: center;
 }
 
+.order-prompt {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  margin: 0 0 12px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: #fff1e4;
+  color: #b34a24;
+  font-size: 12px;
+  line-height: 1.25;
+  font-weight: 900;
+  letter-spacing: -0.35px;
+  word-break: keep-all;
+}
+
 .order-concept {
-  margin: 0 0 10px;
+  margin: 0 0 8px;
 
   color: #2f8f50;
 
@@ -534,7 +552,82 @@
   text-align: center;
 
   word-break: keep-all;
-  white-space: nowrap;
+}
+
+.order-description {
+  max-width: 430px;
+  margin: 13px auto 0;
+  color: #59544d;
+  font-size: 14px;
+  line-height: 1.62;
+  font-weight: 720;
+  letter-spacing: -0.42px;
+  word-break: keep-all;
+}
+
+.order-benefits {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.order-benefit {
+  display: grid;
+  gap: 3px;
+  align-content: center;
+  min-height: 58px;
+  padding: 10px 8px;
+  border: 1px solid #dbe8de;
+  border-radius: 15px;
+  background: #f5faf6;
+  color: #1e5f37;
+  font-size: 15px;
+  line-height: 1.2;
+  font-weight: 950;
+  letter-spacing: -0.55px;
+}
+
+.order-benefit small {
+  color: #6f8274;
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: -0.2px;
+}
+
+.order-benefit.shipping {
+  border-color: #f0d2a8;
+  background: #fff8ec;
+  color: #a75218;
+}
+
+.order-benefit.shipping small {
+  color: #9a795e;
+}
+
+.process-heading {
+  margin: 25px 4px 0;
+  text-align: left;
+}
+
+.process-heading span {
+  display: block;
+  margin-bottom: 5px;
+  color: #2f8f50;
+  font-size: 12px;
+  line-height: 1.25;
+  font-weight: 900;
+  letter-spacing: -0.25px;
+}
+
+.process-heading strong {
+  display: block;
+  color: #202020;
+  font-size: 18px;
+  line-height: 1.42;
+  font-weight: 920;
+  letter-spacing: -0.8px;
+  word-break: keep-all;
 }
 
 .order-button {
@@ -550,7 +643,7 @@
 
   min-height: 144px;
 
-  margin-top: 22px;
+  margin-top: 17px;
   padding: 22px 20px 22px 24px;
 
   border: 0;
@@ -646,10 +739,11 @@ animation:
 }
 
 .order-button-label {
-  font-size: 33px;
-  line-height: 1.05;
+  font-size: 30px;
+  line-height: 1.12;
   font-weight: 950;
   letter-spacing: -1.3px;
+  word-break: keep-all;
 }
 
 .order-button-meta {
@@ -1537,6 +1631,78 @@ animation:
     </header>
 
 
+    <!-- =====================================
+         퇴근 후 구매 순간 · 주문
+    ====================================== -->
+
+    <section class="order-card">
+
+      <p class="order-prompt">
+        퇴근하고 다시 장보러 나가기 귀찮으시죠?
+      </p>
+
+      <p class="order-concept">
+        퇴근 후 주문하는 문 앞의 동네 정육점
+      </p>
+
+      <h1 class="order-title">
+        내일 먹을 고기,<br />
+        오늘 밤 주문하세요.
+      </h1>
+
+      <p class="order-description">
+        오늘 밤 9시까지 주문하면 한농직판장에서 직접 손질해
+        내일 오전 8시 이전 문 앞에 가져다드립니다.
+      </p>
+
+      <div class="order-benefits" aria-label="새벽배송 핵심 혜택">
+        <span class="order-benefit">
+          <small>가격 혜택</small>
+          매장가격 그대로
+        </span>
+        <span class="order-benefit shipping">
+          <small>현재 배송 혜택</small>
+          배송비 0원
+        </span>
+      </div>
+
+      <button
+        class="order-button"
+        id="orderCtaButton"
+        type="button"
+        data-intake-status="loading"
+        aria-label="새벽배송 상품 주문 화면으로 이동"
+        onclick="location.href='morning-delivery.html'"
+      >
+        <span class="order-button-copy" aria-live="polite">
+          <span class="order-button-badge" id="orderCtaBadge">
+            전주 지정지역
+          </span>
+          <span class="order-button-label" id="orderCtaLabel">
+            내일 아침 고기 주문하기
+          </span>
+          <span class="order-button-meta" id="orderCtaMeta">
+            오늘 밤 9시 마감 · 내일 오전 8시 이전 도착
+          </span>
+        </span>
+        <span class="order-button-arrow" aria-hidden="true">→</span>
+      </button>
+
+      <p class="order-note" id="orderCtaNote">
+        한 팩부터 주문 가능 · 전주 지정지역
+      </p>
+
+    </section>
+
+
+    <div class="process-heading">
+      <span>왜 한농직판장인가요?</span>
+      <strong>
+        주문받은 고기를 직접 준비해 문 앞까지 보냅니다.
+      </strong>
+    </div>
+
+
 
     <!-- =====================================
          3장 슬라이드
@@ -1733,48 +1899,6 @@ animation:
 
     </section>
 
-
-    <!-- =====================================
-         주문 선택지는 단 하나
-    ====================================== -->
-
- <section class="order-card">
-
-  <p class="order-concept">
-    지역 직배송 · 초신선 돼지고기
-  </p>
-
-  <h1 class="order-title">
-    오늘 주문하면, 내일 아침 문 앞에.
-  </h1>
-
-  <button
-    class="order-button"
-    id="orderCtaButton"
-    type="button"
-    data-intake-status="loading"
-    aria-label="새벽배송 상품 주문 화면으로 이동"
-    onclick="location.href='morning-delivery.html'"
-  >
-    <span class="order-button-copy" aria-live="polite">
-      <span class="order-button-badge" id="orderCtaBadge">
-        전주 무료 새벽배송
-      </span>
-      <span class="order-button-label" id="orderCtaLabel">
-        지금 주문하기
-      </span>
-      <span class="order-button-meta" id="orderCtaMeta">
-        오늘 밤 9시 마감 · 내일 오전 8시 이전 도착
-      </span>
-    </span>
-    <span class="order-button-arrow" aria-hidden="true">→</span>
-  </button>
-
-  <p class="order-note" id="orderCtaNote">
-  한 팩도 배송비 0원 · 전주 지정지역
-</p>
-
-</section>
 
     <!-- =====================================
          홈 화면 추가
@@ -2230,13 +2354,13 @@ animation:
           button.dataset.intakeStatus =
             "open";
           badge.textContent =
-            "지금 주문 가능";
+            "전주 지정지역";
           label.textContent =
-            "지금 주문하기";
+            "내일 아침 고기 주문하기";
           meta.textContent =
             "오늘 밤 9시 마감 · 내일 오전 8시 이전 도착";
           note.textContent =
-            "한 팩도 배송비 0원 · 전주 지정지역";
+            "한 팩부터 주문 가능 · 전주 지정지역";
         } else {
           button.dataset.intakeStatus =
             "closed";
