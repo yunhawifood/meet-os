@@ -2947,8 +2947,8 @@
   id="intakeClosedNotice"
   aria-live="polite"
 >
-  <strong>오늘 주문 마감</strong>
-  <p>내일 오전 9시에 다시 열립니다.</p>
+  <strong>주문 가능 시간</strong>
+  <p>매일 오전 9시부터 주문 가능합니다.</p>
 </section>
 <section class="section-head" id="products">
   <h1>고기 고르기</h1>
@@ -4018,12 +4018,12 @@ renderOrderIntakeNotice();
 
   if (title) {
     title.textContent =
-      "오늘 주문 마감";
+      "주문 가능 시간";
   }
 
   if (text) {
     text.innerHTML =
-      "내일 오전 9시에 다시 열립니다.";
+      "매일 오전 9시부터 주문 가능합니다.";
   }
 }
 async function refreshOrderIntakeStatus() {
