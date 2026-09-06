@@ -627,14 +627,14 @@
   min-height: 142px;
   margin-top: 18px;
   padding: 24px 72px 18px;
-  border: 2px solid #e6bc6e;
+  border: 2px solid #dce6df;
   border-radius: 20px;
-  background: linear-gradient(180deg, #fffdf8 0%, #f8ecd5 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #f5f8f6 100%);
   color: #17482f;
   text-align: left;
   box-shadow:
-    0 7px 0 #b88537,
-    0 17px 28px rgba(7, 31, 19, 0.23);
+    0 7px 0 #afbeb5,
+    0 17px 28px rgba(7, 31, 19, 0.21);
   cursor: pointer;
   animation: orderHeartbeat 3.1s ease-in-out infinite;
   transition:
@@ -644,12 +644,12 @@
 }
 
 .order-button[data-intake-status="closed"] {
-  border-color: #d8bb82;
-  background: linear-gradient(180deg, #fffdf8 0%, #f6edda 100%);
+  border-color: #dfe6e1;
+  background: linear-gradient(180deg, #ffffff 0%, #f4f6f5 100%);
   color: #2b4938;
   box-shadow:
-    0 7px 0 #ad8a50,
-    0 17px 28px rgba(7, 31, 19, 0.21);
+    0 7px 0 #b4beb7,
+    0 17px 28px rgba(7, 31, 19, 0.19);
 }
 
 .order-button-copy {
@@ -668,10 +668,10 @@
   top: 15px;
   left: 16px;
   padding: 5px 9px;
-  border: 1px solid rgba(179, 126, 39, 0.24);
+  border: 1px solid #c8ddd0;
   border-radius: 999px;
-  background: #fff0c9;
-  color: #8a5710;
+  background: #edf6f0;
+  color: #2c6a47;
   font-size: 10.5px;
   line-height: 1.2;
   font-weight: 900;
@@ -680,9 +680,9 @@
 
 .order-button[data-intake-status="closed"]
 .order-button-badge {
-  border-color: rgba(128, 89, 31, 0.20);
-  background: #eee3ce;
-  color: #76562b;
+  border-color: #d8dfda;
+  background: #f0f2f1;
+  color: #5f6e65;
 }
 
 .order-button-label {
@@ -732,9 +732,9 @@
 .order-button:active {
   animation: none;
   transform: translateY(4px) scale(0.995);
-  background: #f7ead2;
+  background: #eef3f0;
   box-shadow:
-    0 2px 0 #a97a34,
+    0 2px 0 #9caaa1,
     0 8px 16px rgba(7, 31, 19, 0.18);
 }
 
@@ -748,23 +748,23 @@
   100% {
     transform: scale(1);
     box-shadow:
-      0 7px 0 #b88537,
-      0 17px 28px rgba(7, 31, 19, 0.23);
+      0 7px 0 #afbeb5,
+      0 17px 28px rgba(7, 31, 19, 0.21);
   }
 
   77% {
     transform: scale(1.015);
     box-shadow:
-      0 0 0 5px rgba(241, 207, 142, 0.22),
-      0 8px 0 #b88537,
-      0 20px 34px rgba(7, 31, 19, 0.27);
+      0 0 0 5px rgba(160, 201, 176, 0.20),
+      0 8px 0 #afbeb5,
+      0 20px 34px rgba(7, 31, 19, 0.25);
   }
 
   84% {
     transform: scale(1);
     box-shadow:
-      0 7px 0 #b88537,
-      0 17px 28px rgba(7, 31, 19, 0.23);
+      0 7px 0 #afbeb5,
+      0 17px 28px rgba(7, 31, 19, 0.21);
   }
 
   91% {
@@ -2308,7 +2308,7 @@
               ? "오늘은 쉬어갑니다"
               : "오늘 주문 마감";
           label.textContent =
-            "고기 주문하기";
+            "상품 가격 보기";
           meta.textContent =
             "상품과 가격은 지금 확인할 수 있어요";
           note.textContent =
