@@ -11,7 +11,7 @@
 
   <meta name="theme-color" content="#f5f2ec" />
 
-  <title>내일 먹을 고기, 오늘 밤 주문하세요 | 한농직판장</title>
+  <title>오지 마세요. 제가 갈게요. | 한농직판장</title>
 
   <meta
     name="description"
@@ -22,7 +22,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="ko_KR" />
   <meta property="og:site_name" content="한농직판장" />
-  <meta property="og:title" content="내일 먹을 고기, 오늘 밤 주문하세요 | 한농직판장" />
+  <meta property="og:title" content="오지 마세요. 제가 갈게요. | 한농직판장" />
   <meta
     property="og:description"
     content="퇴근 후 주문하는 문 앞의 동네 정육점. 매장가격 그대로 다음 날 오전 8시 이전에 받아보세요."
@@ -34,7 +34,7 @@
   <meta property="og:image:alt" content="한농직판장의 돼지고기 준비 과정" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="내일 먹을 고기, 오늘 밤 주문하세요 | 한농직판장" />
+  <meta name="twitter:title" content="오지 마세요. 제가 갈게요. | 한농직판장" />
   <meta
     name="twitter:description"
     content="퇴근 후 주문하는 문 앞의 동네 정육점. 매장가격 그대로 다음 날 오전 8시 이전에 받아보세요."
@@ -493,12 +493,14 @@
 .order-card {
   position: relative;
   overflow: hidden;
-  margin-top: 20px;
-  padding: 31px 24px 22px;
-  border: 1px solid #ded8ce;
-  border-radius: 28px;
-  background: linear-gradient(155deg, #fffdf8 0%, #ffffff 64%, #f4f7f2 100%);
-  box-shadow: 0 16px 44px rgba(46, 39, 29, 0.10);
+  margin-top: 10px;
+  padding: 29px 24px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 27px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(224, 186, 111, 0.16), transparent 35%),
+    linear-gradient(145deg, #143c2a 0%, #1f5338 100%);
+  box-shadow: 0 17px 38px rgba(25, 55, 39, 0.20);
   text-align: left;
 }
 
@@ -506,88 +508,93 @@
   position: absolute;
   top: 0;
   left: 24px;
-  width: 54px;
-  height: 4px;
+  width: 48px;
+  height: 3px;
   border-radius: 0 0 999px 999px;
-  background: #286b43;
+  background: #f0ca82;
   content: "";
 }
 
 .order-prompt {
-  margin: 0 0 7px;
-  color: #a14928;
+  margin: 0 0 13px;
+  color: #f1cf8e;
   font-size: 12px;
   line-height: 1.35;
   font-weight: 900;
-  letter-spacing: -0.25px;
+  letter-spacing: -0.2px;
   word-break: keep-all;
 }
 
 .order-concept {
-  margin: 0 0 14px;
-  color: #37634a;
-  font-size: 13px;
-  line-height: 1.3;
-  font-weight: 850;
-  letter-spacing: -0.3px;
+  margin: 17px 0 0;
+  color: #ffffff;
+  font-size: 18px;
+  line-height: 1.4;
+  font-weight: 900;
+  letter-spacing: -0.7px;
+  word-break: keep-all;
 }
 
 .order-title {
   margin: 0;
-  color: #171815;
-  font-size: clamp(34px, 9.2vw, 46px);
-  line-height: 1.08;
+  color: #ffffff;
+  font-size: clamp(39px, 10.6vw, 53px);
+  line-height: 1.03;
   font-weight: 950;
-  letter-spacing: -2.7px;
+  letter-spacing: -3.2px;
   word-break: keep-all;
 }
 
+.order-title span {
+  color: #f1cf8e;
+}
+
 .order-description {
-  max-width: 400px;
-  margin: 17px 0 0;
-  color: #5f5b54;
-  font-size: 14px;
-  line-height: 1.55;
-  font-weight: 700;
-  letter-spacing: -0.35px;
+  max-width: 390px;
+  margin: 8px 0 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 720;
+  letter-spacing: -0.25px;
   word-break: keep-all;
 }
 
 .order-benefits {
   display: flex;
   align-items: center;
-  margin-top: 19px;
-  padding: 13px 0;
-  border-top: 1px solid #e7e1d7;
-  border-bottom: 1px solid #e7e1d7;
+  gap: 12px;
+  margin-top: 18px;
+  padding: 0;
+  border: 0;
 }
 
 .order-benefit {
-  flex: 1 1 0;
-  color: #215f3b;
-  font-size: 14px;
+  position: relative;
+  flex: 0 1 auto;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 13px;
   line-height: 1.2;
-  font-weight: 950;
-  letter-spacing: -0.45px;
-  text-align: center;
-}
-
-.order-benefit small {
-  display: block;
-  margin-bottom: 4px;
-  color: #898178;
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.15px;
+  font-weight: 850;
+  letter-spacing: -0.3px;
 }
 
 .order-benefit.shipping {
-  border-left: 1px solid #ddd6ca;
-  color: #a04c1f;
+  padding-left: 13px;
+  border: 0;
+  color: #f1cf8e;
 }
 
-.order-benefit.shipping small {
-  color: #898178;
+.order-benefit.shipping::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.42);
+  transform: translateY(-50%);
+  content: "";
 }
 
 .process-heading {
@@ -621,15 +628,15 @@
   align-items: center;
   gap: 16px;
   width: 100%;
-  min-height: 82px;
-  margin-top: 18px;
+  min-height: 78px;
+  margin-top: 20px;
   padding: 15px 16px 15px 19px;
   border: 0;
   border-radius: 17px;
-  background: linear-gradient(135deg, #184b31 0%, #2a7047 100%);
-  color: #ffffff;
+  background: #ffffff;
+  color: #17482f;
   text-align: left;
-  box-shadow: 0 11px 24px rgba(25, 74, 48, 0.20);
+  box-shadow: 0 11px 24px rgba(7, 31, 19, 0.19);
   cursor: pointer;
   transition:
     transform 0.14s ease,
@@ -638,8 +645,9 @@
 }
 
 .order-button[data-intake-status="closed"] {
-  background: linear-gradient(135deg, #39483f 0%, #526359 100%);
-  box-shadow: 0 9px 20px rgba(39, 55, 45, 0.18);
+  background: #f4f2ec;
+  color: #31483a;
+  box-shadow: 0 9px 20px rgba(7, 31, 19, 0.15);
 }
 
 .order-button-copy {
@@ -649,7 +657,7 @@
 }
 
 .order-button-badge {
-  color: #cbe2d2;
+  color: #a36f18;
   font-size: 10px;
   line-height: 1.2;
   font-weight: 850;
@@ -658,7 +666,7 @@
 
 .order-button[data-intake-status="closed"]
 .order-button-badge {
-  color: #f3d69e;
+  color: #9a6320;
 }
 
 .order-button-label {
@@ -670,7 +678,7 @@
 }
 
 .order-button-meta {
-  color: rgba(255, 255, 255, 0.70);
+  color: #718078;
   font-size: 11px;
   line-height: 1.3;
   font-weight: 700;
@@ -684,8 +692,8 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
+  background: #e8f1eb;
+  color: #1f6540;
   font-size: 23px;
   line-height: 1;
   font-weight: 900;
@@ -694,8 +702,8 @@
 
 .order-button:active {
   transform: scale(0.98);
-  background: #143f2a;
-  box-shadow: 0 6px 14px rgba(25, 74, 48, 0.18);
+  background: #f1f6f3;
+  box-shadow: 0 6px 14px rgba(7, 31, 19, 0.15);
 }
 
 .order-button:active .order-button-arrow {
@@ -718,7 +726,7 @@
 }
 .order-note {
   margin: 11px 2px 0;
-  color: #878078;
+  color: rgba(255, 255, 255, 0.58);
   font-size: 11px;
   line-height: 1.4;
   font-weight: 700;
@@ -1450,14 +1458,14 @@
 
 
       .order-card {
-        margin-top: 16px;
-        padding: 27px 19px 19px;
+        margin-top: 8px;
+        padding: 26px 20px 18px;
       }
 
 
       .order-title {
-        font-size: clamp(32px, 9.4vw, 38px);
-        letter-spacing: -2.25px;
+        font-size: clamp(38px, 10.6vw, 44px);
+        letter-spacing: -2.8px;
       }
 
 
@@ -1516,30 +1524,28 @@
     <section class="order-card">
 
       <p class="order-prompt">
-        오지 마세요. 제가 갈게요.
-      </p>
-
-      <p class="order-concept">
-        퇴근 후 주문하는 문 앞의 동네 정육점
+        퇴근 후 다시 장보러 나가기 귀찮으시죠?
       </p>
 
       <h1 class="order-title">
-        내일 먹을 고기,<br />
-        오늘 밤 주문하세요.
+        오지 마세요.<br />
+        <span>제가 갈게요.</span>
       </h1>
 
+      <p class="order-concept">
+        내일 먹을 고기, 오늘 밤 주문해두세요.
+      </p>
+
       <p class="order-description">
-        퇴근 후 주문하면 직접 손질해
+        오늘 밤 9시까지 주문하면 직접 손질해
         내일 오전 8시 이전 문 앞에 가져다드립니다.
       </p>
 
       <div class="order-benefits" aria-label="새벽배송 핵심 혜택">
         <span class="order-benefit">
-          <small>가격 혜택</small>
           매장가격 그대로
         </span>
         <span class="order-benefit shipping">
-          <small>현재 배송 혜택</small>
           배송비 0원
         </span>
       </div>
@@ -1554,13 +1560,13 @@
       >
         <span class="order-button-copy" aria-live="polite">
           <span class="order-button-badge" id="orderCtaBadge">
-            지금 주문 가능
+            오늘 주문 가능
           </span>
           <span class="order-button-label" id="orderCtaLabel">
-            고기 고르기
+            내일 먹을 고기 고르기
           </span>
           <span class="order-button-meta" id="orderCtaMeta">
-            21시 마감 · 내일 08시 전 도착
+            원하는 부위와 중량을 선택하세요
           </span>
         </span>
         <span class="order-button-arrow" aria-hidden="true">→</span>
@@ -1571,15 +1577,6 @@
       </p>
 
     </section>
-
-
-    <div class="process-heading">
-      <span>왜 한농직판장인가요?</span>
-      <strong>
-        주문받은 고기를 직접 준비해 문 앞까지 보냅니다.
-      </strong>
-    </div>
-
 
 
     <!-- =====================================
@@ -2232,11 +2229,11 @@
           button.dataset.intakeStatus =
             "open";
           badge.textContent =
-            "지금 주문 가능";
+            "오늘 주문 가능";
           label.textContent =
-            "고기 고르기";
+            "내일 먹을 고기 고르기";
           meta.textContent =
-            "21시 마감 · 내일 08시 전 도착";
+            "원하는 부위와 중량을 선택하세요";
           note.textContent =
             "한 팩부터 주문 가능 · 전주 지정지역";
         } else {
@@ -2247,13 +2244,13 @@
               ? "오늘은 쉬어갑니다"
               : "오늘 주문 마감";
           label.textContent =
-            "상품 미리보기";
+            "고기 고르기";
           meta.textContent =
-            reason === "WEEKLY_CLOSED"
-              ? "일요일 오전 9시에 주문이 열립니다"
-              : "내일 오전 9시에 주문이 다시 열립니다";
+            "상품과 가격은 지금 확인할 수 있어요";
           note.textContent =
-            "마감 후에도 상품과 가격을 미리 볼 수 있어요";
+            reason === "WEEKLY_CLOSED"
+              ? "오늘 주문 휴무 · 일요일 오전 9시에 다시 열립니다"
+              : "오늘 주문 마감 · 내일 오전 9시에 다시 열립니다";
         }
 
         button.setAttribute(
