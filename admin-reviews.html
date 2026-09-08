@@ -7,7 +7,7 @@
   <meta name="referrer" content="same-origin" />
   <meta
     http-equiv="Content-Security-Policy"
-    content="default-src 'self'; connect-src https://rbtwvemljpgnwhlzayqy.supabase.co wss://rbtwvemljpgnwhlzayqy.supabase.co https://yunhawi-payment-api.yunhawifood.workers.dev; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'"
+    content="default-src 'self'; connect-src https://rbtwvemljpgnwhlzayqy.supabase.co wss://rbtwvemljpgnwhlzayqy.supabase.co https://yunhawi-payment-api.yunhawifood.workers.dev; script-src 'self' 'sha256-J35kFb0JBYNELNgH0wsiNLmxn+9tLboctOHF2WTuKtU='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'"
   />
 
   <title>고객 의견함 | 한농직판장 운영 OS</title>
@@ -60,6 +60,26 @@
       color: var(--muted);
       font-weight: 800;
       text-align: center;
+    }
+
+    .loading-content {
+      display: grid;
+      justify-items: center;
+      gap: 18px;
+      max-width: 420px;
+      line-height: 1.6;
+    }
+
+    .loading-retry-button {
+      min-width: 150px;
+      min-height: 46px;
+      padding: 10px 18px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--green);
+      color: #ffffff;
+      font-weight: 900;
+      cursor: pointer;
     }
 
     header {
@@ -319,7 +339,12 @@
 
 <body>
   <div id="loadingScreen" class="loading-screen">
-    관리자 권한과 고객 의견을 확인하고 있습니다...
+    <div class="loading-content">
+      <span id="loadingMessage">관리자 권한과 고객 의견을 확인하고 있습니다...</span>
+      <button id="loadingRetryButton" class="loading-retry-button hidden" type="button">
+        다시 시도
+      </button>
+    </div>
   </div>
 
   <header>
@@ -376,7 +401,7 @@
     <p id="errorMessage" class="error-message hidden" role="alert"></p>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./supabase-js-2.116.0.js"></script>
   <script>
     const SUPABASE_URL =
       "https://rbtwvemljpgnwhlzayqy.supabase.co";
@@ -387,16 +412,73 @@
     const PAYMENT_API_BASE =
       "https://yunhawi-payment-api.yunhawifood.workers.dev";
 
+    const loadingScreen = document.getElementById("loadingScreen");
+    const loadingMessage = document.getElementById("loadingMessage");
+    const loadingRetryButton = document.getElementById("loadingRetryButton");
+    const reviewsList = document.getElementById("reviewsList");
+    const emptyState = document.getElementById("emptyState");
+    const errorMessage = document.getElementById("errorMessage");
+    const logoutButton = document.getElementById("logoutButton");
+
+    function showLoadingError(message) {
+      loadingMessage.textContent = message;
+      loadingRetryButton.classList.remove("hidden");
+      loadingScreen.style.display = "grid";
+    }
+
+    loadingRetryButton.addEventListener("click", function () {
+      window.location.reload();
+    });
+
+    if (!window.supabase || typeof window.supabase.createClient !== "function") {
+      showLoadingError(
+        "관리자 화면을 불러오지 못했습니다. 인터넷 연결을 확인한 뒤 다시 시도해주세요."
+      );
+      throw new Error("Supabase client failed to load");
+    }
+
     const supabaseClient = window.supabase.createClient(
       SUPABASE_URL,
       SUPABASE_PUBLISHABLE_KEY
     );
 
-    const loadingScreen = document.getElementById("loadingScreen");
-    const reviewsList = document.getElementById("reviewsList");
-    const emptyState = document.getElementById("emptyState");
-    const errorMessage = document.getElementById("errorMessage");
-    const logoutButton = document.getElementById("logoutButton");
+    function withTimeout(promise, message, timeoutMs = 12000) {
+      let timerId;
+
+      const timeout = new Promise(function (_, reject) {
+        timerId = window.setTimeout(function () {
+          reject(new Error(message));
+        }, timeoutMs);
+      });
+
+      return Promise.race([Promise.resolve(promise), timeout]).finally(
+        function () {
+          window.clearTimeout(timerId);
+        }
+      );
+    }
+
+    async function fetchWithTimeout(url, options, timeoutMs = 12000) {
+      const controller = new AbortController();
+      const timerId = window.setTimeout(function () {
+        controller.abort();
+      }, timeoutMs);
+
+      try {
+        return await fetch(url, {
+          ...options,
+          signal: controller.signal
+        });
+      } catch (error) {
+        if (error?.name === "AbortError") {
+          throw new Error("고객 의견 확인 시간이 오래 걸리고 있습니다. 다시 시도해주세요.");
+        }
+
+        throw error;
+      } finally {
+        window.clearTimeout(timerId);
+      }
+    }
 
     let allReviews = [];
     let activeFilter = "all";
@@ -540,7 +622,10 @@
       const {
         data: { session },
         error: sessionError
-      } = await supabaseClient.auth.getSession();
+      } = await withTimeout(
+        supabaseClient.auth.getSession(),
+        "관리자 로그인 확인 시간이 오래 걸리고 있습니다. 다시 시도해주세요."
+      );
 
       if (sessionError) throw sessionError;
       if (!session) return null;
@@ -548,12 +633,15 @@
       const {
         data: admin,
         error: adminError
-      } = await supabaseClient
-        .from("admin_users")
-        .select("user_id, is_active")
-        .eq("user_id", session.user.id)
-        .eq("is_active", true)
-        .maybeSingle();
+      } = await withTimeout(
+        supabaseClient
+          .from("admin_users")
+          .select("user_id, is_active")
+          .eq("user_id", session.user.id)
+          .eq("is_active", true)
+          .maybeSingle(),
+        "관리자 권한 확인 시간이 오래 걸리고 있습니다. 다시 시도해주세요."
+      );
 
       if (adminError) throw adminError;
 
@@ -574,7 +662,7 @@
           return;
         }
 
-        const response = await fetch(
+        const response = await fetchWithTimeout(
           PAYMENT_API_BASE + "/admin/reviews",
           {
             method: "GET",
@@ -583,7 +671,8 @@
               Accept: "application/json"
             },
             cache: "no-store"
-          }
+          },
+          12000
         );
 
         let data = null;
@@ -615,13 +704,14 @@
           Number(data.summary?.needsImprovement || 0).toLocaleString("ko-KR") + "건";
 
         renderReviews();
+        loadingScreen.style.display = "none";
       } catch (error) {
         console.error(error);
-        errorMessage.textContent =
+        const message =
           error?.message || "고객 의견을 불러오지 못했습니다.";
+        errorMessage.textContent = message;
         errorMessage.classList.remove("hidden");
-      } finally {
-        loadingScreen.style.display = "none";
+        showLoadingError(message);
       }
     }
 
