@@ -74,8 +74,8 @@
   <link
   rel="preload"
   as="image"
-  type="image/webp"
-  href="images/hero-1.webp"
+  type="image/jpeg"
+  href="images/hero-pork-xbanner-v2.jpg"
   fetchpriority="high"
 />
 
@@ -123,6 +123,19 @@
     button {
       font-family: inherit;
       -webkit-tap-highlight-color: transparent;
+    }
+
+
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
     }
 
 
@@ -492,67 +505,81 @@
 
 .order-card {
   position: relative;
+  isolation: isolate;
   overflow: hidden;
   margin-top: 10px;
-  padding: 28px 20px 21px;
-  border: 1px solid #d5ebdc;
+  min-height: 622px;
+  padding: 24px 18px 250px;
+  border: 1px solid #d9e9de;
   border-radius: 27px;
   background:
-    radial-gradient(circle at 96% 0%, rgba(100, 211, 132, 0.20), transparent 31%),
-    linear-gradient(150deg, #ffffff 0%, #f2faf4 100%);
+    radial-gradient(circle at 96% 0%, rgba(114, 208, 137, 0.13), transparent 29%),
+    #ffffff;
   box-shadow:
-    0 15px 34px rgba(31, 104, 57, 0.10),
+    0 12px 30px rgba(31, 104, 57, 0.09),
     inset 0 1px 0 rgba(255, 255, 255, 0.95);
   text-align: center;
 }
 
 .order-card::before {
   position: absolute;
-  top: 0;
-  left: 24px;
-  width: 54px;
-  height: 4px;
-  border-radius: 0 0 999px 999px;
-  background: linear-gradient(90deg, #36ad5c, #84d59a);
+  inset: auto 0 0;
+  z-index: -2;
+  height: 46%;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(236, 248, 239, 0.45));
   content: "";
 }
 
-.order-prompt,
-.order-concept {
+.order-prompt {
   margin: 0;
-  color: #52695a;
-  font-size: 14px;
+  color: #141414;
+  font-size: 15px;
   line-height: 1.45;
-  font-weight: 800;
-  letter-spacing: -0.45px;
+  font-weight: 900;
+  letter-spacing: -0.55px;
   word-break: keep-all;
 }
 
-.order-concept {
-  margin-top: 4px;
-  color: #2f7147;
-}
-
 .order-title {
-  margin: 17px 0 0;
-  color: #173d27;
-  font-size: clamp(25px, 7.2vw, 30px);
-  line-height: 1.2;
+  position: relative;
+  display: grid;
+  gap: 0;
+  margin: 13px 0 0;
+  color: #0a0a0a;
+  font-size: clamp(42px, 12.4vw, 58px);
+  line-height: 0.98;
   font-weight: 950;
-  letter-spacing: -1.8px;
-  white-space: nowrap;
+  letter-spacing: -3.4px;
   word-break: keep-all;
 }
 
 .order-title span {
-  color: #239a50;
+  display: block;
+}
+
+.order-title strong {
+  display: block;
+  color: #176d39;
+  font: inherit;
+}
+
+.order-title::after {
+  display: block;
+  width: 92%;
+  height: 5px;
+  margin: 13px auto 0;
+  border-radius: 999px 35% 999px 35%;
+  background: linear-gradient(90deg, #188044, #64bd7a);
+  transform: rotate(-1.2deg);
+  content: "";
 }
 
 .order-benefits {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 7px;
-  margin-top: 18px;
+  gap: 0;
+  margin-top: 21px;
   padding: 0;
   border: 0;
 }
@@ -560,27 +587,32 @@
 .order-benefit {
   display: grid;
   align-content: center;
-  min-height: 84px;
-  padding: 9px 5px;
-  border: 1px solid #d8ebde;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.92);
-  color: #214b31;
-  font-size: 14px;
+  min-height: 80px;
+  padding: 7px 8px;
+  border: 0;
+  border-right: 1px solid #d5ddd7;
+  border-radius: 0;
+  background: transparent;
+  color: #111111;
+  font-size: 15px;
   line-height: 1.25;
   font-weight: 950;
-  letter-spacing: -0.4px;
+  letter-spacing: -0.65px;
   text-align: center;
-  box-shadow: 0 5px 13px rgba(36, 111, 61, 0.07);
+  box-shadow: none;
+}
+
+.order-benefit:last-child {
+  border-right: 0;
 }
 
 .order-benefit small {
   display: block;
-  margin-bottom: 5px;
-  color: #26964e;
-  font-size: 9.5px;
+  margin-bottom: 6px;
+  color: #176d39;
+  font-size: 10.5px;
   line-height: 1.2;
-  font-weight: 850;
+  font-weight: 900;
   letter-spacing: -0.2px;
 }
 
@@ -590,13 +622,13 @@
 }
 
 .order-benefit.delivery-time strong {
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.35;
   letter-spacing: -0.35px;
 }
 
 .order-benefit.shipping {
-  color: #238f49;
+  color: #176d39;
 }
 
 .process-heading {
@@ -626,21 +658,19 @@
 
 .order-button {
   position: relative;
+  z-index: 3;
   display: block;
-  width: 100%;
-  min-height: 142px;
-  margin-top: 18px;
-  padding: 24px 72px 18px;
-  border: 2px solid #2b9e57;
-  border-radius: 20px;
-  background: linear-gradient(145deg, #35ad61 0%, #248b4b 100%);
+  width: min(100%, 292px);
+  min-height: 58px;
+  margin: 19px auto 0;
+  padding: 0 48px 0 22px;
+  border: 0;
+  border-radius: 16px;
+  background: #176d39;
   color: #ffffff;
-  text-align: left;
-  box-shadow:
-    0 7px 0 #176638,
-    0 17px 28px rgba(25, 111, 58, 0.20);
+  text-align: center;
+  box-shadow: 0 8px 18px rgba(18, 93, 47, 0.20);
   cursor: pointer;
-  animation: orderHeartbeat 3.1s ease-in-out infinite;
   transition:
     transform 0.14s ease,
     background 0.14s ease,
@@ -648,154 +678,66 @@
 }
 
 .order-button[data-intake-status="closed"] {
-  border-color: #dfe6e1;
-  background: linear-gradient(180deg, #ffffff 0%, #f4f6f5 100%);
-  color: #2b4938;
-  box-shadow:
-    0 7px 0 #b4beb7,
-    0 17px 28px rgba(7, 31, 19, 0.19);
-  animation: none;
+  background: #59655e;
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(41, 55, 47, 0.16);
 }
 
 .order-button-copy {
   display: grid;
   place-content: center;
-  align-content: center;
-  gap: 7px;
   width: 100%;
-  min-height: 96px;
+  min-height: 58px;
   min-width: 0;
   text-align: center;
 }
 
-.order-button-badge {
-  position: absolute;
-  top: 15px;
-  left: 16px;
-  padding: 5px 9px;
-  border: 1px solid rgba(255, 255, 255, 0.48);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.17);
-  color: #ffffff;
-  font-size: 10.5px;
-  line-height: 1.2;
-  font-weight: 900;
-  letter-spacing: -0.05px;
-}
-
-.order-button[data-intake-status="closed"]
-.order-button-badge {
-  border-color: #d8dfda;
-  background: #f0f2f1;
-  color: #5f6e65;
-}
-
-.order-button[data-intake-status="closed"]
-.order-button-meta {
-  color: #60766a;
-}
-
 .order-button-label {
   justify-self: center;
-  font-size: 30px;
-  line-height: 1.15;
+  font-size: 20px;
+  line-height: 1;
   font-weight: 950;
-  letter-spacing: -1.2px;
+  letter-spacing: -0.85px;
   text-align: center;
   white-space: nowrap;
-  word-break: keep-all;
-}
-
-.order-button-meta {
-  justify-self: center;
-  color: rgba(255, 255, 255, 0.84);
-  font-size: 12.5px;
-  line-height: 1.3;
-  font-weight: 800;
-  letter-spacing: -0.25px;
-  text-align: center;
   word-break: keep-all;
 }
 
 .order-button-arrow {
   position: absolute;
   top: 50%;
-  right: 18px;
+  right: 13px;
   display: grid;
   place-items: center;
-  width: 58px;
-  height: 58px;
-  border: 1px solid #e7f5eb;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.32);
   border-radius: 50%;
-  background: linear-gradient(145deg, #ffffff, #eef9f1);
-  color: #238e4a;
-  font-size: 30px;
+  background: rgba(255, 255, 255, 0.13);
+  color: #ffffff;
+  font-size: 20px;
   line-height: 1;
   font-weight: 900;
-  box-shadow:
-    0 4px 0 #c2ddca,
-    0 8px 15px rgba(20, 83, 42, 0.20);
+  box-shadow: none;
   transform: translateY(-50%);
 }
 
-.order-button[data-intake-status="closed"]
-.order-button-arrow {
-  border-color: #e0e7e2;
-  background: #eef2ef;
-  color: #607066;
-  box-shadow:
-    0 4px 0 #c8d0ca,
-    0 8px 15px rgba(45, 64, 52, 0.13);
-}
-
 .order-button:focus-visible {
-  outline: 4px solid rgba(67, 181, 99, 0.25);
+  outline: 4px solid rgba(23, 109, 57, 0.23);
   outline-offset: 4px;
 }
 
 
 .order-button:active {
-  animation: none;
-  transform: translateY(4px) scale(0.995);
-  background: #208247;
-  box-shadow:
-    0 2px 0 #145b32,
-    0 8px 16px rgba(17, 88, 44, 0.18);
+  transform: scale(0.985);
+  background: #115a2e;
+  box-shadow: 0 4px 10px rgba(18, 93, 47, 0.18);
 }
 
 .order-button:active .order-button-arrow {
-  transform: translate(2px, -50%);
+  transform: translate(1px, -50%);
 }
 
-@keyframes orderHeartbeat {
-  0%,
-  70%,
-  100% {
-    transform: scale(1);
-    box-shadow:
-      0 7px 0 #176638,
-      0 17px 28px rgba(25, 111, 58, 0.20);
-  }
-
-  77% {
-    transform: scale(1.015);
-    box-shadow:
-      0 0 0 5px rgba(106, 205, 134, 0.18),
-      0 8px 0 #176638,
-      0 20px 34px rgba(25, 111, 58, 0.24);
-  }
-
-  84% {
-    transform: scale(1);
-    box-shadow:
-      0 7px 0 #176638,
-      0 17px 28px rgba(25, 111, 58, 0.20);
-  }
-
-  91% {
-    transform: scale(1.011);
-  }
-}
 @media (prefers-reduced-motion: reduce) {
 
   html {
@@ -810,18 +752,42 @@
     transition-duration: 0.01ms !important;
   }
 
-  .order-button {
-    animation: none;
-  }
-
 }
 .order-note {
-  margin: 11px 2px 0;
-  color: #607868;
+  position: relative;
+  z-index: 3;
+  margin: 10px 2px 0;
+  color: #5e7064;
   font-size: 11px;
   line-height: 1.4;
-  font-weight: 700;
+  font-weight: 800;
   text-align: center;
+}
+
+.order-visual {
+  position: absolute;
+  right: -80px;
+  bottom: -16px;
+  left: -28px;
+  z-index: -1;
+  height: 250px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.order-visual::after {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0) 24%);
+  content: "";
+}
+
+.order-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left 55%;
 }
 
 
@@ -1550,34 +1516,37 @@
 
       .order-card {
         margin-top: 8px;
-        padding: 24px 17px 18px;
+        min-height: 584px;
+        padding: 21px 14px 220px;
       }
 
 
       .order-title {
-        font-size: clamp(24px, 7vw, 27px);
-        letter-spacing: -1.3px;
+        font-size: clamp(39px, 12vw, 47px);
+        letter-spacing: -2.8px;
       }
 
 
       .order-button {
-        min-height: 138px;
-        padding: 24px 64px 17px;
+        min-height: 56px;
+        padding: 0 44px 0 20px;
       }
 
       .order-button-label {
-        font-size: 28px;
-      }
-
-      .order-button-meta {
-        font-size: 12px;
+        font-size: 19px;
       }
 
       .order-button-arrow {
-        right: 14px;
-        width: 54px;
-        height: 54px;
-        font-size: 28px;
+        right: 12px;
+        width: 30px;
+        height: 30px;
+        font-size: 19px;
+      }
+
+      .order-visual {
+        right: -94px;
+        left: -38px;
+        height: 225px;
       }
 
     }
@@ -1619,24 +1588,23 @@
         퇴근 후 다시 장보러 나가기 귀찮으셨죠?
       </p>
 
-      <p class="order-concept">
-        내일 드실 고기, 오늘 밤 주문해 두세요.
-      </p>
-
       <h1 class="order-title">
-        <span>오지 마세요</span>, 제가 갈게요.
+        <span>오지 마세요.</span>
+        <strong>제가 갈게요.</strong>
       </h1>
 
       <div class="order-benefits" aria-label="새벽배송 핵심 안내">
         <span class="order-benefit delivery-time">
           <small>21시까지 주문 시</small>
-          <strong>다음 날 오전 8시 이전<br />문 앞 도착</strong>
+          <strong>오전 8시 이전<br />문 앞 배송</strong>
         </span>
         <span class="order-benefit">
-          <strong>매장가격<br />그대로</strong>
+          <small>매장 판매가</small>
+          <strong>그대로</strong>
         </span>
         <span class="order-benefit shipping">
-          <strong>배송비<br />무료</strong>
+          <small>배송비</small>
+          <strong>0원</strong>
         </span>
       </div>
 
@@ -1649,13 +1617,13 @@
         onclick="location.href='morning-delivery.html'"
       >
         <span class="order-button-copy" aria-live="polite">
-          <span class="order-button-badge" id="orderCtaBadge">
+          <span class="sr-only" id="orderCtaBadge">
             오늘 주문 가능
           </span>
           <span class="order-button-label" id="orderCtaLabel">
             고기 주문하기
           </span>
-          <span class="order-button-meta" id="orderCtaMeta">
+          <span class="sr-only" id="orderCtaMeta">
             원하는 부위와 중량을 선택하세요
           </span>
         </span>
@@ -1665,6 +1633,17 @@
       <p class="order-note" id="orderCtaNote">
         한 팩부터 주문 가능 · 전주 지정지역
       </p>
+
+      <div class="order-visual">
+        <img
+          src="images/hero-pork-xbanner-v2.jpg"
+          alt="로즈마리와 함께 놓인 신선한 돼지고기"
+          width="1200"
+          height="800"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </div>
 
     </section>
 
@@ -1690,8 +1669,9 @@
   alt="김제 육가공 작업장"
   width="1200"
   height="900"
+  loading="lazy"
   decoding="async"
-  fetchpriority="high"
+  fetchpriority="low"
 />
         </div>
 
