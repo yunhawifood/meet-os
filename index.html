@@ -69,15 +69,15 @@
   />
 
 
-  <!-- 첫 번째 메인 이미지만 우선 로딩 -->
+  <!-- 첫 화면의 실제 상품 이미지를 우선 로딩 -->
 
   <link
-  rel="preload"
-  as="image"
-  type="image/jpeg"
-  href="images/hero-pork-xbanner-v2.jpg"
-  fetchpriority="high"
-/>
+    rel="preload"
+    as="image"
+    type="image/webp"
+    href="images/hero-pork-plated-v1.webp"
+    fetchpriority="high"
+  />
 
   <link rel="prefetch" href="morning-delivery.html" />
 
@@ -869,6 +869,145 @@
   height: 100%;
   object-fit: cover;
   object-position: left 55%;
+}
+
+
+/* ========================================
+   첫 화면 - 사진 · 브랜드 문구 · 주문 버튼
+======================================== */
+
+.minimal-order-hero {
+  position: relative;
+  overflow: hidden;
+  margin-top: 10px;
+  border: 1px solid #dce9df;
+  border-radius: 28px;
+  background: #ffffff;
+  box-shadow:
+    0 16px 38px rgba(26, 91, 51, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+.minimal-product-stage {
+  position: relative;
+  height: 372px;
+  overflow: hidden;
+  background: #f8f7f3;
+}
+
+.minimal-product-stage::after {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 4;
+  height: 66px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), #ffffff 92%);
+  content: "";
+  pointer-events: none;
+}
+
+.minimal-product-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 49%;
+  background: #f8f7f3;
+}
+
+.minimal-hero-content {
+  position: relative;
+  z-index: 6;
+  padding: 0 22px 25px;
+  background: #ffffff;
+  text-align: center;
+}
+
+.minimal-tagline {
+  display: grid;
+  gap: 1px;
+  margin: -9px 0 0;
+  color: #111111;
+  font-size: clamp(39px, 11.4vw, 54px);
+  line-height: 0.99;
+  font-weight: 950;
+  letter-spacing: -3.1px;
+  word-break: keep-all;
+}
+
+.minimal-tagline span,
+.minimal-tagline strong {
+  display: block;
+  font: inherit;
+}
+
+.minimal-tagline strong {
+  color: #176d39;
+}
+
+.minimal-order-hero .order-button {
+  min-height: 70px;
+  margin-top: 24px;
+  border: 1px solid #cfe0d4;
+  border-radius: 18px;
+  background: #ffffff;
+  color: #176d39;
+  box-shadow:
+    0 9px 22px rgba(23, 109, 57, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+.minimal-order-hero .order-button[data-intake-status="closed"] {
+  background: #ffffff;
+  color: #56635b;
+}
+
+.minimal-order-hero .order-button:active {
+  background: #f6faf7;
+}
+
+.minimal-order-hero .order-button-copy {
+  min-height: 70px;
+}
+
+.minimal-order-hero .order-button-label {
+  font-size: 22px;
+  letter-spacing: -0.9px;
+}
+
+.minimal-order-hero .order-button-arrow {
+  right: 15px;
+  width: 38px;
+  height: 38px;
+  border-color: #176d39;
+  background: #176d39;
+  color: #ffffff;
+  font-size: 22px;
+}
+
+@media (max-width: 390px) {
+  .minimal-product-stage {
+    height: 348px;
+  }
+
+  .minimal-hero-content {
+    padding-right: 17px;
+    padding-bottom: 21px;
+    padding-left: 17px;
+  }
+
+  .minimal-tagline {
+    font-size: clamp(38px, 12vw, 48px);
+    letter-spacing: -2.8px;
+  }
+
+  .minimal-order-hero .order-button {
+    min-height: 66px;
+    margin-top: 21px;
+  }
+
+  .minimal-order-hero .order-button-copy {
+    min-height: 66px;
+  }
 }
 
 
@@ -1670,91 +1809,54 @@
 
 
     <!-- =====================================
-         퇴근 후 구매 순간 · 주문
+         사진 · 브랜드 문구 · 주문 버튼
     ====================================== -->
 
-    <section class="order-card">
+    <section class="minimal-order-hero" aria-labelledby="mainOrderMessage">
 
-      <p class="order-prompt">
-        <span>퇴근 후 다시 장보러 나가기 귀찮으셨죠?</span>
-        <span>내일 드실 고기, 오늘 밤 주문해 두세요.</span>
-      </p>
-
-      <h1 class="order-title">
-        <span>오지 마세요</span>
-        <strong>제가 갈게요.</strong>
-      </h1>
-
-      <div class="order-benefits" aria-label="새벽배송 핵심 안내">
-        <span class="order-benefit delivery-time">
-          <span class="order-benefit-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="8.5"></circle>
-              <path d="M12 7.5v5l3.2 2"></path>
-            </svg>
-          </span>
-          <small>21시까지 주문 시</small>
-          <strong>다음 날 오전 8시<em>이전 문 앞 배송</em></strong>
-        </span>
-        <span class="order-benefit price">
-          <span class="order-benefit-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path d="M5.5 8.5h13l-1 10h-11z"></path>
-              <path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"></path>
-            </svg>
-          </span>
-          <small>매장 판매가</small>
-          <strong>그대로</strong>
-        </span>
-        <span class="order-benefit shipping">
-          <span class="order-benefit-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path d="M3.5 7.5h10v8h-10z"></path>
-              <path d="M13.5 10h3l3 3v2.5h-6z"></path>
-              <circle cx="7" cy="17.5" r="1.5"></circle>
-              <circle cx="17" cy="17.5" r="1.5"></circle>
-            </svg>
-          </span>
-          <small>배송비</small>
-          <strong>0원</strong>
-        </span>
-      </div>
-
-      <button
-        class="order-button"
-        id="orderCtaButton"
-        type="button"
-        data-intake-status="loading"
-        aria-label="새벽배송 상품 주문 화면으로 이동"
-        onclick="location.href='morning-delivery.html'"
-      >
-        <span class="order-button-copy" aria-live="polite">
-          <span class="sr-only" id="orderCtaBadge">
-            오늘 주문 가능
-          </span>
-          <span class="order-button-label" id="orderCtaLabel">
-            고기 주문하기
-          </span>
-          <span class="sr-only" id="orderCtaMeta">
-            원하는 부위와 중량을 선택하세요
-          </span>
-        </span>
-        <span class="order-button-arrow" aria-hidden="true">→</span>
-      </button>
-
-      <p class="order-note" id="orderCtaNote">
-        한 팩부터 주문 가능 · 전주 지정지역
-      </p>
-
-      <div class="order-visual">
+      <div class="minimal-product-stage">
         <img
-          src="images/hero-pork-xbanner-v2.jpg"
-          alt="로즈마리와 함께 놓인 신선한 돼지고기"
-          width="1200"
-          height="800"
+          class="minimal-product-photo"
+          src="images/hero-pork-plated-v1.webp"
+          alt="밝은 접시에 정갈하게 담은 삼겹살과 목살"
+          width="900"
+          height="1200"
           decoding="async"
           fetchpriority="high"
         />
+      </div>
+
+      <div class="minimal-hero-content">
+        <h1 class="minimal-tagline" id="mainOrderMessage">
+          <span>오지 마세요</span>
+          <strong>제가 갈게요.</strong>
+        </h1>
+
+        <button
+          class="order-button"
+          id="orderCtaButton"
+          type="button"
+          data-intake-status="loading"
+          aria-label="새벽배송 상품 주문 화면으로 이동"
+          onclick="location.href='morning-delivery.html'"
+        >
+          <span class="order-button-copy" aria-live="polite">
+            <span class="sr-only" id="orderCtaBadge">
+              오늘 주문 가능
+            </span>
+            <span class="order-button-label" id="orderCtaLabel">
+              고기 주문하기
+            </span>
+            <span class="sr-only" id="orderCtaMeta">
+              원하는 부위와 중량을 선택하세요
+            </span>
+          </span>
+          <span class="order-button-arrow" aria-hidden="true">→</span>
+        </button>
+
+        <p class="sr-only" id="orderCtaNote">
+          한 팩부터 주문 가능 · 전주 지정지역
+        </p>
       </div>
 
     </section>
