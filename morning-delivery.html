@@ -1987,38 +1987,13 @@
   box-shadow: 0 8px 18px rgba(153, 69, 31, 0.13);
 }
 
-.order-intro-region {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 10px;
-  width: calc(100% - 32px);
-  min-height: 40px;
-  margin: 9px 16px 0;
-  padding: 7px 13px;
-  border: 0;
-  border-radius: 12px;
-  background: transparent;
-  color: #735d53;
-  text-align: center;
-  font-size: 13px;
-  line-height: 1.35;
-  font-weight: 850;
-  letter-spacing: -0.45px;
-}
-
-.order-intro-region-arrow {
-  font-size: 23px;
-  font-weight: 900;
-}
-
 .order-intro-confirm {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
   width: calc(100% - 32px);
   min-height: 58px;
-  margin: 10px 16px 0;
+  margin: 14px 16px 0;
   padding: 0 16px 0 22px;
   border: 0;
   border-radius: 15px;
@@ -2042,7 +2017,6 @@
 }
 
 .order-intro-close:focus-visible,
-.order-intro-region:focus-visible,
 .order-intro-confirm:focus-visible {
   outline: 3px solid rgba(235, 82, 66, 0.34);
   outline-offset: 3px;
@@ -3343,21 +3317,12 @@
       </div>
 
       <button
-        class="order-intro-region"
-        type="button"
-        onclick="openRegionFromIntro()"
-      >
-        <span>배송 가능 지역 확인하기</span>
-        <span class="order-intro-region-arrow" aria-hidden="true">›</span>
-      </button>
-
-      <button
         class="order-intro-confirm"
         id="orderIntroConfirm"
         type="button"
-        onclick="closeOrderIntro()"
+        onclick="openRegionFromIntro()"
       >
-        <span>확인하고 고기 고르기</span>
+        <span>배송 가능지역 확인하고 주문하기</span>
         <span aria-hidden="true">→</span>
       </button>
     </section>
