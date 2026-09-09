@@ -1831,10 +1831,10 @@
   display: none;
   align-items: center;
   justify-content: center;
-  padding: 20px 18px calc(20px + env(safe-area-inset-bottom));
-  background: rgba(18, 32, 23, 0.55);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  padding: 18px 16px calc(18px + env(safe-area-inset-bottom));
+  background: rgba(16, 31, 21, 0.64);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
 }
 
 .order-intro-overlay.show {
@@ -1844,15 +1844,13 @@
 .order-intro-dialog {
   position: relative;
   width: min(100%, 420px);
-  max-height: calc(100dvh - 40px);
+  max-height: calc(100dvh - 36px);
   overflow-y: auto;
-  padding: 25px 20px 20px;
-  border: 1px solid rgba(218, 231, 222, 0.95);
-  border-radius: 28px;
-  background:
-    radial-gradient(circle at 100% 0%, rgba(100, 180, 124, 0.10), transparent 30%),
-    #ffffff;
-  box-shadow: 0 28px 80px rgba(8, 36, 19, 0.30);
+  padding: 0 0 16px;
+  border: 1px solid rgba(222, 235, 226, 0.96);
+  border-radius: 26px;
+  background: #ffffff;
+  box-shadow: 0 30px 90px rgba(8, 36, 19, 0.34);
   animation: order-intro-in 0.24s ease-out;
 }
 
@@ -1869,83 +1867,193 @@
 
 .order-intro-close {
   position: absolute;
-  top: 14px;
-  right: 14px;
+  z-index: 3;
+  top: 13px;
+  right: 13px;
   display: grid;
   place-items: center;
   width: 38px;
   height: 38px;
   padding: 0;
-  border: 0;
+  border: 1px solid rgba(28, 100, 59, 0.09);
   border-radius: 50%;
-  background: #f1f5f2;
-  color: #617067;
+  background: rgba(255, 255, 255, 0.88);
+  color: #537061;
   font-size: 23px;
   line-height: 1;
+  box-shadow: 0 4px 13px rgba(20, 72, 42, 0.09);
+}
+
+.order-intro-visual {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 380px;
+  padding: 27px 20px 24px;
+  background:
+    radial-gradient(circle at 9% 12%, rgba(68, 166, 101, 0.16) 0 5px, transparent 6px),
+    radial-gradient(circle at 89% 29%, rgba(241, 182, 102, 0.22) 0 6px, transparent 7px),
+    radial-gradient(circle at 16% 76%, rgba(31, 112, 65, 0.12) 0 7px, transparent 8px),
+    linear-gradient(150deg, #f8fcf9 0%, #eaf6ed 100%);
+  text-align: center;
+}
+
+.order-intro-visual::before,
+.order-intro-visual::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.order-intro-visual::before {
+  width: 180px;
+  height: 180px;
+  top: -90px;
+  left: -70px;
+}
+
+.order-intro-visual::after {
+  width: 220px;
+  height: 220px;
+  right: -115px;
+  bottom: -125px;
 }
 
 .order-intro-eyebrow {
-  margin: 1px 44px 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  margin: 0 44px 7px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
   color: #2e8150;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.3;
   font-weight: 900;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   text-align: center;
 }
 
 .order-intro-title {
   margin: 0;
-  color: #142019;
-  font-size: 25px;
-  line-height: 1.25;
+  color: #172119;
+  font-size: 39px;
+  line-height: 1.05;
   font-weight: 950;
-  letter-spacing: -1.2px;
+  letter-spacing: -2.1px;
   text-align: center;
   word-break: keep-all;
 }
 
+.order-intro-title strong {
+  color: #18743c;
+  font-size: 1.22em;
+  font-weight: 950;
+}
+
+.order-intro-ticket-stack {
+  position: relative;
+  width: min(100%, 326px);
+  height: 190px;
+  margin: 21px auto 0;
+}
+
+.order-intro-ticket {
+  position: absolute;
+  display: grid;
+  align-content: center;
+  min-height: 112px;
+  padding: 18px 16px;
+  border-radius: 18px;
+  text-align: left;
+  box-shadow: 0 16px 30px rgba(24, 83, 47, 0.16);
+}
+
+.order-intro-ticket::before,
+.order-intro-ticket::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #eef8f0;
+  transform: translateY(-50%);
+}
+
+.order-intro-ticket::before {
+  left: -9px;
+}
+
+.order-intro-ticket::after {
+  right: -9px;
+}
+
+.order-intro-ticket small {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 11px;
+  line-height: 1.35;
+  font-weight: 900;
+}
+
+.order-intro-ticket strong {
+  display: block;
+  font-size: 18px;
+  line-height: 1.28;
+  font-weight: 950;
+  letter-spacing: -0.75px;
+  word-break: keep-all;
+}
+
+.order-intro-ticket.price {
+  z-index: 1;
+  top: 4px;
+  left: 3px;
+  width: 63%;
+  border: 1px solid #cfe5d5;
+  background: #ffffff;
+  color: #1b6338;
+  transform: rotate(-5deg);
+}
+
+.order-intro-ticket.price small {
+  color: #71857a;
+}
+
+.order-intro-ticket.delivery {
+  z-index: 2;
+  right: 2px;
+  bottom: 2px;
+  width: 70%;
+  min-height: 128px;
+  background: linear-gradient(145deg, #247d47 0%, #155f35 100%);
+  color: #ffffff;
+  transform: rotate(4deg);
+}
+
+.order-intro-ticket.delivery small {
+  color: #d6f2de;
+}
+
 .order-intro-region {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 12px;
-  width: 100%;
-  min-height: 68px;
-  margin-top: 19px;
-  padding: 12px 14px;
-  border: 1px solid #cfe2d4;
-  border-radius: 18px;
-  background: #f7fbf8;
+  gap: 10px;
+  width: calc(100% - 32px);
+  min-height: 48px;
+  margin: 14px 16px 0;
+  padding: 10px 14px 10px 16px;
+  border: 1px solid #dbe8df;
+  border-radius: 14px;
+  background: #ffffff;
   color: #1f6840;
   text-align: left;
-  box-shadow: 0 6px 16px rgba(31, 104, 64, 0.07);
-}
-
-.order-intro-region-icon {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #e6f3e9;
-  font-size: 19px;
-}
-
-.order-intro-region-copy {
-  display: grid;
-  gap: 2px;
-  min-width: 0;
-}
-
-.order-intro-region-copy small {
-  color: #698074;
-  font-size: 11px;
-  line-height: 1.25;
-  font-weight: 800;
-}
-
-.order-intro-region-copy strong {
   font-size: 15px;
   line-height: 1.35;
   font-weight: 950;
@@ -1957,64 +2065,16 @@
   font-weight: 900;
 }
 
-.order-intro-benefits {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.order-intro-benefit {
-  display: grid;
-  place-content: center;
-  min-height: 76px;
-  padding: 12px 10px;
-  border: 1px solid #dbe8df;
-  border-radius: 16px;
-  background: #ffffff;
-  color: #223128;
-  text-align: center;
-}
-
-.order-intro-benefit.delivery {
-  grid-column: 1 / -1;
-  min-height: 82px;
-  background: #edf7f0;
-}
-
-.order-intro-benefit small {
-  display: block;
-  margin-bottom: 4px;
-  color: #2b7d4b;
-  font-size: 12px;
-  line-height: 1.3;
-  font-weight: 900;
-}
-
-.order-intro-benefit strong {
-  display: block;
-  color: #18221c;
-  font-size: 16px;
-  line-height: 1.35;
-  font-weight: 950;
-  letter-spacing: -0.55px;
-  word-break: keep-all;
-}
-
-.order-intro-benefit:not(.delivery) strong {
-  color: #1f7041;
-}
-
 .order-intro-confirm {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  width: 100%;
-  min-height: 60px;
-  margin-top: 15px;
-  padding: 0 18px 0 24px;
+  width: calc(100% - 32px);
+  min-height: 58px;
+  margin: 10px 16px 0;
+  padding: 0 16px 0 22px;
   border: 0;
-  border-radius: 17px;
+  border-radius: 15px;
   background: #1f7041;
   color: #ffffff;
   font-size: 17px;
@@ -2042,29 +2102,32 @@
 }
 
 @media (max-height: 690px) {
-  .order-intro-dialog {
-    padding-top: 19px;
+  .order-intro-visual {
+    min-height: 325px;
+    padding-top: 20px;
     padding-bottom: 16px;
   }
 
-  .order-intro-region {
-    min-height: 60px;
-    margin-top: 13px;
+  .order-intro-title {
+    font-size: 34px;
   }
 
-  .order-intro-benefit {
-    min-height: 66px;
-    padding-top: 9px;
-    padding-bottom: 9px;
+  .order-intro-ticket-stack {
+    height: 157px;
+    margin-top: 10px;
   }
 
-  .order-intro-benefit.delivery {
-    min-height: 70px;
+  .order-intro-ticket {
+    min-height: 98px;
+    padding: 14px;
   }
 
-  .order-intro-confirm {
-    min-height: 54px;
-    margin-top: 11px;
+  .order-intro-ticket.delivery {
+    min-height: 108px;
+  }
+
+  .order-intro-ticket strong {
+    font-size: 16px;
   }
 }
 
@@ -3321,38 +3384,36 @@
         ×
       </button>
 
-      <p class="order-intro-eyebrow">한농직판장 새벽배송</p>
-      <h2 class="order-intro-title" id="orderIntroTitle">
-        주문 전, 이것만 확인해 주세요
-      </h2>
+      <div class="order-intro-visual">
+        <p class="order-intro-eyebrow">한농직판장 새벽배송 혜택</p>
+        <h2 class="order-intro-title" id="orderIntroTitle">
+          배송비 <strong>무료</strong>
+        </h2>
+
+        <div class="order-intro-ticket-stack">
+          <article class="order-intro-ticket price">
+            <small>가격 혜택</small>
+            <strong>매장 판매가 그대로</strong>
+          </article>
+
+          <article class="order-intro-ticket delivery">
+            <small>21시까지 주문 시</small>
+            <strong>
+              다음 날 오전 8시 이전<br />
+              문 앞 배송
+            </strong>
+          </article>
+        </div>
+      </div>
 
       <button
         class="order-intro-region"
         type="button"
         onclick="openRegionFromIntro()"
       >
-        <span class="order-intro-region-icon" aria-hidden="true">⌖</span>
-        <span class="order-intro-region-copy">
-          <small>먼저 확인해 주세요</small>
-          <strong>배송 가능 지역 확인하기</strong>
-        </span>
+        <span>배송 가능 지역 확인하기</span>
         <span class="order-intro-region-arrow" aria-hidden="true">›</span>
       </button>
-
-      <div class="order-intro-benefits" aria-label="새벽배송 핵심 안내">
-        <span class="order-intro-benefit delivery">
-          <small>21시까지 주문 시</small>
-          <strong>다음 날 오전 8시 이전 문 앞 배송</strong>
-        </span>
-        <span class="order-intro-benefit">
-          <small>가격 혜택</small>
-          <strong>매장 판매가 그대로</strong>
-        </span>
-        <span class="order-intro-benefit">
-          <small>배송 혜택</small>
-          <strong>배송비 0원</strong>
-        </span>
-      </div>
 
       <button
         class="order-intro-confirm"
