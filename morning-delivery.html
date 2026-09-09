@@ -1824,111 +1824,248 @@
   font-weight: 650;
 
 }
-    .kiosk-region-nav {
-  position: relative;
-  z-index: 2;
-  margin: 0 0 22px;
+.order-intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 260;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 18px calc(20px + env(safe-area-inset-bottom));
+  background: rgba(18, 32, 23, 0.55);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
-.kiosk-region-button {
+.order-intro-overlay.show {
+  display: flex;
+}
+
+.order-intro-dialog {
+  position: relative;
+  width: min(100%, 420px);
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+  padding: 25px 20px 20px;
+  border: 1px solid rgba(218, 231, 222, 0.95);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(100, 180, 124, 0.10), transparent 30%),
+    #ffffff;
+  box-shadow: 0 28px 80px rgba(8, 36, 19, 0.30);
+  animation: order-intro-in 0.24s ease-out;
+}
+
+@keyframes order-intro-in {
+  from {
+    transform: translateY(18px) scale(0.985);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.order-intro-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #f1f5f2;
+  color: #617067;
+  font-size: 23px;
+  line-height: 1;
+}
+
+.order-intro-eyebrow {
+  margin: 1px 44px 6px;
+  color: #2e8150;
+  font-size: 12px;
+  line-height: 1.3;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.order-intro-title {
+  margin: 0;
+  color: #142019;
+  font-size: 25px;
+  line-height: 1.25;
+  font-weight: 950;
+  letter-spacing: -1.2px;
+  text-align: center;
+  word-break: keep-all;
+}
+
+.order-intro-region {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
   width: 100%;
-  min-height: 60px;
-  padding: 11px 15px;
-  border: 1px solid #d8e4db;
-  border-radius: 17px;
-  background: #ffffff;
-  color: #214e36;
-  font-size: 15px;
-  font-weight: 900;
+  min-height: 68px;
+  margin-top: 19px;
+  padding: 12px 14px;
+  border: 1px solid #cfe2d4;
+  border-radius: 18px;
+  background: #f7fbf8;
+  color: #1f6840;
   text-align: left;
-  box-shadow: 0 7px 20px rgba(35, 95, 63, 0.08);
-  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(31, 104, 64, 0.07);
 }
 
-.kiosk-region-icon,
-.kiosk-region-arrow {
+.order-intro-region-icon {
   display: grid;
   place-items: center;
-  flex: 0 0 auto;
-}
-
-.kiosk-region-icon {
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: #edf5ef;
-  font-size: 16px;
+  background: #e6f3e9;
+  font-size: 19px;
 }
 
-.kiosk-region-arrow {
-  color: #6e8b79;
-  font-size: 22px;
-}
-
-.kiosk-region-button:active {
-  transform: scale(0.985);
-  background: #f8fbf9;
-}
-
-.order-promise-strip {
-  margin: -7px 0 22px;
-  overflow: hidden;
-  border: 1px solid #d8e7dc;
-  border-radius: 17px;
-  background: #f6faf7;
-  box-shadow: 0 7px 20px rgba(35, 95, 63, 0.06);
-}
-
-.order-promise-main {
+.order-intro-region-copy {
   display: grid;
-  gap: 3px;
-  padding: 14px 16px 13px;
+  gap: 2px;
+  min-width: 0;
+}
+
+.order-intro-region-copy small {
+  color: #698074;
+  font-size: 11px;
+  line-height: 1.25;
+  font-weight: 800;
+}
+
+.order-intro-region-copy strong {
+  font-size: 15px;
+  line-height: 1.35;
+  font-weight: 950;
+  letter-spacing: -0.45px;
+}
+
+.order-intro-region-arrow {
+  font-size: 23px;
+  font-weight: 900;
+}
+
+.order-intro-benefits {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.order-intro-benefit {
+  display: grid;
+  place-content: center;
+  min-height: 76px;
+  padding: 12px 10px;
+  border: 1px solid #dbe8df;
+  border-radius: 16px;
+  background: #ffffff;
+  color: #223128;
   text-align: center;
 }
 
-.order-promise-main strong {
-  color: #1f7041;
-  font-size: 13px;
-  line-height: 1.25;
-  font-weight: 900;
-  letter-spacing: -0.35px;
+.order-intro-benefit.delivery {
+  grid-column: 1 / -1;
+  min-height: 82px;
+  background: #edf7f0;
 }
 
-.order-promise-main span {
-  color: #1d2921;
-  font-size: 15px;
-  line-height: 1.35;
+.order-intro-benefit small {
+  display: block;
+  margin-bottom: 4px;
+  color: #2b7d4b;
+  font-size: 12px;
+  line-height: 1.3;
   font-weight: 900;
-  letter-spacing: -0.5px;
+}
+
+.order-intro-benefit strong {
+  display: block;
+  color: #18221c;
+  font-size: 16px;
+  line-height: 1.35;
+  font-weight: 950;
+  letter-spacing: -0.55px;
   word-break: keep-all;
 }
 
-.order-promise-benefits {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border-top: 1px solid #dce9df;
-  background: #ffffff;
+.order-intro-benefit:not(.delivery) strong {
+  color: #1f7041;
 }
 
-.order-promise-benefits span {
+.order-intro-confirm {
   display: grid;
-  place-items: center;
-  min-height: 45px;
-  padding: 8px 10px;
-  color: #245f3d;
-  font-size: 13px;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  width: 100%;
+  min-height: 60px;
+  margin-top: 15px;
+  padding: 0 18px 0 24px;
+  border: 0;
+  border-radius: 17px;
+  background: #1f7041;
+  color: #ffffff;
+  font-size: 17px;
   line-height: 1.3;
-  font-weight: 850;
-  letter-spacing: -0.35px;
-  text-align: center;
+  font-weight: 950;
+  letter-spacing: -0.55px;
+  box-shadow: 0 9px 20px rgba(31, 112, 65, 0.22);
 }
 
-.order-promise-benefits span + span {
-  border-left: 1px solid #dce9df;
+.order-intro-confirm span:first-child {
+  font-size: 17px;
+  line-height: 1.3;
+}
+
+.order-intro-confirm span:last-child {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.order-intro-close:focus-visible,
+.order-intro-region:focus-visible,
+.order-intro-confirm:focus-visible {
+  outline: 3px solid rgba(49, 150, 82, 0.34);
+  outline-offset: 3px;
+}
+
+@media (max-height: 690px) {
+  .order-intro-dialog {
+    padding-top: 19px;
+    padding-bottom: 16px;
+  }
+
+  .order-intro-region {
+    min-height: 60px;
+    margin-top: 13px;
+  }
+
+  .order-intro-benefit {
+    min-height: 66px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+  }
+
+  .order-intro-benefit.delivery {
+    min-height: 70px;
+  }
+
+  .order-intro-confirm {
+    min-height: 54px;
+    margin-top: 11px;
+  }
 }
 
 .order-consent {
@@ -2987,29 +3124,6 @@
 
   <main class="page">
 
-<nav class="kiosk-region-nav" aria-label="배송 지역 확인">
-  <button
-    class="kiosk-region-button"
-    type="button"
-    onclick="openRegionModal()"
-  >
-    <span class="kiosk-region-icon" aria-hidden="true">⌖</span>
-    <span>배송 가능 지역 확인하기</span>
-    <span class="kiosk-region-arrow" aria-hidden="true">›</span>
-  </button>
-</nav>
-
-<section class="order-promise-strip" aria-label="새벽배송 핵심 안내">
-  <div class="order-promise-main">
-    <strong>21시까지 주문 시</strong>
-    <span>다음 날 오전 8시 이전 문 앞 배송</span>
-  </div>
-  <div class="order-promise-benefits">
-    <span>매장 판매가 그대로</span>
-    <span>배송비 0원</span>
-  </div>
-</section>
-
 <section
   class="intake-closed-notice"
   id="intakeClosedNotice"
@@ -3185,6 +3299,72 @@
     장바구니 보기 · <span id="cartCount">0</span>개
 
   </button>
+
+  <!-- 주문 화면 첫 방문 안내 -->
+
+  <div
+    class="order-intro-overlay"
+    id="orderIntroModal"
+    aria-hidden="true"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="orderIntroTitle"
+  >
+    <section class="order-intro-dialog">
+      <button
+        class="order-intro-close"
+        id="orderIntroClose"
+        type="button"
+        aria-label="주문 안내 닫기"
+        onclick="closeOrderIntro()"
+      >
+        ×
+      </button>
+
+      <p class="order-intro-eyebrow">한농직판장 새벽배송</p>
+      <h2 class="order-intro-title" id="orderIntroTitle">
+        주문 전, 이것만 확인해 주세요
+      </h2>
+
+      <button
+        class="order-intro-region"
+        type="button"
+        onclick="openRegionFromIntro()"
+      >
+        <span class="order-intro-region-icon" aria-hidden="true">⌖</span>
+        <span class="order-intro-region-copy">
+          <small>먼저 확인해 주세요</small>
+          <strong>배송 가능 지역 확인하기</strong>
+        </span>
+        <span class="order-intro-region-arrow" aria-hidden="true">›</span>
+      </button>
+
+      <div class="order-intro-benefits" aria-label="새벽배송 핵심 안내">
+        <span class="order-intro-benefit delivery">
+          <small>21시까지 주문 시</small>
+          <strong>다음 날 오전 8시 이전 문 앞 배송</strong>
+        </span>
+        <span class="order-intro-benefit">
+          <small>가격 혜택</small>
+          <strong>매장 판매가 그대로</strong>
+        </span>
+        <span class="order-intro-benefit">
+          <small>배송 혜택</small>
+          <strong>배송비 0원</strong>
+        </span>
+      </div>
+
+      <button
+        class="order-intro-confirm"
+        id="orderIntroConfirm"
+        type="button"
+        onclick="closeOrderIntro()"
+      >
+        <span>확인하고 고기 고르기</span>
+        <span aria-hidden="true">→</span>
+      </button>
+    </section>
+  </div>
 
   <!-- 배송지역 안내창 -->
 
@@ -3930,6 +4110,18 @@ const productById = new Map();
 
     document.getElementById("regionModal");
 
+  const orderIntroModal =
+
+    document.getElementById("orderIntroModal");
+
+  const orderIntroConfirm =
+
+    document.getElementById("orderIntroConfirm");
+
+  const ORDER_INTRO_SESSION_KEY =
+
+    "hanong-order-intro-seen-v1";
+
   const sheetOverlay =
 
     document.getElementById("sheetOverlay");
@@ -3957,12 +4149,101 @@ let orderIntakeReason = "OPEN";
     renderProducts(FALLBACK_PRODUCTS);
     loadStorefront();
 
+    window.setTimeout(
+      showOrderIntro,
+      220
+    );
+
     setInterval(
       refreshOrderIntakeStatus,
       60 * 1000
     );
   }
 );
+
+  function hasSeenOrderIntro() {
+    try {
+      return sessionStorage.getItem(
+        ORDER_INTRO_SESSION_KEY
+      ) === "1";
+    } catch (error) {
+      return false;
+    }
+  }
+
+  function rememberOrderIntro() {
+    try {
+      sessionStorage.setItem(
+        ORDER_INTRO_SESSION_KEY,
+        "1"
+      );
+    } catch (error) {
+      // 저장이 제한된 환경에서도 안내창은 정상적으로 닫힙니다.
+    }
+  }
+
+  function showOrderIntro() {
+    if (
+      !orderIntroModal ||
+      hasSeenOrderIntro()
+    ) {
+      return;
+    }
+
+    orderIntroModal.classList.add("show");
+    orderIntroModal.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+    document.body.classList.add("modal-open");
+
+    window.setTimeout(function () {
+      if (orderIntroConfirm) {
+        orderIntroConfirm.focus({
+          preventScroll: true
+        });
+      }
+    }, 80);
+  }
+
+  function closeOrderIntro(
+    remember = true
+  ) {
+    if (!orderIntroModal) {
+      return;
+    }
+
+    if (remember) {
+      rememberOrderIntro();
+    }
+
+    orderIntroModal.classList.remove("show");
+    orderIntroModal.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+    if (!regionModal.classList.contains("show")) {
+      document.body.classList.remove("modal-open");
+    }
+  }
+
+  function openRegionFromIntro() {
+    closeOrderIntro(true);
+    openRegionModal();
+  }
+
+  if (orderIntroModal) {
+    orderIntroModal.addEventListener(
+      "click",
+      function (event) {
+        if (event.target === orderIntroModal) {
+          closeOrderIntro();
+        }
+      }
+    );
+  }
+
   function openRegionModal() {
     regionModal.classList.add("show");
     regionModal.setAttribute("aria-hidden", "false");
@@ -5150,6 +5431,16 @@ document.addEventListener(
   function (event) {
 
     if (event.key === "Escape") {
+
+      if (
+        orderIntroModal &&
+        orderIntroModal.classList.contains(
+          "show"
+        )
+      ) {
+        closeOrderIntro();
+        return;
+      }
 
       closePaymentConfirm();
 
