@@ -49,6 +49,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180.png" />
 <link rel="preconnect" href="https://pay.nicepay.co.kr" crossorigin />
 <link rel="preconnect" href="https://yunhawi-payment-api.yunhawifood.workers.dev" />
+<link rel="preload" as="image" href="images/order-benefit-card-pig-v1.jpg" />
 
 <script defer src="https://pay.nicepay.co.kr/v1/js/"></script>
 
@@ -1875,50 +1876,26 @@
   width: 38px;
   height: 38px;
   padding: 0;
-  border: 1px solid rgba(28, 100, 59, 0.09);
+  border: 1px solid rgba(92, 62, 46, 0.10);
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.88);
-  color: #537061;
+  color: #69564d;
   font-size: 23px;
   line-height: 1;
-  box-shadow: 0 4px 13px rgba(20, 72, 42, 0.09);
+  box-shadow: 0 4px 13px rgba(89, 52, 34, 0.10);
 }
 
 .order-intro-visual {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  min-height: 380px;
-  padding: 27px 20px 24px;
-  background:
-    radial-gradient(circle at 9% 12%, rgba(68, 166, 101, 0.16) 0 5px, transparent 6px),
-    radial-gradient(circle at 89% 29%, rgba(241, 182, 102, 0.22) 0 6px, transparent 7px),
-    radial-gradient(circle at 16% 76%, rgba(31, 112, 65, 0.12) 0 7px, transparent 8px),
-    linear-gradient(150deg, #f8fcf9 0%, #eaf6ed 100%);
-  text-align: center;
-}
-
-.order-intro-visual::before,
-.order-intro-visual::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.62);
-}
-
-.order-intro-visual::before {
-  width: 180px;
-  height: 180px;
-  top: -90px;
-  left: -70px;
-}
-
-.order-intro-visual::after {
-  width: 220px;
-  height: 220px;
-  right: -115px;
-  bottom: -125px;
+  aspect-ratio: 4 / 5;
+  padding: 27px 24px 22px;
+  background-color: #ffe98c;
+  background-image: url("images/order-benefit-card-pig-v1.jpg");
+  background-position: center;
+  background-size: cover;
+  text-align: left;
 }
 
 .order-intro-eyebrow {
@@ -1926,118 +1903,85 @@
   align-items: center;
   justify-content: center;
   min-height: 28px;
-  margin: 0 44px 7px;
-  padding: 5px 12px;
+  margin: 0 44px 9px 0;
+  padding: 5px 11px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.78);
-  color: #2e8150;
+  background: rgba(255, 255, 255, 0.90);
+  color: #d94437;
   font-size: 11px;
   line-height: 1.3;
   font-weight: 900;
   letter-spacing: 0.04em;
-  text-align: center;
+  text-align: left;
+  box-shadow: 0 4px 12px rgba(158, 91, 27, 0.08);
 }
 
 .order-intro-title {
   margin: 0;
-  color: #172119;
-  font-size: 39px;
-  line-height: 1.05;
+  color: #30251f;
+  font-size: 37px;
+  line-height: 1.02;
   font-weight: 950;
-  letter-spacing: -2.1px;
-  text-align: center;
+  letter-spacing: -2.2px;
+  text-align: left;
   word-break: keep-all;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.34);
 }
 
 .order-intro-title strong {
-  color: #18743c;
-  font-size: 1.22em;
+  display: block;
+  margin-top: 2px;
+  color: #e64638;
+  font-size: 1.42em;
   font-weight: 950;
 }
 
-.order-intro-ticket-stack {
-  position: relative;
-  width: min(100%, 326px);
-  height: 190px;
-  margin: 21px auto 0;
-}
-
-.order-intro-ticket {
-  position: absolute;
-  display: grid;
-  align-content: center;
-  min-height: 112px;
-  padding: 18px 16px;
-  border-radius: 18px;
+.order-intro-promise {
+  width: min(69%, 235px);
+  margin-top: 15px;
+  padding: 10px 0 10px 12px;
+  border-left: 4px solid #329cda;
+  color: #40312b;
   text-align: left;
-  box-shadow: 0 16px 30px rgba(24, 83, 47, 0.16);
 }
 
-.order-intro-ticket::before,
-.order-intro-ticket::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #eef8f0;
-  transform: translateY(-50%);
-}
-
-.order-intro-ticket::before {
-  left: -9px;
-}
-
-.order-intro-ticket::after {
-  right: -9px;
-}
-
-.order-intro-ticket small {
+.order-intro-promise small {
   display: block;
-  margin-bottom: 5px;
-  font-size: 11px;
+  margin-bottom: 3px;
+  color: #327da8;
+  font-size: 12px;
   line-height: 1.35;
   font-weight: 900;
 }
 
-.order-intro-ticket strong {
+.order-intro-promise strong {
   display: block;
-  font-size: 18px;
-  line-height: 1.28;
+  font-size: 16px;
+  line-height: 1.32;
   font-weight: 950;
-  letter-spacing: -0.75px;
+  letter-spacing: -0.65px;
   word-break: keep-all;
 }
 
-.order-intro-ticket.price {
-  z-index: 1;
-  top: 4px;
-  left: 3px;
-  width: 63%;
-  border: 1px solid #cfe5d5;
-  background: #ffffff;
-  color: #1b6338;
-  transform: rotate(-5deg);
-}
-
-.order-intro-ticket.price small {
-  color: #71857a;
-}
-
-.order-intro-ticket.delivery {
-  z-index: 2;
-  right: 2px;
-  bottom: 2px;
-  width: 70%;
-  min-height: 128px;
-  background: linear-gradient(145deg, #247d47 0%, #155f35 100%);
-  color: #ffffff;
-  transform: rotate(4deg);
-}
-
-.order-intro-ticket.delivery small {
-  color: #d6f2de;
+.order-intro-price-sticker {
+  position: absolute;
+  top: 50%;
+  left: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 43px;
+  padding: 9px 14px;
+  border: 2px dashed #eb5c4c;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #d93f35;
+  font-size: 14px;
+  line-height: 1.25;
+  font-weight: 950;
+  letter-spacing: -0.55px;
+  transform: rotate(-3deg);
+  box-shadow: 0 8px 18px rgba(153, 69, 31, 0.13);
 }
 
 .order-intro-region {
@@ -2046,17 +1990,17 @@
   align-items: center;
   gap: 10px;
   width: calc(100% - 32px);
-  min-height: 48px;
-  margin: 14px 16px 0;
-  padding: 10px 14px 10px 16px;
-  border: 1px solid #dbe8df;
-  border-radius: 14px;
-  background: #ffffff;
-  color: #1f6840;
-  text-align: left;
-  font-size: 15px;
+  min-height: 40px;
+  margin: 9px 16px 0;
+  padding: 7px 13px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #735d53;
+  text-align: center;
+  font-size: 13px;
   line-height: 1.35;
-  font-weight: 950;
+  font-weight: 850;
   letter-spacing: -0.45px;
 }
 
@@ -2075,13 +2019,13 @@
   padding: 0 16px 0 22px;
   border: 0;
   border-radius: 15px;
-  background: #1f7041;
+  background: linear-gradient(135deg, #f45e4d 0%, #e3473c 100%);
   color: #ffffff;
   font-size: 17px;
   line-height: 1.3;
   font-weight: 950;
   letter-spacing: -0.55px;
-  box-shadow: 0 9px 20px rgba(31, 112, 65, 0.22);
+  box-shadow: 0 10px 22px rgba(214, 63, 52, 0.25);
 }
 
 .order-intro-confirm span:first-child {
@@ -2097,37 +2041,27 @@
 .order-intro-close:focus-visible,
 .order-intro-region:focus-visible,
 .order-intro-confirm:focus-visible {
-  outline: 3px solid rgba(49, 150, 82, 0.34);
+  outline: 3px solid rgba(235, 82, 66, 0.34);
   outline-offset: 3px;
 }
 
 @media (max-height: 690px) {
   .order-intro-visual {
-    min-height: 325px;
-    padding-top: 20px;
-    padding-bottom: 16px;
+    aspect-ratio: 1 / 1;
+    padding-top: 18px;
+    background-position: center 61%;
   }
 
   .order-intro-title {
-    font-size: 34px;
+    font-size: 31px;
   }
 
-  .order-intro-ticket-stack {
-    height: 157px;
+  .order-intro-promise {
     margin-top: 10px;
   }
 
-  .order-intro-ticket {
-    min-height: 98px;
-    padding: 14px;
-  }
-
-  .order-intro-ticket.delivery {
-    min-height: 108px;
-  }
-
-  .order-intro-ticket strong {
-    font-size: 16px;
+  .order-intro-price-sticker {
+    top: 54%;
   }
 }
 
@@ -3385,25 +3319,20 @@
       </button>
 
       <div class="order-intro-visual">
-        <p class="order-intro-eyebrow">한농직판장 새벽배송 혜택</p>
+        <p class="order-intro-eyebrow">한농직판장 새벽배송</p>
         <h2 class="order-intro-title" id="orderIntroTitle">
           배송비 <strong>무료</strong>
         </h2>
 
-        <div class="order-intro-ticket-stack">
-          <article class="order-intro-ticket price">
-            <small>가격 혜택</small>
-            <strong>매장 판매가 그대로</strong>
-          </article>
-
-          <article class="order-intro-ticket delivery">
-            <small>21시까지 주문 시</small>
-            <strong>
-              다음 날 오전 8시 이전<br />
-              문 앞 배송
-            </strong>
-          </article>
+        <div class="order-intro-promise">
+          <small>21시까지 주문 시</small>
+          <strong>
+            다음 날 오전 8시 이전<br />
+            문 앞 도착
+          </strong>
         </div>
+
+        <span class="order-intro-price-sticker">매장 판매가 그대로</span>
       </div>
 
       <button
