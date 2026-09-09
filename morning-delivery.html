@@ -1890,7 +1890,7 @@
   isolation: isolate;
   overflow: hidden;
   aspect-ratio: 4 / 5;
-  padding: 27px 24px 22px;
+  padding: 24px 24px 22px;
   background-color: #ffe98c;
   background-image: url("images/order-benefit-card-pig-v1.jpg");
   background-position: center;
@@ -1919,7 +1919,7 @@
 .order-intro-title {
   margin: 0;
   color: #30251f;
-  font-size: 37px;
+  font-size: 35px;
   line-height: 1.02;
   font-weight: 950;
   letter-spacing: -2.2px;
@@ -1932,17 +1932,20 @@
   display: block;
   margin-top: 2px;
   color: #e64638;
-  font-size: 1.42em;
+  font-size: 1.38em;
   font-weight: 950;
 }
 
 .order-intro-promise {
-  width: min(69%, 235px);
-  margin-top: 15px;
-  padding: 10px 0 10px 12px;
-  border-left: 4px solid #329cda;
+  width: min(70%, 230px);
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.74);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.78);
   color: #40312b;
   text-align: left;
+  box-shadow: 0 7px 18px rgba(139, 87, 38, 0.10);
 }
 
 .order-intro-promise small {
@@ -1956,7 +1959,7 @@
 
 .order-intro-promise strong {
   display: block;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.32;
   font-weight: 950;
   letter-spacing: -0.65px;
@@ -1964,23 +1967,23 @@
 }
 
 .order-intro-price-sticker {
-  position: absolute;
-  top: 50%;
-  left: 22px;
+  position: relative;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 43px;
-  padding: 9px 14px;
+  min-height: 36px;
+  margin-top: 9px;
+  padding: 7px 12px;
   border: 2px dashed #eb5c4c;
   border-radius: 13px;
   background: rgba(255, 255, 255, 0.92);
   color: #d93f35;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.25;
   font-weight: 950;
   letter-spacing: -0.55px;
-  transform: rotate(-3deg);
+  transform: rotate(-1.5deg);
   box-shadow: 0 8px 18px rgba(153, 69, 31, 0.13);
 }
 
@@ -2061,7 +2064,7 @@
   }
 
   .order-intro-price-sticker {
-    top: 54%;
+    margin-top: 7px;
   }
 }
 
@@ -3099,6 +3102,10 @@
 :is(button, a, input, select, textarea, [role="button"]):focus-visible {
   outline: 3px solid rgba(47, 139, 80, 0.28);
   outline-offset: 3px;
+}
+
+.order-intro-confirm:focus-visible {
+  outline-color: rgba(235, 82, 66, 0.34);
 }
 
 @media (prefers-reduced-motion: reduce) {
