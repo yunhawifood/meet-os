@@ -895,6 +895,38 @@
   background: #f8f7f3;
 }
 
+.same-day-rider {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  left: 16px;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 48px;
+  padding: 0 16px;
+  border: 1px solid rgba(23, 109, 57, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #174f2c;
+  font-size: 15px;
+  line-height: 1.3;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  box-shadow: 0 8px 22px rgba(32, 75, 47, 0.13);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.same-day-rider-icon {
+  display: inline-block;
+  font-size: 23px;
+  line-height: 1;
+  animation: same-day-rider-run 2.7s ease-in-out infinite;
+}
+
 .minimal-product-stage::after {
   position: absolute;
   inset: auto 0 0;
@@ -991,7 +1023,7 @@
   border-radius: 22px;
   background: #fffdf9;
   box-shadow: 0 8px 22px rgba(71, 52, 28, 0.07);
-  text-align: left;
+  text-align: center;
 }
 
 .home-side-dish h2 {
@@ -1003,20 +1035,11 @@
   word-break: keep-all;
 }
 
-.home-side-dish-copy {
-  margin: 13px 0 0;
-  color: #5f5a52;
-  font-size: 17px;
-  line-height: 1.55;
-  font-weight: 750;
-  letter-spacing: -0.55px;
-  word-break: keep-all;
-}
-
 .home-side-dish-link {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   min-height: 53px;
   margin-top: 19px;
   padding: 0 15px;
@@ -1027,10 +1050,35 @@
   font-weight: 900;
   letter-spacing: -0.45px;
   text-decoration: none;
+  animation: openchat-button-nudge 3.2s ease-in-out infinite;
+}
+
+.home-side-dish-link span:last-child {
+  position: absolute;
+  right: 17px;
+  animation: openchat-arrow-slide 1.6s ease-in-out infinite;
 }
 
 .home-side-dish-link:active {
   transform: scale(0.985);
+  animation: none;
+}
+
+@keyframes same-day-rider-run {
+  0%, 72%, 100% { transform: translateX(0) rotate(0); }
+  80% { transform: translateX(5px) rotate(-3deg); }
+  88% { transform: translateX(-2px) rotate(2deg); }
+}
+
+@keyframes openchat-button-nudge {
+  0%, 70%, 100% { transform: translateY(0); box-shadow: 0 8px 18px rgba(126, 107, 0, 0.12); }
+  78% { transform: translateY(-3px); box-shadow: 0 13px 25px rgba(126, 107, 0, 0.18); }
+  86% { transform: translateY(0); box-shadow: 0 8px 18px rgba(126, 107, 0, 0.12); }
+}
+
+@keyframes openchat-arrow-slide {
+  0%, 65%, 100% { transform: translateX(0); }
+  78% { transform: translateX(5px); }
 }
 
 @media (max-width: 390px) {
@@ -1864,6 +1912,10 @@
     <section class="minimal-order-hero" aria-labelledby="mainOrderMessage">
 
       <div class="minimal-product-stage">
+        <p class="same-day-rider">
+          <span class="same-day-rider-icon" aria-hidden="true">🛵</span>
+          <span>오후 5시까지 주문하면 오늘 달려갑니다</span>
+        </p>
         <img
           class="minimal-product-photo"
           src="images/hero-pork-plated-v1.webp"
@@ -1911,10 +1963,7 @@
     </section>
 
     <section class="home-side-dish" aria-labelledby="homeSideDishTitle">
-      <h2 id="homeSideDishTitle">오늘 직접 만든 따뜻한 고기반찬, 구매하고 싶으신가요?</h2>
-      <p class="home-side-dish-copy">
-        아래 오픈톡에 참여해 할인 혜택과 오늘의 상품을 확인하세요.
-      </p>
+      <h2 id="homeSideDishTitle">오늘 직접 만든 따뜻한 고기반찬,<br />구매하고 싶으신가요?</h2>
       <a
         class="home-side-dish-link"
         href="https://open.kakao.com/o/gWzWTLQi"
@@ -1922,7 +1971,7 @@
         rel="noopener noreferrer"
         aria-label="카카오 오픈톡에서 고기반찬 생산일 알림 받기"
       >
-        <span>고기반찬 오픈톡 참여하기</span>
+        <span>오픈톡 참여하기</span>
         <span aria-hidden="true">→</span>
       </a>
     </section>

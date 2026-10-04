@@ -446,8 +446,8 @@
     }
 
   .section-head {
-  margin: 0 2px 16px;
-  text-align: left;
+  margin: 38px 2px 18px;
+  text-align: center;
 
 } 
     .section-head h1 {
@@ -2816,6 +2816,7 @@
     border-radius: 22px;
     background: #fffdf9;
     box-shadow: 0 9px 24px rgba(70, 54, 31, 0.07);
+    text-align: center;
   }
 
   .side-dish-showcase h2 {
@@ -2828,19 +2829,11 @@
     word-break: keep-all;
   }
 
-  .side-dish-lead {
-    margin: 13px 0 0;
-    color: #69625a;
-    font-size: 17px;
-    line-height: 1.55;
-    font-weight: 750;
-    word-break: keep-all;
-  }
-
   .side-dish-openchat {
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     min-height: 56px;
     margin-top: 19px;
     padding: 0 15px;
@@ -2851,10 +2844,29 @@
     font-weight: 950;
     letter-spacing: -0.5px;
     text-decoration: none;
+    animation: side-dish-button-nudge 3.2s ease-in-out infinite;
+  }
+
+  .side-dish-openchat span:last-child {
+    position: absolute;
+    right: 17px;
+    animation: side-dish-arrow-slide 1.6s ease-in-out infinite;
   }
 
   .side-dish-openchat:active {
     transform: scale(0.985);
+    animation: none;
+  }
+
+  @keyframes side-dish-button-nudge {
+    0%, 70%, 100% { transform: translateY(0); box-shadow: 0 8px 18px rgba(126, 107, 0, 0.12); }
+    78% { transform: translateY(-3px); box-shadow: 0 13px 25px rgba(126, 107, 0, 0.18); }
+    86% { transform: translateY(0); box-shadow: 0 8px 18px rgba(126, 107, 0, 0.12); }
+  }
+
+  @keyframes side-dish-arrow-slide {
+    0%, 65%, 100% { transform: translateX(0); }
+    78% { transform: translateX(5px); }
   }
 
 
@@ -3161,10 +3173,7 @@
 </section>
 
 <section class="side-dish-showcase" aria-labelledby="sideDishTitle">
-  <h2 id="sideDishTitle">오늘 직접 만든 따뜻한 고기반찬, 구매하고 싶으신가요?</h2>
-  <p class="side-dish-lead">
-    아래 오픈톡에 참여해 할인 혜택과 오늘의 상품을 확인하세요.
-  </p>
+  <h2 id="sideDishTitle">오늘 직접 만든 따뜻한 고기반찬,<br />구매하고 싶으신가요?</h2>
   <a
     class="side-dish-openchat"
     href="https://open.kakao.com/o/gWzWTLQi"
@@ -3172,7 +3181,7 @@
     rel="noopener noreferrer"
     aria-label="카카오 오픈톡에서 고기반찬 생산일 알림 받기"
   >
-    <span>고기반찬 오픈톡 참여하기</span>
+    <span>오픈톡 참여하기</span>
     <span aria-hidden="true">→</span>
   </a>
 </section>
