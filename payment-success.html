@@ -371,16 +371,10 @@
     .weekly-pack-card {
       display: none;
       margin-top: 22px;
-      padding: 19px 17px 16px;
-      border: 1px solid #d5e8db;
+      padding: 24px 18px 18px;
+      border: 1px solid #e3ddd2;
       border-radius: 20px;
-      background:
-        radial-gradient(
-          circle at 100% 0%,
-          rgba(255, 218, 128, 0.26),
-          transparent 40%
-        ),
-        #f4fbf6;
+      background: #fffdf9;
       text-align: left;
     }
 
@@ -388,43 +382,23 @@
       display: block;
     }
 
-    .weekly-pack-eyebrow {
-      display: inline-flex;
-      min-height: 26px;
-      align-items: center;
-      padding: 0 9px;
-      border-radius: 999px;
-      background: #e3efe7;
-      color: var(--green);
-      font-size: 10px;
-      font-weight: 900;
-    }
-
     .weekly-pack-title {
-      margin: 11px 0 0;
-      color: var(--green);
-      font-size: 24px;
-      line-height: 1.3;
+      margin: 0;
+      color: #1d1d1d;
+      font-size: 26px;
+      line-height: 1.25;
       font-weight: 950;
-      letter-spacing: -0.05em;
+      letter-spacing: -0.065em;
       word-break: keep-all;
     }
 
     .weekly-pack-copy {
-      margin: 10px 0 0;
-      color: #385244;
-      font-size: 13px;
-      line-height: 1.5;
-      font-weight: 850;
+      margin: 12px 0 0;
+      color: #5f5a52;
+      font-size: 15px;
+      line-height: 1.55;
+      font-weight: 750;
       word-break: keep-all;
-    }
-
-    .weekly-pack-composition {
-      margin: 5px 0 0;
-      color: #6b746e;
-      font-size: 11px;
-      line-height: 1.45;
-      font-weight: 700;
     }
 
     .weekly-pack-actions {
@@ -458,7 +432,6 @@
       color: var(--green);
     }
 
-    .weekly-pack-privacy,
     .weekly-pack-status {
       margin: 9px 0 0;
       color: #707871;
@@ -571,25 +544,15 @@
         data-weekly-pack-card
         aria-labelledby="weeklyPackSuccessTitle"
       >
-        <span class="weekly-pack-eyebrow">
-          오늘 만든 고기반찬 · 한정 생산
-        </span>
-
         <h2
           class="weekly-pack-title"
           id="weeklyPackSuccessTitle"
         >
-          다음 생산일과 예약 시작<br />
-          알림을 신청하세요.
+          오늘 직접 만든 따뜻한 고기반찬, 구매하고 싶으신가요?
         </h2>
 
         <p class="weekly-pack-copy">
-          왕갈비탕 · 나주곰탕 · 목살간장불고기<br />
-          돈까스 · 직접 끓인 곰국 · 떡갈비
-        </p>
-
-        <p class="weekly-pack-composition">
-          생산하는 날만 정해진 수량으로 준비합니다.
+          아래 오픈톡에 참여해 할인 혜택과 오늘의 상품을 확인하세요.
         </p>
 
         <div class="weekly-pack-actions">
@@ -603,10 +566,6 @@
           </a>
 
         </div>
-
-        <p class="weekly-pack-privacy">
-          오픈톡에서 다음 생산일과 예약 시작을 가장 먼저 알려드립니다.
-        </p>
 
         <p
           class="weekly-pack-status"

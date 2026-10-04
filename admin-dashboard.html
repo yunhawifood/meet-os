@@ -509,7 +509,7 @@ font-size:19px;
     <div class="intake-control-head">
 
       <div>
-        <strong>새벽배송 주문 접수</strong>
+        <strong>저녁배송 주문 접수</strong>
 
         <div
           class="intake-status"
@@ -856,7 +856,7 @@ if (
   return;
 }
   /*
-    09시 이전 또는 21시 이후
+    09시 이전 또는 17시 이후
     자동 시간 마감
   */
   if (
@@ -864,7 +864,7 @@ if (
   ) {
 
     status.textContent =
-      "● 자동 마감 · 운영시간 09:00~21:00";
+      "● 자동 마감 · 운영시간 09:00~17:00";
 
     status.className =
       "intake-status closed";
@@ -986,7 +986,7 @@ document
 
       const confirmed =
         confirm(
-          "오늘 새벽배송 주문 접수를 마감하시겠습니까?"
+          "오늘 저녁배송 주문 접수를 마감하시겠습니까?"
         );
 
       if (!confirmed) return;
