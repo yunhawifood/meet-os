@@ -15,7 +15,7 @@
 
   <meta
     name="description"
-    content="퇴근 후 장보러 다시 나가지 마세요. 오늘 밤 9시까지 주문하면 매장가격 그대로, 배송비 0원으로 다음 날 오전 8시 이전 문 앞에 배송합니다."
+    content="오후 5시까지 주문하면 한농직판장이 직접 준비해 저녁 7시부터 순차배송하고 밤 9시 이전 문 앞에 도착합니다."
   />
   <link rel="canonical" href="https://yunhawi.com/" />
 
@@ -25,7 +25,7 @@
   <meta property="og:title" content="오지 마세요. 제가 갈게요. | 한농직판장" />
   <meta
     property="og:description"
-    content="퇴근 후 주문하는 문 앞의 동네 정육점. 매장가격 그대로 다음 날 오전 8시 이전에 받아보세요."
+    content="오후 5시 주문 마감, 저녁 7시부터 순차배송, 밤 9시 이전 문 앞 도착."
   />
   <meta property="og:url" content="https://yunhawi.com/" />
   <meta property="og:image" content="https://yunhawi.com/images/og-home.jpg" />
@@ -37,7 +37,7 @@
   <meta name="twitter:title" content="오지 마세요. 제가 갈게요. | 한농직판장" />
   <meta
     name="twitter:description"
-    content="퇴근 후 주문하는 문 앞의 동네 정육점. 매장가격 그대로 다음 날 오전 8시 이전에 받아보세요."
+    content="오후 5시 주문 마감, 저녁 7시부터 순차배송, 밤 9시 이전 문 앞 도착."
   />
   <meta name="twitter:image" content="https://yunhawi.com/images/og-home.jpg" />
 
@@ -984,6 +984,91 @@
   font-size: 22px;
 }
 
+.home-side-dish {
+  margin: 14px 0 0;
+  padding: 18px 17px;
+  border: 1px solid #e3ddd2;
+  border-radius: 22px;
+  background: #fffdf9;
+  box-shadow: 0 8px 22px rgba(71, 52, 28, 0.07);
+  text-align: left;
+}
+
+.home-side-dish-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  min-height: 27px;
+  margin: 0 0 9px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #176d39;
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.3px;
+}
+
+.home-side-dish h2 {
+  margin: 0;
+  color: #181818;
+  font-size: 23px;
+  line-height: 1.25;
+  letter-spacing: -1px;
+  word-break: keep-all;
+}
+
+.home-side-dish-copy {
+  margin: 8px 0 0;
+  color: #5f5a52;
+  font-size: 14px;
+  line-height: 1.58;
+  font-weight: 650;
+  letter-spacing: -0.35px;
+  word-break: keep-all;
+}
+
+.home-side-dish-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-side-dish-items li {
+  padding: 7px 10px;
+  border: 1px solid #eadfd0;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #3e3a35;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.25px;
+}
+
+.home-side-dish-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 53px;
+  margin-top: 15px;
+  padding: 0 15px;
+  border-radius: 15px;
+  background: #fee500;
+  color: #191600;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: -0.45px;
+  text-decoration: none;
+}
+
+.home-side-dish-link:active {
+  transform: scale(0.985);
+}
+
 @media (max-width: 390px) {
   .minimal-product-stage {
     height: 348px;
@@ -1803,7 +1888,7 @@
       </p>
 
      <span class="delivery-badge">
-  전주 돼지고기 새벽배송
+  오후 5시 마감 · 밤 9시 이전 도착
 </span>
     </header>
 
@@ -1837,7 +1922,7 @@
           id="orderCtaButton"
           type="button"
           data-intake-status="loading"
-          aria-label="새벽배송 상품 주문 화면으로 이동"
+          aria-label="오늘 저녁배송 상품 주문 화면으로 이동"
           onclick="location.href='morning-delivery.html'"
         >
           <span class="order-button-copy" aria-live="polite">
@@ -1855,10 +1940,37 @@
         </button>
 
         <p class="sr-only" id="orderCtaNote">
-          한 팩부터 주문 가능 · 전주 지정지역
+          오후 5시 마감 · 저녁 7시부터 순차배송
         </p>
       </div>
 
+    </section>
+
+    <section class="home-side-dish" aria-labelledby="homeSideDishTitle">
+      <p class="home-side-dish-eyebrow">오늘 만든 고기반찬 · 한정 생산</p>
+      <h2 id="homeSideDishTitle">다음 생산일과 예약 시작 알림을 신청하세요.</h2>
+      <p class="home-side-dish-copy">
+        생산하는 날만 정해진 수량으로 준비합니다. 오픈톡에 참여하면
+        생산일과 예약 시작 소식을 가장 먼저 받을 수 있습니다.
+      </p>
+      <ul class="home-side-dish-items" aria-label="직접 만든 고기반찬 예정 상품">
+        <li>왕갈비탕</li>
+        <li>나주곰탕</li>
+        <li>목살간장불고기</li>
+        <li>돈까스</li>
+        <li>직접 끓인 곰국</li>
+        <li>떡갈비</li>
+      </ul>
+      <a
+        class="home-side-dish-link"
+        href="https://open.kakao.com/o/gWzWTLQi"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="카카오 오픈톡에서 고기반찬 생산일 알림 받기"
+      >
+        <span>고기반찬 오픈톡 참여하기</span>
+        <span aria-hidden="true">→</span>
+      </a>
     </section>
 
 
@@ -1969,7 +2081,7 @@
 
 
 
-      <!-- 3번 : 새벽배송 -->
+      <!-- 3번 : 저녁배송 -->
 
       <article class="hero-slide" aria-hidden="true">
 
@@ -1994,7 +2106,7 @@
 
           <img
             data-src="images/hero-3.webp"
-            alt="새벽배송을 위해 포장된 돼지고기"
+            alt="저녁배송을 위해 포장된 돼지고기"
             width="1200"
             height="900"
             decoding="async"
@@ -2008,7 +2120,7 @@
         <div class="hero-copy">
 
           <span class="hero-kicker">
-            03 · 전주 새벽배송
+            03 · 전주 저녁배송
           </span>
 
         <strong>
@@ -2383,7 +2495,7 @@
         <p>
           한농직판장은 김제 장군이포크 육가공의 직영매장입니다.
           날씨와 거리, 이동이 어려운 고객님의 생활환경을 생각하여
-          전주 지역 새벽배송을 시작했습니다.
+          전주 지역 저녁배송을 시작했습니다.
         </p>
 
         <strong class="store-intro-flow">
@@ -2398,7 +2510,7 @@
         </p>
 
    <p class="store-intro-closing">
-  고객님의 아침과 저녁 식탁이 더 편하고 든든해지도록
+  고객님의 저녁 식탁이 더 편하고 든든해지도록
   <span class="store-intro-closing-emphasis">
     한 팩부터 정성껏 보내드리겠습니다.
   </span>
@@ -2516,9 +2628,9 @@
           label.textContent =
             "고기 주문하기";
           meta.textContent =
-            "원하는 부위와 중량을 선택하세요";
+            "오후 5시까지 주문하면 오늘 저녁 도착";
           note.textContent =
-            "한 팩부터 주문 가능 · 전주 지정지역";
+            "저녁 7시부터 순차배송 · 밤 9시 이전 도착";
         } else {
           button.dataset.intakeStatus =
             "closed";
@@ -2533,7 +2645,7 @@
           note.textContent =
             reason === "WEEKLY_CLOSED"
               ? "오늘 주문 휴무 · 일요일 오전 9시에 다시 열립니다"
-              : "주문 가능 시간 · 매일 오전 9시부터";
+              : "주문 가능 시간 · 오전 9시부터 오후 5시까지";
         }
 
         button.setAttribute(

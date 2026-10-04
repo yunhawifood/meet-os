@@ -622,7 +622,7 @@
         오늘 주문하신 상품은<br />
 
         <strong>
-          다음 날 오전 8시 이전
+          오늘 저녁 7시부터 순차배송해 밤 9시 이전
         </strong>
 
         문 앞 배송됩니다.
@@ -636,39 +636,40 @@
         aria-labelledby="weeklyPackOrderTitle"
       >
         <span class="weekly-pack-eyebrow">
-          준비 중 · 일주일 든든팩
+          오늘 만든 고기반찬 · 한정 생산
         </span>
 
         <h2
           class="weekly-pack-title"
           id="weeklyPackOrderTitle"
         >
-          월요일 아침,<br />
-          이번 주 고기 장보기 끝.
+          다음 생산일과 예약 시작<br />
+          알림을 신청하세요.
         </h2>
 
         <p class="weekly-pack-copy">
-          삼겹살 2팩 · 목살 2팩 · 앞다리 2팩
+          왕갈비탕 · 나주곰탕 · 목살간장불고기<br />
+          돈까스 · 직접 끓인 곰국 · 떡갈비
         </p>
 
         <p class="weekly-pack-composition">
-          앞다리는 불고기용 1팩 + 찌개용 1팩
+          생산하는 날만 정해진 수량으로 준비합니다.
         </p>
 
         <div class="weekly-pack-actions">
-          <button
+          <a
             class="weekly-pack-interest-button"
-            type="button"
-            data-weekly-pack-interest
-            data-source="order_check"
+            href="https://open.kakao.com/o/gWzWTLQi"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            관심 등록할게요
-          </button>
+            고기반찬 오픈톡 참여하기
+          </a>
 
         </div>
 
         <p class="weekly-pack-privacy">
-          연락처나 이름 없이 관심만 집계합니다.
+          오픈톡에서 다음 생산일과 예약 시작을 가장 먼저 알려드립니다.
         </p>
 
         <p
@@ -828,14 +829,8 @@
         parseServerDate(value);
 
       if (!date) {
-        return "다음 날 오전 8시 이전";
+        return "오늘 오후 9시 이전";
       }
-
-      const nextDay =
-        new Date(
-          date.getTime() +
-          24 * 60 * 60 * 1000
-        );
 
       const day =
         new Intl.DateTimeFormat(
@@ -845,11 +840,11 @@
             month: "long",
             day: "numeric",
           }
-        ).format(nextDay);
+        ).format(date);
 
       return (
         day +
-        " 오전 8시 이전"
+        " 오후 9시 이전"
       );
 
     }
@@ -1495,8 +1490,6 @@ document.getElementById("deliveryGuide").classList.add("hidden");
     }
 
   </script>
-
-  <script src="weekly-pack-interest.js"></script>
 
 </body>
 </html>
